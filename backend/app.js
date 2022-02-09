@@ -1,11 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors')
 require('dotenv').config();
 
 const userRoutes = require('./routes/userRoutes');
 
 const app = express();
+
+// allow cors
+app.use(cors())
 
 // support parsing of application/json type post data
 app.use(bodyParser.json());
@@ -19,7 +23,7 @@ app.use('/users', userRoutes);
 mongoose
     .connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(result => {
-        app.listen(3000); // launches server on port 3000
+        app.listen(3001); // launches server on port 3000
     })
     .catch(err => {
         console.log(err);
