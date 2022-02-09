@@ -23,7 +23,7 @@ app.use('/users', userRoutes);
 mongoose
     .connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(result => {
-        app.listen(3001); // launches server on port 3000
+        app.listen(3001); // launches server on port 3001
     })
     .catch(err => {
         console.log(err);

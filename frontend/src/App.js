@@ -5,9 +5,9 @@ import {
     Route
 } from "react-router-dom";
 import NavigationBar from "./components/navigationBar";
-import CreateAccountPage from "./pages/createAccount";
-import LoginPage from "./pages/login";
-import HomePage from "./pages/homePage";
+import CreateAccountPage from "./pages/CreateAccount";
+import LoginPage from "./pages/Login";
+import HomePage from "./pages/HomePage";
 
 const App = () => {
     return (

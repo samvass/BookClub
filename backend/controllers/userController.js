@@ -34,7 +34,6 @@ exports.getByUsername = (req, res, next) => {
 exports.createAccount = (req, res, next) => {
 
     // this should be using req.body but its not working...
-
     const username = req.query.username;
     const email = req.query.email;
     const password = req.query.password;
