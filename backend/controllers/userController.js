@@ -39,6 +39,9 @@ exports.createAccount = async (req, res, next) => {
     const password = req.body.password;
 
     // TODO: validate username, email, password
+    if (email.indexOf('@') > -1){
+        return res.status(404).send('Invalid email');
+    }
 
     // encrypt password
     let hashedPassword = await bcrypt.hash(password, 12);
@@ -50,7 +53,46 @@ exports.createAccount = async (req, res, next) => {
         password: hashedPassword
     });
 
-    await user.save();
+    try {
+        await user.save();
+    }
+
+    // check that username and email are unique
+    catch(error){
+        res.status(401).json('Username or email already exists');
+    }
 
     return res.json(user);
+};
+
+exports.login = async (req, res, next) => {
+
+    // get the credentials
+    const username = req.body.username;
+    const password = req.body.password;
+
+    const user = await User.findOne({username: username});
+
+    const passwordMatches = await bcrypt.compare(password, user.password);
+    
+    console.log("login successful: " + passwordMatches);
+
+    // login the user
+    if (passwordMatches){
+        req.session.isLoggedIn = true;
+        req.session.user = user;
+        await req.session.save();
+    }
+
+    // return error
+    else {
+        return res.status(404).send('incorrect password');   
+    }
+}
+
+exports.logout = (req, res, next) => {
+    console.log("logging out...");
+    req.session.destroy(err => {
+        console.log("logout done");
+    })
 };

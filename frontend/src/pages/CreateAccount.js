@@ -6,6 +6,7 @@ const CreateAccountPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
+    const [error, setError] = useState("");
 
     const signup = (event) => {
         event.preventDefault();
@@ -18,7 +19,9 @@ const CreateAccountPage = () => {
         }
 
         let response = createAccount(body);
-    } 
+
+        console.log(response);
+    }
 
     return <div style={{ "width": 600, "margin": "0 auto", "marginTop": 30 }}>
         <Form>

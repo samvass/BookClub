@@ -1,15 +1,23 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const cors = require('cors')
+const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
+const cors = require('cors');
 require('dotenv').config();
+
 
 const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 
+const store = new MongoDBStore({
+    uri: process.env.MONGODB_URI,
+    collection: 'sessions'
+});
+
 // allow cors
-app.use(cors())
+app.use(cors());
 
 // support parsing of application/json type post data
 app.use(express.json());
@@ -17,6 +25,16 @@ app.use(bodyParser.json());
 
 // support parsing of application/x-www-form-urlencoded post data
 app.use(bodyParser.urlencoded({ extended: true }));
+
+
+app.use(
+    session({
+        secret: 'my secret',
+        resave: false,
+        saveUninitialized: false,
+        store: store
+    })
+);
 
 // all of the user related routes
 app.use('/users', userRoutes);
