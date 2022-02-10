@@ -1,7 +1,18 @@
 import { Navbar, Container, Nav } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 
+import { logout } from '../api/userAPI';
+
 const NavigationBar = () => {
+
+    const logoutUser = (event) => {
+        event.preventDefault();
+
+        let response = logout({});
+
+        console.log(response);
+    }
+
     return <>
         <Navbar bg="dark" variant="dark">
             <Container>
@@ -18,6 +29,9 @@ const NavigationBar = () => {
                     <Nav.Link as={Link} to="/login" title="Login">
                         Login
                     </Nav.Link>
+                    <form onClick={logoutUser}>
+                        <input type="submit" value="Logout"/>
+                    </form>
                 </Nav>
             </Container>
         </Navbar>

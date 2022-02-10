@@ -15,6 +15,12 @@ router.get('/get/:username', userController.getByUsername);
 // create a user
 router.post('/create', userController.createAccount);
 
+// login user
+router.post('/login', userController.login);
+
+// logout user
+router.post('/logout', userController.logout);
+
 module.exports = router;
 
 

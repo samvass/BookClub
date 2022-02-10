@@ -24,11 +24,11 @@ const apiPost = async (endpoint, body) => {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
-        }); 
+        });
 
         return await res.json();
     } catch (error) {
-        console.log(error);
+        console.log("hell0");
     }
 }
 
@@ -44,5 +44,15 @@ export const getAllUsers = async () => {
 
 export const createAccount = async (body) => {
     let endpoint = apiURL + "/users/create";
+    return await apiPost(endpoint, body);
+}
+
+export const login = async (body) => {
+    let endpoint = apiURL + "/users/login";
+    return await apiPost(endpoint, body);
+}
+
+export const logout = async (body) => {
+    let endpoint = apiURL + "/users/logout";
     return await apiPost(endpoint, body);
 }
