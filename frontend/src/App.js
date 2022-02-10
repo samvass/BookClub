@@ -5,9 +5,10 @@ import {
     Route
 } from "react-router-dom";
 import NavigationBar from "./components/navigationBar";
-import CreateAccountPage from "./pages/CreateAccount";
-import LoginPage from "./pages/Login";
+import CreateAccountPage from "./pages/CreateAccountPage";
+import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
+import MyAccountPage from "./pages/MyAccountPage/MyAccountPage";
 
 const App = () => {
     return (
@@ -17,6 +18,7 @@ const App = () => {
                     <NavigationBar />
 
                     <Routes>
+                        <Route path='/myAccount' element={<MyAccountPage />} />
                         <Route path='/signup' element={<CreateAccountPage />} />
                         <Route path='/login' element={<LoginPage />} />
                         <Route path='/' element={<HomePage />} />

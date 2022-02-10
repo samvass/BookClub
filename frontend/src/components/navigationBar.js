@@ -23,6 +23,9 @@ const NavigationBar = () => {
                     <Nav.Link as={Link} to="/" title="Home">
                         Home
                     </Nav.Link>
+                    <Nav.Link as={Link} to="/myAccount" title="My Account">
+                        My Account
+                    </Nav.Link>
                     <Nav.Link as={Link} to="/signup" title="Create Account">
                         Create Account
                     </Nav.Link>
@@ -30,7 +33,7 @@ const NavigationBar = () => {
                         Login
                     </Nav.Link>
                     <form onClick={logoutUser}>
-                        <input type="submit" value="Logout"/>
+                        <input type="submit" value="Logout" />
                     </form>
                 </Nav>
             </Container>

@@ -39,9 +39,9 @@ exports.createAccount = async (req, res, next) => {
     const password = req.body.password;
 
     // TODO: validate username, email, password
-    if (email.indexOf('@') > -1){
-        return res.status(404).send('Invalid email');
-    }
+    // if (email.indexOf('@') > -1){
+    //     return res.status(404).send('Invalid email');
+    // }
 
     // encrypt password
     let hashedPassword = await bcrypt.hash(password, 12);
@@ -58,7 +58,7 @@ exports.createAccount = async (req, res, next) => {
     }
 
     // check that username and email are unique
-    catch(error){
+    catch (error) {
         res.status(401).json('Username or email already exists');
     }
 
@@ -71,14 +71,14 @@ exports.login = async (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
 
-    const user = await User.findOne({username: username});
+    const user = await User.findOne({ username: username });
 
     const passwordMatches = await bcrypt.compare(password, user.password);
-    
+
     console.log("login successful: " + passwordMatches);
 
     // login the user
-    if (passwordMatches){
+    if (passwordMatches) {
         req.session.isLoggedIn = true;
         req.session.user = user;
         await req.session.save();
@@ -86,7 +86,7 @@ exports.login = async (req, res, next) => {
 
     // return error
     else {
-        return res.status(404).send('incorrect password');   
+        return res.status(404).send('incorrect password');
     }
 }
 
