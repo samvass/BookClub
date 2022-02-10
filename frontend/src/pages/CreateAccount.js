@@ -9,7 +9,7 @@ const CreateAccountPage = () => {
 
     const signup = (event) => {
         event.preventDefault();
-    
+
         // call the backend
         const body = {
             "username": username,
@@ -18,26 +18,26 @@ const CreateAccountPage = () => {
         }
 
         let response = createAccount(body);
-    } 
+    }
 
     return <div style={{ "width": 600, "margin": "0 auto", "marginTop": 30 }}>
         <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" 
-                value={email} onChange={(event) => setEmail(event.target.value)} />
+                <Form.Control type="email" placeholder="Email"
+                    value={email} onChange={(event) => setEmail(event.target.value)} />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicUsername">
                 <Form.Label>Username</Form.Label>
-                <Form.Control type="text" placeholder="Enter username"
-                value={username} onChange={(event) => setUsername(event.target.value)} />
+                <Form.Control type="text" placeholder="Username"
+                    value={username} onChange={(event) => setUsername(event.target.value)} />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" 
-                value={password} onChange={(event) => setPassword(event.target.value)} />
+                <Form.Control type="password" placeholder="Password"
+                    value={password} onChange={(event) => setPassword(event.target.value)} />
             </Form.Group>
 
             <Button variant="primary" type="submit" onClick={signup}>
