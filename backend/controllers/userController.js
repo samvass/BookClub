@@ -59,7 +59,7 @@ exports.createAccount = async (req, res, next) => {
 
     // check that username and email are unique
     catch (error) {
-        res.status(401).json('Username or email already exists');
+        return res.status(401).json('Username or email already exists');
     }
 
     return res.json(user);

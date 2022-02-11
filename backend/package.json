@@ -20,5 +20,9 @@
     "express-session": "^1.17.2",
     "mongoose": "^6.2.0",
     "nodemon": "^2.0.15"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^7.3.2",
+    "supertest": "^6.2.2"
   }
 }
