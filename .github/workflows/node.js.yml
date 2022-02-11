@@ -14,15 +14,16 @@ env:
 
 jobs:
   backend:
-
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: backend
     steps:
     - uses: actions/checkout@v2
-    - run: cd backend
     - name: Use Node.js 16.x
       uses: actions/setup-node@v2
       with:
         node-version: 16.x
         cache: 'npm'
+    - run: npm install
     - run: npm test
