@@ -15,9 +15,6 @@ env:
 jobs:
   backend:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: backend
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js 16.x
@@ -25,5 +22,6 @@ jobs:
       with:
         node-version: 16.x
         cache: 'npm'
+        cache-dependency-path: backend/package-lock.json
     - run: npm install
     - run: npm test
