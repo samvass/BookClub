@@ -37,7 +37,7 @@ Then('a new account will be created with username {string}, email {string}, and 
 });
 
 Then('an error message {string} is issued', (string) => {
-
+    // TODO
 })
 
 // drop collection
