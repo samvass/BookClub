@@ -1,12 +1,13 @@
 import { Form, Button } from 'react-bootstrap';
 import { useState } from 'react';
+import { login } from '../api/userAPI';
 
 const LoginPage = () => {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const signIn = (event) => {
+    const loginUser = (event) => {
         event.preventDefault();
 
         // call the backend
@@ -15,8 +16,7 @@ const LoginPage = () => {
             "password": password,
         }
 
-        // dont have method to sign in 
-        // let response = signInAccount(body);
+        let response = login(body);
     }
 
     return <div style={{ "width": 600, "margin": "0 auto", "marginTop": 30 }}>
@@ -31,7 +31,7 @@ const LoginPage = () => {
                 <Form.Control type="password" placeholder="Password" onChange={(event) => setPassword(event.target.value)} />
             </Form.Group>
 
-            <Button variant="primary" type="submit" onClick={signIn}>
+            <Button variant="primary" type="submit" onClick={loginUser}>
                 Login
             </Button>
         </Form>

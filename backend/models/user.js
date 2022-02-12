@@ -13,7 +13,12 @@ const userSchema = new Schema({
     email: {
         type: String,
         unique: true
-    }
+    },
+
+    myLibrary: [{
+        type: Schema.Types.ObjectId,
+        ref: "Book"
+    }]
 });
 
 module.exports = mongoose.model('User', userSchema);

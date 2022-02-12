@@ -1,32 +1,21 @@
 import React, { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Alert } from 'react-bootstrap';
 import { createAccount } from '../api/userAPI';
 
 const CreateAccountPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
-    const [error, setError] = useState("error");
+    const [error, setError] = useState(null);
 
     const emailHandler = (event) => {
         let typedEmail = event.target.value;
-
-        if (typedEmail.trim().length() === 0) {
-            setError("Email cannot be empty")
-            return;
-        }
 
         setEmail(event.target.value)
     }
 
     const usernameHandler = (event) => {
         let typedUsername = event.target.value;
-        console.log(typedUsername)
-
-        if (typedUsername.trim().length() === 0) {
-            setError("Username cannot be empty")
-            return;
-        }
 
         setUsername(event.target.value)
     }
@@ -34,15 +23,10 @@ const CreateAccountPage = () => {
     const passwordHandler = (event) => {
         let typedPassword = event.target.value;
 
-        if (typedPassword.trim().length() === 0) {
-            setError("Password cannot be empty")
-            return;
-        }
-
         setPassword(event.target.value)
     }
 
-    const signup = (event) => {
+    const signup = async (event) => {
         event.preventDefault();
 
         // call the backend
@@ -51,37 +35,43 @@ const CreateAccountPage = () => {
             "password": password,
             "email": email
         }
+        
+        const response = await createAccount(body);
 
-        let response = createAccount(body);
-        console.log(response)
+        if (response.error.length > 0){
+            setError(response.error);
+        }
     }
 
     return <div>
-        <h1>{error}</h1>
         <div style={{ "width": 600, "margin": "0 auto", "marginTop": 30 }}>
             <Form>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
                     <Form.Control type="email" placeholder="Email"
-                        value={email} onSubmit={emailHandler} />
+                        value={email} onChange={emailHandler} />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicUsername">
                     <Form.Label>Username</Form.Label>
                     <Form.Control type="text" placeholder="Username"
-                        value={username} onSubmit={usernameHandler} />
+                        value={username} onChange={usernameHandler} />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" placeholder="Password"
-                        value={password} onSubmit={passwordHandler} />
+                        value={password} onChange={passwordHandler} />
                 </Form.Group>
 
                 <Button variant="primary" type="submit" onClick={signup}>
                     Create Account
                 </Button>
             </Form>
+            <br/>
+            {error && error.map(err => {
+            return <Alert variant="danger" key={err}>{err}</Alert>;
+            })}
         </div>
     </div>
 }

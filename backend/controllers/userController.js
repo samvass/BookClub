@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const emailValidator = require("email-validator");
+const passwordValidator = require('password-validator');
+
+
 
 const User = require('../models/user');
+const { response } = require('express');
 
 exports.getUsers = (req, res, next) => {
 
@@ -33,18 +38,54 @@ exports.getByUsername = (req, res, next) => {
 
 exports.createAccount = async (req, res, next) => {
 
-    // this should be using req.body but its not working...
+    var error = [];
+
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
 
     // TODO: validate username, email, password
-    // if (email.indexOf('@') > -1){
-    //     return res.status(404).send('Invalid email');
-    // }
 
+    // // check username or email doesn't already exist
+    const userExists = await User.findOne({ username: username}) ? true : false;
+    const emailExists = await User.findOne({email: email}) ? true : false;
+
+    if (userExists || emailExists){
+        error.push("username or email already exists");
+    }
+
+    // validate email
+    if(!emailValidator.validate(email)){
+        error.push("invalid email");
+
+    }
+
+    // validate password
+    const passwordSchema = new passwordValidator();
+    passwordSchema
+    .is().min(8)                                    // Minimum length 8
+    .is().max(100)                                  // Maximum length 100
+    .has().uppercase()                              // Must have uppercase letters
+    .has().lowercase()                              // Must have lowercase letters
+    .has().digits(1)                                // Must have at least 1 digits
+    .has().symbols(1)                               // Must have at least 1 symbol
+    .has().not().spaces()                           // Should not have spaces
+
+    if (!passwordSchema.validate(password)){
+        error.push("invalid password");
+
+    }
+
+    if (error.length > 0) {
+        return res.status(404).send({
+            data: {},
+            error: error
+        });
+    }
+        
     // encrypt password
     let hashedPassword = await bcrypt.hash(password, 12);
+    
 
     // create the new user
     const user = new User({
@@ -53,16 +94,13 @@ exports.createAccount = async (req, res, next) => {
         password: hashedPassword
     });
 
-    try {
-        await user.save();
-    }
+    
+    await user.save();
 
-    // check that username and email are unique
-    catch (error) {
-        return res.status(401).json('Username or email already exists');
-    }
-
-    return res.json(user);
+    return res.json({
+        data: user,
+        error: error
+    });
 };
 
 exports.login = async (req, res, next) => {
@@ -72,6 +110,10 @@ exports.login = async (req, res, next) => {
     const password = req.body.password;
 
     const user = await User.findOne({ username: username });
+
+    if (!user){
+        return res.status(401).send('user does not exist');
+    }
 
     const passwordMatches = await bcrypt.compare(password, user.password);
 
@@ -90,9 +132,8 @@ exports.login = async (req, res, next) => {
     }
 }
 
-exports.logout = (req, res, next) => {
+exports.logout = async (req, res, next) => {
     console.log("logging out...");
-    req.session.destroy(err => {
-        console.log("logout done");
-    })
+    const err = await req.session.destroy();
+    console.log(err);
 };
