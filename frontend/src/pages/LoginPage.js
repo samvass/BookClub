@@ -1,8 +1,9 @@
 import { Form, Button, Alert } from 'react-bootstrap';
 import { useState } from 'react';
 import { login } from '../api/userAPI';
+import { Navigate } from "react-router-dom"
 
-const LoginPage = () => {
+const LoginPage = (props) => {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -14,7 +15,7 @@ const LoginPage = () => {
 
         setSuccessMsg("");
         setError("");
-        
+
         // call the backend
         const body = {
             "username": username,
@@ -23,16 +24,14 @@ const LoginPage = () => {
 
         let response = await login(body);
 
-        if (response.error.length > 0) {
-            console.log("error")
-            setError(response.error);
-        } else {
-            setSuccessMsg(response.message);
-        }
+        props.setUserLoggedIn(username)
     }
 
+    console.log(props.loggedInUser)
+
     return <div style={{ "width": 600, "margin": "0 auto", "marginTop": 30 }}>
-        <Form>
+
+        {props.loggedInUser !== "" ? <Navigate to="/" /> : <div><Form>
             <Form.Group className="mb-3" controlId="formBasicUsername">
                 <Form.Label>Username</Form.Label>
                 <Form.Control type="text" placeholder="Username" onChange={(event) => setUsername(event.target.value)} />
@@ -47,10 +46,10 @@ const LoginPage = () => {
                 Login
             </Button>
         </Form>
-        <br/>
+            <br />
 
-        {successMsg && <Alert variant="success" key={successMsg}>{successMsg}</Alert>}
-        {error && <Alert variant="danger" key={error}>{error}</Alert>}
+            {successMsg && <Alert variant="success" key={successMsg}>{successMsg}</Alert>}
+            {error && <Alert variant="danger" key={error}>{error}</Alert>}</div>}
     </div>
 }
 

@@ -3,15 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { logout } from '../api/userAPI';
 
-const NavigationBar = () => {
-
-    const logoutUser = (event) => {
-        event.preventDefault();
-
-        let response = logout({});
-
-        console.log(response);
-    }
+const NavigationBar = (props) => {
 
     return <>
         <Navbar bg="dark" variant="dark">
@@ -23,18 +15,20 @@ const NavigationBar = () => {
                     <Nav.Link as={Link} to="/" title="Home">
                         Home
                     </Nav.Link>
-                    <Nav.Link as={Link} to="/myAccount" title="My Account">
+                    {props.loggedInUser !== "" && <Nav.Link as={Link} to="/myAccount" title="My Account">
                         My Account
-                    </Nav.Link>
-                    <Nav.Link as={Link} to="/signup" title="Create Account">
+                    </Nav.Link>}
+                    {props.loggedInUser === "" && <Nav.Link as={Link} to="/signup" title="Create Account">
                         Create Account
-                    </Nav.Link>
-                    <Nav.Link as={Link} to="/login" title="Login">
-                        Login
-                    </Nav.Link>
-                    <form onClick={logoutUser}>
-                        <input type="submit" value="Logout" />
-                    </form>
+                    </Nav.Link>}
+                    {props.loggedInUser === "" &&
+                        <Nav.Link as={Link} to="/login" title="Login">
+                            Login
+                        </Nav.Link>}
+                    {props.loggedInUser !== "" &&
+                        <Nav.Link as={Link} to="/logout" title="Logout" >
+                            Logout
+                        </Nav.Link>}
                 </Nav>
             </Container>
         </Navbar>

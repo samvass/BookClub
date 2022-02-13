@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     BrowserRouter as Router,
     Routes,
@@ -9,18 +9,22 @@ import CreateAccountPage from "./pages/CreateAccountPage";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import MyAccountPage from "./pages/MyAccountPage/MyAccountPage";
+import LogoutPage from "./pages/LogoutPage";
 
 const App = () => {
+    const [username, setUsername] = useState("");
+
     return (
         <div className="App">
             <Router>
                 <div>
-                    <NavigationBar />
+                    <NavigationBar loggedInUser={username} />
 
                     <Routes>
-                        <Route path='/myAccount' element={<MyAccountPage />} />
+                        <Route path='/myAccount' element={<MyAccountPage loggedInUser={username} />} />
                         <Route path='/signup' element={<CreateAccountPage />} />
-                        <Route path='/login' element={<LoginPage />} />
+                        <Route path='/login' element={<LoginPage setUserLoggedIn={setUsername} loggedInUser={username} />} />
+                        <Route path='/logout' element={<LogoutPage setUserLoggedIn={setUsername} loggedInUser={username} />} />
                         <Route path='/' element={<HomePage />} />
                     </Routes>
                 </div>

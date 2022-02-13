@@ -23,7 +23,7 @@ exports.getByUsername = (req, res, next) => {
     const username = req.params.username;
 
     // take the user schema and find all instances
-    User.find({ username: username }).then(user => {
+    User.findOne({ username: username }).then(user => {
         // return the user
         res.json({ user: user });
     })
@@ -132,10 +132,12 @@ exports.login = async (req, res, next) => {
     // get the credentials
     const username = req.body.username;
     const password = req.body.password;
+    // console.log(username)
+    // console.log(password)
 
     const user = await User.findOne({ username: username });
 
-    if (!user){
+    if (!user) {
         return res.json({
             data: {},
             message: {},
@@ -143,6 +145,9 @@ exports.login = async (req, res, next) => {
         });
     }
 
+    console.log(password)
+    console.log(user.password)
+    console.log(user)
     const passwordMatches = await bcrypt.compare(password, user.password);
 
     // login the user
