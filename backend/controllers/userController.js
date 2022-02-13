@@ -3,10 +3,7 @@ const bcrypt = require('bcryptjs');
 const emailValidator = require("email-validator");
 const passwordValidator = require('password-validator');
 
-
-
 const User = require('../models/user');
-const { response } = require('express');
 
 exports.getUsers = (req, res, next) => {
 
@@ -44,48 +41,74 @@ exports.createAccount = async (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
 
-    // TODO: validate username, email, password
-
     // // check username or email doesn't already exist
-    const userExists = await User.findOne({ username: username}) ? true : false;
-    const emailExists = await User.findOne({email: email}) ? true : false;
+    const userExists = await User.findOne({ username: username }) ? true : false;
+    const emailExists = await User.findOne({ email: email }) ? true : false;
 
-    if (userExists || emailExists){
-        error.push("username or email already exists");
+    if (userExists || emailExists) {
+        error.push("Username or email already exists");
     }
 
     // validate email
-    if(!emailValidator.validate(email)){
-        error.push("invalid email");
-
+    if (!emailValidator.validate(email)) {
+        error.push("Email must be valid");
     }
 
     // validate password
     const passwordSchema = new passwordValidator();
     passwordSchema
-    .is().min(8)                                    // Minimum length 8
-    .is().max(100)                                  // Maximum length 100
-    .has().uppercase()                              // Must have uppercase letters
-    .has().lowercase()                              // Must have lowercase letters
-    .has().digits(1)                                // Must have at least 1 digits
-    .has().symbols(1)                               // Must have at least 1 symbol
-    .has().not().spaces()                           // Should not have spaces
+        .is().min(8)                                    // Minimum length 8
+        .is().max(100)                                  // Maximum length 100
+        .has().uppercase()                              // Must have uppercase letters
+        .has().lowercase()                              // Must have lowercase letters
+        .has().digits(1)                                // Must have at least 1 digits
+        .has().symbols(1)                               // Must have at least 1 symbol
+        .has().not().spaces()                           // Should not have spaces
 
-    if (!passwordSchema.validate(password)){
-        error.push("invalid password");
-
+    if (!passwordSchema.validate(password)) {
+        let errorList = passwordSchema.validate(password, { list: true })
+        if (errorList.includes("spaces")) {
+            error.push("Password cannot contain spaces");
+        }
+        if (errorList.includes("symbols") || errorList.includes("digits") || errorList.includes("symbols") || errorList.includes("uppercase") || errorList.includes("lowercase")) {
+            error.push("Password must contain an upper case, lower case, special character, and number");
+        }
+        if (errorList.includes("min")) {
+            error.push("Password must contain more than 8 characters");
+        }
     }
 
+    // validate username
+    const usernameSchema = new passwordValidator();
+    usernameSchema
+        .is().min(5)                                    // Minimum length 5
+        .is().max(100)                                  // Maximum length 100
+        .has().not().symbols()                          // Should not have symbols
+        .has().not().spaces()                           // Should not have spaces
+
+    if (!usernameSchema.validate(username)) {
+        let errorList = usernameSchema.validate(username, { list: true })
+        if (errorList.includes("spaces")) {
+            error.push("Username cannot contain spaces");
+        }
+        if (errorList.includes("symbols")) {
+            error.push("Username must not contain special characters");
+        }
+        if (errorList.includes("min")) {
+            error.push("Username must contain more than 5 characters");
+        }
+    }
+
+    // check if there is any error
     if (error.length > 0) {
         return res.status(404).send({
             data: {},
             error: error
         });
     }
-        
+
     // encrypt password
     let hashedPassword = await bcrypt.hash(password, 12);
-    
 
     // create the new user
     const user = new User({
@@ -94,7 +117,6 @@ exports.createAccount = async (req, res, next) => {
         password: hashedPassword
     });
 
-    
     await user.save();
 
     return res.json({
@@ -111,7 +133,7 @@ exports.login = async (req, res, next) => {
 
     const user = await User.findOne({ username: username });
 
-    if (!user){
+    if (!user) {
         return res.status(401).send('user does not exist');
     }
 
