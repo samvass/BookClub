@@ -35,7 +35,7 @@ Then('a new account will be created with username {string}, email {string}, and 
             .expect('Content-Type', /json/)
             .expect(200)
             .then(response => {
-                let user = response.body.user[0]
+                let user = response.body.user;
                 assert(user.username, string);
                 assert(user.email, string2);
             })
