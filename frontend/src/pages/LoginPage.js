@@ -1,4 +1,4 @@
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Alert } from 'react-bootstrap';
 import { useState } from 'react';
 import { login } from '../api/userAPI';
 
@@ -6,17 +6,29 @@ const LoginPage = () => {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState(null);
+    const [successMsg, setSuccessMsg] = useState(null);
 
-    const loginUser = (event) => {
+    const loginUser = async (event) => {
         event.preventDefault();
 
+        setSuccessMsg("");
+        setError("");
+        
         // call the backend
         const body = {
             "username": username,
             "password": password,
         }
 
-        let response = login(body);
+        let response = await login(body);
+
+        if (response.error.length > 0) {
+            console.log("error")
+            setError(response.error);
+        } else {
+            setSuccessMsg(response.message);
+        }
     }
 
     return <div style={{ "width": 600, "margin": "0 auto", "marginTop": 30 }}>
@@ -35,6 +47,10 @@ const LoginPage = () => {
                 Login
             </Button>
         </Form>
+        <br/>
+
+        {successMsg && <Alert variant="success" key={successMsg}>{successMsg}</Alert>}
+        {error && <Alert variant="danger" key={error}>{error}</Alert>}
     </div>
 }
 

@@ -79,6 +79,7 @@ exports.createAccount = async (req, res, next) => {
     if (error.length > 0) {
         return res.status(404).send({
             data: {},
+            message: "error",
             error: error
         });
     }
@@ -94,11 +95,11 @@ exports.createAccount = async (req, res, next) => {
         password: hashedPassword
     });
 
-    
     await user.save();
 
     return res.json({
         data: user,
+        message: "Account successfully created",
         error: error
     });
 };
@@ -112,23 +113,35 @@ exports.login = async (req, res, next) => {
     const user = await User.findOne({ username: username });
 
     if (!user){
-        return res.status(401).send('user does not exist');
+        return res.json({
+            data: {},
+            message: {},
+            error: "Username does not exist"
+        });
     }
 
     const passwordMatches = await bcrypt.compare(password, user.password);
-
-    console.log("login successful: " + passwordMatches);
 
     // login the user
     if (passwordMatches) {
         req.session.isLoggedIn = true;
         req.session.user = user;
         await req.session.save();
+
+        return res.json({
+            data: user,
+            message: "Login Successful",
+            error: {}
+        });
     }
 
     // return error
     else {
-        return res.status(404).send('incorrect password');
+        return res.json({
+            data: {},
+            message: {},
+            error: "Incorrect Password"
+        });
     }
 }
 

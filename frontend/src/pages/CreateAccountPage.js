@@ -7,23 +7,24 @@ const CreateAccountPage = () => {
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [error, setError] = useState(null);
+    const [successMsg, setSuccessMsg] = useState(null);
 
     const emailHandler = (event) => {
         let typedEmail = event.target.value;
 
-        setEmail(event.target.value)
+        setEmail(typedEmail);
     }
 
     const usernameHandler = (event) => {
         let typedUsername = event.target.value;
 
-        setUsername(event.target.value)
+        setUsername(typedUsername);
     }
 
     const passwordHandler = (event) => {
         let typedPassword = event.target.value;
 
-        setPassword(event.target.value)
+        setPassword(typedPassword);
     }
 
     const signup = async (event) => {
@@ -40,6 +41,11 @@ const CreateAccountPage = () => {
 
         if (response.error.length > 0){
             setError(response.error);
+        } else {
+            setSuccessMsg(response.message);
+            setEmail("");
+            setPassword("");
+            setUsername("");
         }
     }
 
@@ -72,6 +78,8 @@ const CreateAccountPage = () => {
             {error && error.map(err => {
             return <Alert variant="danger" key={err}>{err}</Alert>;
             })}
+
+            {successMsg && <Alert variant="success" key={successMsg}>{successMsg}</Alert>}
         </div>
     </div>
 }
