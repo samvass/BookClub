@@ -176,5 +176,6 @@ exports.login = async (req, res, next) => {
 exports.logout = async (req, res, next) => {
     console.log("logging out...");
     const err = await req.session.destroy();
+    res.redirect(req.get('referer'));
     console.log(err);
 };
