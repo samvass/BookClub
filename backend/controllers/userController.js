@@ -132,8 +132,6 @@ exports.login = async (req, res, next) => {
     // get the credentials
     const username = req.body.username;
     const password = req.body.password;
-    // console.log(username)
-    // console.log(password)
 
     const user = await User.findOne({ username: username });
 

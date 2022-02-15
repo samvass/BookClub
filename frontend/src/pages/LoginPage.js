@@ -7,14 +7,14 @@ const LoginPage = (props) => {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState(null);
-    const [successMsg, setSuccessMsg] = useState(null);
+    const [errorMsg, setErrorMsg] = useState("");
+    const [successMsg, setSuccessMsg] = useState("");
 
     const loginUser = async (event) => {
         event.preventDefault();
 
         setSuccessMsg("");
-        setError("");
+        setErrorMsg("");
 
         // call the backend
         const body = {
@@ -22,12 +22,20 @@ const LoginPage = (props) => {
             "password": password,
         }
 
+        // send entered username and password to backend
         let response = await login(body);
 
-        props.setUserLoggedIn(username)
-    }
+        // if backend approves of the info
+        if (response.message === "Login Successful") {
+            setSuccessMsg(response.message)
+            props.setUserLoggedIn(username)
 
-    console.log(props.loggedInUser)
+            // if backend sends an error
+        } else {
+            setErrorMsg(response.error);
+        }
+
+    }
 
     return <div style={{ "width": 600, "margin": "0 auto", "marginTop": 30 }}>
 
@@ -47,9 +55,8 @@ const LoginPage = (props) => {
             </Button>
         </Form>
             <br />
-
-            {successMsg && <Alert variant="success" key={successMsg}>{successMsg}</Alert>}
-            {error && <Alert variant="danger" key={error}>{error}</Alert>}</div>}
+            {successMsg !== "" && <Alert variant="success" key={successMsg}>{successMsg}</Alert>}
+            {errorMsg !== "" && <Alert variant="danger" key={errorMsg}>{errorMsg}</Alert>}</div>}
     </div>
 }
 

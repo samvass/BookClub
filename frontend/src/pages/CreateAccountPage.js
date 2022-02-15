@@ -6,24 +6,21 @@ const CreateAccountPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
-    const [error, setError] = useState(null);
-    const [successMsg, setSuccessMsg] = useState(null);
+    const [errorMsg, setErrorMsg] = useState();
+    const [successMsg, setSuccessMsg] = useState("");
 
     const emailHandler = (event) => {
         let typedEmail = event.target.value;
-
         setEmail(typedEmail);
     }
 
     const usernameHandler = (event) => {
         let typedUsername = event.target.value;
-
         setUsername(typedUsername);
     }
 
     const passwordHandler = (event) => {
         let typedPassword = event.target.value;
-
         setPassword(typedPassword);
     }
 
@@ -36,18 +33,28 @@ const CreateAccountPage = () => {
             "password": password,
             "email": email
         }
-        
         const response = await createAccount(body);
+        console.log(response)
 
-        if (response.error.length > 0){
-            setError(response.error);
-        } else {
+        if (response.message === "Account successfully created") {
+            setErrorMsg(null)
             setSuccessMsg(response.message);
-            setEmail("");
-            setPassword("");
-            setUsername("");
+            window.location.href = "/login";
+
+        } else {
+            setErrorMsg(response.error)
         }
     }
+
+    let displayErrorMessages = []
+
+    if (errorMsg) {
+        displayErrorMessages = errorMsg.map((err) => {
+            return <Alert variant="danger" key={err}>{err}</Alert>;
+        })
+    }
+
+
 
     return <div>
         <div style={{ "width": 600, "margin": "0 auto", "marginTop": 30 }}>
@@ -74,12 +81,10 @@ const CreateAccountPage = () => {
                     Create Account
                 </Button>
             </Form>
-            <br/>
-            {error && error.map(err => {
-            return <Alert variant="danger" key={err}>{err}</Alert>;
-            })}
+            <br />
 
-            {successMsg && <Alert variant="success" key={successMsg}>{successMsg}</Alert>}
+            {errorMsg && displayErrorMessages}
+            {successMsg !== "" && <Alert variant="success" key={successMsg}>{successMsg}</Alert>}
         </div>
     </div>
 }
