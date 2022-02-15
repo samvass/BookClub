@@ -8,6 +8,7 @@ require('dotenv').config();
 
 
 const userRoutes = require('./routes/userRoutes');
+const bookRoutes = require('./routes/bookRoutes');
 
 const app = express();
 
@@ -36,8 +37,11 @@ app.use(
     })
 );
 
-// all of the user related routes
+// user related routes
 app.use('/users', userRoutes);
+
+// google books api related routes
+app.use('/books', bookRoutes);
 
 mongoose
     .connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
