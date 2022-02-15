@@ -4,6 +4,10 @@
      I would like to login to a BookClub account
      So that I can access all funtionalities of the BookClub application
 
+     Background:
+     Given the following user with username "Andrew321", password "Pickles1212", and email "andrew12@gmail.com" exists in the system:
+
+
      Scenario Outline: Valid Credentials (Normal Flow)
 
          Given a user tries to login to an account
