@@ -36,3 +36,8 @@ export const getBookByName = async (bookName) => {
     let endpoint = apiURL + "/books/get/" + bookName;
     return await apiGet(endpoint);
 }
+
+export const getBooksByGenre = async (bookGenre) => {
+    let endpoint = apiURL + "/books/get/" + bookGenre;
+    return await apiGet(endpoint);
+}
