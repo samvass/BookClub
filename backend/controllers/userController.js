@@ -143,16 +143,13 @@ exports.login = async (req, res, next) => {
         });
     }
 
-    console.log(password)
-    console.log(user.password)
-    console.log(user)
     const passwordMatches = await bcrypt.compare(password, user.password);
 
     // login the user
     if (passwordMatches) {
         req.session.isLoggedIn = true;
         req.session.user = user;
-        await req.session.save();
+        // await req.session.save();
 
         return res.json({
             data: user,
@@ -173,7 +170,7 @@ exports.login = async (req, res, next) => {
 
 exports.logout = async (req, res, next) => {
     console.log("logging out...");
-    const err = await req.session.destroy();
+    await req.session.destroy();
     res.redirect(req.get('referer'));
-    console.log(err);
+    res.json("Logged out");
 };
