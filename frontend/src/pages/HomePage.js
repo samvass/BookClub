@@ -14,11 +14,11 @@ const HomePage = () => {
         setBookName(typedBookName);
     }
 
-    const displayBook = async () => {
+    const displayBook = async (event) => {
         event.preventDefault();
         const response = await getBookByName(bookName);
         console.log(response)
-    
+
         const book = response.data.book[0];
         const title = book.title;
         const thumbnail = book.thumbnail;
@@ -28,23 +28,23 @@ const HomePage = () => {
     }
 
     return <div>
-    <div style={{ "width": 600, "margin": "0 auto", "marginTop": 30 }}>
-        <Form>
-            <Form.Group className="mb-3">
-                <Form.Control type="text" placeholder="Book Name"
-                    value={bookName} onChange={bookHandler} />
-            </Form.Group>
+        <div style={{ "width": 600, "margin": "0 auto", "marginTop": 30 }}>
+            <Form>
+                <Form.Group className="mb-3">
+                    <Form.Control type="text" placeholder="Book Name"
+                        value={bookName} onChange={bookHandler} />
+                </Form.Group>
 
-            <Button variant="primary" type="submit" onClick={displayBook}>
-                Display Book
-            </Button>
-        </Form>
+                <Button variant="primary" type="submit" onClick={displayBook}>
+                    Display Book
+                </Button>
+            </Form>
 
-        {bookTitle && <div>{bookTitle}</div>}
-        <br/>
-        {bookThumbnail && <img src={bookThumbnail}></img>}
+            {bookTitle && <div>{bookTitle}</div>}
+            <br />
+            {bookThumbnail && <img src={bookThumbnail}></img>}
+        </div>
     </div>
-</div>
 }
 
 export default HomePage;
