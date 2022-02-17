@@ -10,21 +10,26 @@ import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import MyAccountPage from "./pages/MyAccountPage/MyAccountPage";
 import LogoutPage from "./pages/LogoutPage";
-import Sidebar from "./components/Sidebar";
 
 const App = () => {
     const [username, setUsername] = useState("");
+    const [sessionID, setSessionID] = useState(null);
 
     return (
         <div className="App">
-            <Sidebar />
             <Router>
+            <NavigationBar loggedInUser={username}/>
                 <div>
                     <Routes>
                         <Route path='/myAccount' element={<MyAccountPage loggedInUser={username} />} />
                         <Route path='/signup' element={<CreateAccountPage />} />
-                        <Route path='/login' element={<LoginPage setUserLoggedIn={setUsername} loggedInUser={username} />} />
-                        <Route path='/logout' element={<LogoutPage setUserLoggedIn={setUsername} loggedInUser={username} />} />
+
+                        <Route path='/login' element={
+                        <LoginPage setUserLoggedIn={setUsername} loggedInUser={username} setSessionID={setSessionID}/>
+                        } />
+
+                        <Route path='/logout' element={<LogoutPage setUserLoggedIn={setUsername} loggedInUser={username} sessionID={sessionID} />} />
+
                         <Route path='/' element={<HomePage />} />
                     </Routes>
                 </div>

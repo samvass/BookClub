@@ -45,16 +45,15 @@ When(
 Then(
   "a user will be logged into an account with username {string} and password {string}",
   async (string, string2) => {
-    await request(app);
-    // .post("/users/login")
-    // .set("Accept", "application/json")
-    // //.send(data)
-    const db = mongoose.connection.db;
-    console.log(db);
-    //const user = await db.collection("sessions").find();
-    //console.log(user);
-    //assert(user.username, string);
-    // console.log(res.session.user);
+    await request(app)
+      .post("/users/login")
+      .set("Accept", "application/json")
+      .send(data)
+    const username = string;
+    const result = await mongoose.connection.collection('sessions').findOne({'session.user.username': username});
+    console.log(result);
+    assert(result != null);
+    
   }
 );
 

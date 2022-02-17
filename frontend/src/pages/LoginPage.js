@@ -29,6 +29,7 @@ const LoginPage = (props) => {
         if (response.message === "Login Successful") {
             setSuccessMsg(response.message)
             props.setUserLoggedIn(username)
+            props.setSessionID(response.sessionID);
 
             // if backend sends an error
         } else {

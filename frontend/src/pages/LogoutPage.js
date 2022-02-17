@@ -6,11 +6,12 @@ const LogoutPage = (props) => {
     const [logoutSuccess, setLogoutSuccess] = useState(false);
 
     useEffect(async () => {
-        if (props.loggedInUser !== "") {
-            await props.setUserLoggedIn("")
-            await logout({})
+        if (props.loggedInUser != ""){
+            console.log(props.sessionID)
+            await logout({sessionID: props.sessionID})
+            props.setUserLoggedIn("")
+            setLogoutSuccess(true);
         }
-        setLogoutSuccess(true);
     }, [])
 
     return <div>

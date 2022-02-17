@@ -1,4 +1,5 @@
 var books = require('google-books-search');
+var mongoose = require('mongoose');
 
 const googleAPIKey = process.env.GOOGLE_API_KEY;
 
@@ -17,6 +18,7 @@ exports.getBookByName = (req,res,next)=>{
     const bookName = req.params.bookName;
     
     books.search(bookName, options, function(error, results, apiResponse) {
+
         if ( ! error ) {
             return res.status(200).send({
                 data: {
