@@ -1,0 +1,16 @@
+.menu {
+    width: 100px;
+    height: 100px;
+    background-color: #333;
+}
+
+.link-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.link-list a {
+    margin-top: 5px;
+    margin-left: 10px;
+    text-decoration: none;
+}
