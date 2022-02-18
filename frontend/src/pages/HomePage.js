@@ -2,11 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { getBookByName } from '../api/bookAPI';
 import { Form, Button } from 'react-bootstrap';
 
+import "./HomePage.css"
+import ArrowUp from '../components/ArrowUp/ArrowUp';
+import ArrowDown from "../components/ArrowDown/ArrowDown"
+import NavBar from '../components/navbar/NavBar';
+
 const HomePage = () => {
 
     const [bookName, setBookName] = useState("");
     const [bookTitle, setBookTitle] = useState(null);
+    const [bookDescription, setbookDescription] = useState(null);
     const [bookThumbnail, setBookThumbnail] = useState(null);
+    const [showInfo, setShowInfo] = useState(false);
 
 
     const bookHandler = (event) => {
@@ -22,12 +29,25 @@ const HomePage = () => {
         const book = response.data.book[0];
         const title = book.title;
         const thumbnail = book.thumbnail;
+        const description = book.description
 
+        setbookDescription(description)
         setBookTitle(title);
         setBookThumbnail(thumbnail);
     }
 
+    const hoverShowInfo = () => {
+        setShowInfo(true)
+        console.log("hovering")
+    }
+
+    const noHoverShowInfo = () => {
+        setShowInfo(false)
+        console.log("not hovering")
+    }
+
     return <div>
+        <NavBar />
         <div style={{ "width": 600, "margin": "0 auto", "marginTop": 30 }}>
             <Form>
                 <Form.Group className="mb-3">
@@ -40,11 +60,20 @@ const HomePage = () => {
                 </Button>
             </Form>
 
-            {bookTitle && <div>{bookTitle}</div>}
+            {/* {bookTitle && <div className='title'>{bookTitle}</div>} */}
             <br />
-            {bookThumbnail && <img src={bookThumbnail}></img>}
+            <ArrowUp />
+            {bookThumbnail &&
+                <div id="imgcontainer">
+                    <img className='book' onMouseEnter={hoverShowInfo} onMouseLeave={noHoverShowInfo} src={bookThumbnail}></img>
+                    {showInfo && <div className="bookTitle">{bookTitle}</div>}
+                    {showInfo && <div className="bio">{bookDescription}</div>}
+                    {showInfo && <div className="reviewTitle">Top Review</div>}
+                    {showInfo && <div className="review">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto voluptate minus deserunt voluptatum deleniti maiores repellendus, aut quis iusto distinctio ea quasi dolore</div>}
+                </div>}
+            <ArrowDown />
         </div>
     </div>
 }
 
-export default HomePage;
+export default HomePage;  

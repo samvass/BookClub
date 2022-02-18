@@ -1,0 +1,68 @@
+.book {
+    width: 473px;
+    height: 618px;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.book:hover {
+    opacity: .5;
+   filter: alpha(opacity=50);
+   background-color: rgba(0, 0, 0, 0.5);
+}
+
+#imgcontainer
+{
+    opacity: 1;
+    background-color: Black;
+    z-index: 10;
+    display: inline-block
+}
+
+#imgcontainer img
+{
+      Z-index: 5;
+}
+
+.bookTitle {
+    color: white;
+    font-size: 36px;
+    max-width: 450px;
+    position: absolute;
+    top: 25%;
+    left: 47%;
+    transform: translate(-50%, -50%);
+}
+
+
+.bio {
+    color: white;
+    max-width: 450px;
+    position: absolute;
+    top: 50%;
+    left: 47%;
+    transform: translate(-50%, -50%);
+}
+
+.reviewTitle {
+    text-decoration: underline;
+    font-family: Fjalla One;
+    font-size: 36px;
+    color: white;
+    max-width: 450px;
+    position: absolute;
+    top: 75%;
+    left: 47%;
+    transform: translate(-50%, -50%);
+}
+
+.review {
+    font-family: Fjalla One;
+    color: white;
+    max-width: 440px;
+    position: absolute;
+    top: 81%;
+    left: 47%;
+    transform: translate(-50%, -50%);
+}
