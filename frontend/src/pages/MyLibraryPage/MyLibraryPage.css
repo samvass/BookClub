@@ -1,0 +1,14 @@
+.myLibraryTitle {
+    text-align: center;
+    color: #050C4E;
+    font-size: 64px;
+    font-family: 'Lilita One', cursive;
+    margin: 0;
+}
+
+.shelf {
+    display: block;
+    margin-top: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}

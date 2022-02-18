@@ -1,6 +1,9 @@
 .book {
     width: 473px;
     height: 618px;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .book:hover {
