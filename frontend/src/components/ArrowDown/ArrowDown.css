@@ -1,0 +1,9 @@
+.arrow {
+    font-size: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+.arrow:hover {
+    cursor: pointer;
+}
