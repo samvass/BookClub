@@ -6,6 +6,8 @@ const router = express.Router();
 // load book by name
 router.get('/get/:bookName', bookController.getBookByName);
 
-router.get('/get/genre/:bookGenre', bookController.getBooksByGenre);
+router.get('/accept', bookController.acceptBookRecommendation);
+
+router.get('/reject', bookController.rejectBookRecommendation);
 
 module.exports = router;

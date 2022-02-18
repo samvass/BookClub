@@ -13,7 +13,12 @@ const bookSchema = new Schema({
     description: {
         type: String,
         unique: true
-    }
+    },
+    genre: [
+        {
+            type: String
+        }
+    ]
 });
 
 module.exports = mongoose.model('Book', bookSchema);
