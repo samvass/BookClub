@@ -32,13 +32,9 @@ Given("a user tries to login to an account", () => {
 
 When(
   "a user enters a username {string} and password {string}",
-  async (string, string2) => {
+  (string, string2) => {
     data.username = string;
     data.password = string2;
-    await request(app)
-      .post("/users/login")
-      .set("Accept", "application/json")
-      .send(data);
   }
 );
 
@@ -48,14 +44,25 @@ Then(
     await request(app)
       .post("/users/login")
       .set("Accept", "application/json")
-      .send(data)
+      .send(data);
     const username = string;
-    const result = await mongoose.connection.collection('sessions').findOne({'session.user.username': username});
-    console.log(result);
-    assert(result != null);
-    
+    const result = await mongoose.connection
+      .collection("sessions")
+      .findOne({ "session.user.username": username });
+    //console.log(result.session.user.username + "~~~~~~~~~~~~~");
+    assert(result.session.user.username == username);
   }
 );
+
+Then("an error message {string} will be issued", async (string) => {
+  // create an account
+  let res = await request(app)
+    .post("/users/login")
+    .set("Accept", "application/json")
+    .send(data);
+  assert(res.body.error.length > 0);
+  assert(res.body.error.includes(string));
+});
 
 // drop collection
 AfterAll(function (done) {
