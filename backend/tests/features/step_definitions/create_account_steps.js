@@ -58,10 +58,10 @@ Then("an error message {string} is issued", async (string) => {
   assert(res.body.error.includes(string));
 });
 
-// drop collection
-AfterAll(function (done) {
-  mongoose.connection.db.dropCollection("users", function (err, result) {
-    console.log("Collection droped");
-    done();
-  });
-});
+// // drop collection
+// AfterAll(function (done) {
+//   mongoose.connection.db.dropCollection("users", function (err, result) {
+//     console.log("Collection droped");
+//     done();
+//   });
+// });

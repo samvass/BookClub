@@ -47,7 +47,6 @@ When("the user {string} tries to log out", async (string) => {
         .collection("sessions")
         .findOne({ "session.user.username": string });
     logoutData.sessionID = result._id;
-    console.log(logoutData.sessionID);
     await request(app)
         .post("/users/logout")
         .set("Accept", "application/json")
@@ -65,11 +64,11 @@ Then("the user {string} shall be logged out", async (string) => {
 // drop collection
 AfterAll(function (done) {
     mongoose.connection.db.dropCollection("sessions", function (err, result) {
-        console.log("Collection droped");
+        console.log("Sessions droped");
         done();
     });
     mongoose.connection.db.dropCollection("users", function (err, result) {
-        console.log("Collection droped");
+        console.log("Users droped");
         done();
     });
 });
