@@ -23,6 +23,11 @@ exports.getBookByName = (req,res,next)=>{
     
     books.search(bookName, options, function(error, results, apiResponse) {
 
+        // adjust size of the thumbnail
+        const newURL = results[0].thumbnail.replace("zoom=1", "zoom=3");
+
+        results[0].thumbnail = newURL;
+
         if ( ! error ) {
             return res.status(200).send({
                 data: {
@@ -44,26 +49,28 @@ exports.getBookByName = (req,res,next)=>{
 }
 
 exports.acceptBookRecommendation = async (req, res, next) => {
+    console.log(req);
     // get book information from request body
-    // const title = req.body.title;
-    // const description = req.body.description;
-    // const author = req.body.author;
-    // const genre = req.body.genre;
-    // const username = req.body.username;
+    const title = req.body.title;
+    const description = req.body.description;
+    const author = req.body.author;
+    const genre = req.body.genre;
+    const thumbnail = req.body.thumbnail;
+    const username = req.body.username;
 
-    /////////////////////////////////////////////////////////////////////////////
-    // for now I will use mock variables since I am not connected to the front end
-    const mockBook = {
-        title: "The Hunger Games",
-        description: "First in the ground-breaking HUNGER GAMES trilogy. Set in a dark vision of the near future, a terrifying reality TV show is taking place. Twelve boys and twelve girls are forced to appear in a live event called The Hunger Games. There is only one rule: kill or be killed. When sixteen-year-old Katniss Everdeen steps forward to take her younger sister's place in the games, she sees it as a death sentence. But Katniss has been close to death before. For her, survival is second nature.",
-        author: "Suzanne Collins",
-        genre: ["Action", "Dystopian"]
-    }
+    // /////////////////////////////////////////////////////////////////////////////
+    // // for now I will use mock variables since I am not connected to the front end
+    // const mockBook = {
+    //     title: "The Hunger Games",
+    //     description: "First in the ground-breaking HUNGER GAMES trilogy. Set in a dark vision of the near future, a terrifying reality TV show is taking place. Twelve boys and twelve girls are forced to appear in a live event called The Hunger Games. There is only one rule: kill or be killed. When sixteen-year-old Katniss Everdeen steps forward to take her younger sister's place in the games, she sees it as a death sentence. But Katniss has been close to death before. For her, survival is second nature.",
+    //     author: "Suzanne Collins",
+    //     genre: ["Action", "Dystopian"]
+    // }
 
-    // get mock user
-    const username = "samvass";
+    // // get mock user
+    // const username = "samvass";
 
-    /////////////////////////////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////////////////////////////
 
     const user = await User.findOne({username: username});
 
@@ -75,15 +82,16 @@ exports.acceptBookRecommendation = async (req, res, next) => {
     }
 
     // check if the book has been previously accepted
-    let book = await Book.findOne({title: mockBook.title});
+    let book = await Book.findOne({title: title});
 
     if (!book){
         // create the book
         bookModel = new Book({
-            title: mockBook.title,
-            author: mockBook.author,
-            description: mockBook.description,
-            genre: mockBook.genre
+            title: title,
+            author: author,
+            description: description,
+            thumbnail: thumbnail,
+            genre: genre
         });
         book = await bookModel.save();
     }

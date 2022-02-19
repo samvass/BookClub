@@ -7,11 +7,13 @@ import ArrowUp from '../components/ArrowUp/ArrowUp';
 import ArrowDown from "../components/ArrowDown/ArrowDown"
 import NavBar from '../components/navbar/NavBar';
 
-const HomePage = () => {
+const HomePage = props => {
 
     const [bookName, setBookName] = useState("");
     const [bookTitle, setBookTitle] = useState(null);
     const [bookDescription, setbookDescription] = useState(null);
+    const [bookAuthor, setBookAuthor] = useState(null);
+    const [bookGenres, setBookGenres] = useState(null);
     const [bookThumbnail, setBookThumbnail] = useState(null);
     const [showInfo, setShowInfo] = useState(false);
 
@@ -29,10 +31,14 @@ const HomePage = () => {
         const book = response.data.book[0];
         const title = book.title;
         const thumbnail = book.thumbnail;
-        const description = book.description
+        const description = book.description;
+        const author = book.authors[0];
+        const genre = book.categories;
 
         setbookDescription(description)
         setBookTitle(title);
+        setBookAuthor(author);
+        setBookGenres(genre);
         setBookThumbnail(thumbnail);
     }
 
@@ -62,7 +68,7 @@ const HomePage = () => {
 
             {/* {bookTitle && <div className='title'>{bookTitle}</div>} */}
             <br />
-            <ArrowUp />
+            <ArrowUp title={bookTitle} description={bookDescription} author={bookAuthor} genre={bookGenres} thumbnail={bookThumbnail} loggedInUser={props.loggedInUser}/>
             {bookThumbnail &&
                 <div id="imgcontainer">
                     <img className='book' onMouseEnter={hoverShowInfo} onMouseLeave={noHoverShowInfo} src={bookThumbnail}></img>

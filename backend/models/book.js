@@ -14,6 +14,9 @@ const bookSchema = new Schema({
         type: String,
         unique: true
     },
+    thumbnail: {
+        type: String
+    },
     genre: [
         {
             type: String

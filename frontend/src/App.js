@@ -31,7 +31,7 @@ const App = () => {
                             <LoginPage setUserLoggedIn={setUsername} loggedInUser={username} setSessionID={setSessionID} />
                         } />
                         <Route path='/logout' element={<LogoutPage setUserLoggedIn={setUsername} loggedInUser={username} sessionID={sessionID} />} />
-                        <Route path='/' element={<HomePage />} />
+                        <Route path='/' element={<HomePage loggedInUser={username}/>}/>
                     </Routes>
                 </div>
             </Router>
