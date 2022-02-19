@@ -128,9 +128,6 @@ exports.createAccount = async (req, res, next) => {
 };
 
 exports.login = async (req, res, next) => {
-
-    console.log(req.session);
-
     // get the credentials
     const username = req.body.username;
     const password = req.body.password;
@@ -151,18 +148,19 @@ exports.login = async (req, res, next) => {
     if (passwordMatches) {
         req.session.isLoggedIn = true;
         req.session.user = user;
-        await req.session.save();
 
-        // try searching the session
-        const result = await mongoose.connection.collection('sessions').findOne({'session.user.username': username});
+        req.session.save(async (err) => {
+            if (!err) {
+                // try searching the session
+                const result = await mongoose.connection.collection('sessions').findOne({ 'session.user.username': username });
 
-        console.log(result);
-
-        return res.json({
-            data: user,
-            message: "Login Successful",
-            sessionID: result._id,
-            error: {}
+                return res.json({
+                    data: user,
+                    message: "Login Successful",
+                    sessionID: result._id,
+                    error: {}
+                });
+            }
         });
     }
 
@@ -180,7 +178,7 @@ exports.logout = async (req, res, next) => {
     const sessionID = req.body.sessionID;
 
     // search the db for the session
-    const result = await mongoose.connection.collection('sessions').deleteOne({_id: sessionID});
+    const result = await mongoose.connection.collection('sessions').deleteOne({ _id: sessionID });
 
     if (result.acknowledged) {
         return res.status(200).json({
@@ -193,5 +191,5 @@ exports.logout = async (req, res, next) => {
         })
     }
 
-    
+
 };
