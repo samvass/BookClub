@@ -10,8 +10,8 @@ Given the following user with username "Andrew1", password "$Pickles1212", and e
 Scenario Outline: View My Account, user already logged in (Normal Flow)
 
     Given the user with username "Andrew1" is logged in
-    When the user selects the My Account tab
-    Then the user will be directed to the My Account page
+    When the user selects the My Account page
+    Then the user will be directed to the My Account page, showing username and email
 
 Scenario Outline: View My Account, guest user (Alternate Flow)
 
