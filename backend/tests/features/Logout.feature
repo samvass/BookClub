@@ -4,7 +4,7 @@
       I want to log out of the application 
       So that I can use the application as a guest
 
-     Background:
+   Background:
      Given the user with username "Tara321", password "$Pickles1212", and email "tara@gmail.com" exists in the system:
 
    Scenario: Log out with a user that is logged in (Normal Flow)

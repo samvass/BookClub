@@ -48,8 +48,43 @@ exports.getBookByName = (req,res,next)=>{
     });
 }
 
+exports.getBookRecommendation = (req, res, next)=>{
+
+    var options = {
+        key: googleAPIKey,
+        offset: 0,
+        field: 'title',
+        limit: 10,
+        type: 'books',
+        order: 'relevance',
+        lang: 'en'
+    };
+
+    // hardcode for now
+    const bookName = "Software";
+    
+    books.search(bookName, options, function(error, results, apiResponse) {
+        if ( ! error ) {
+            return res.status(200).send({
+                data: {
+                    book: results
+                },
+                message: "",
+                error: {}
+            });
+        }
+
+        return res.status(404).send({
+            data: {},
+            message: "Error",
+            error: {
+                err: error
+            }
+        });
+    });
+}
+
 exports.acceptBookRecommendation = async (req, res, next) => {
-    console.log(req);
     // get book information from request body
     const title = req.body.title;
     const description = req.body.description;

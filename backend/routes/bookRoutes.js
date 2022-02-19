@@ -3,10 +3,15 @@ const bookController = require("../controllers/bookController");
 
 const router = express.Router();
 
+const auth = require("./middleware/auth");
+
 // load book by name
 router.get('/get/:bookName', bookController.getBookByName);
 
-router.post('/accept', bookController.acceptBookRecommendation);
+// get book recommendation
+router.get('/get', auth.isLoggedIn, bookController.getBookRecommendation);
+
+router.post('/accept', auth.isLoggedIn, bookController.acceptBookRecommendation);
 
 router.post('/reject', bookController.rejectBookRecommendation);
 
