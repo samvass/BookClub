@@ -56,3 +56,8 @@ export const logout = async (body) => {
     let endpoint = apiURL + "/users/logout";
     return await apiPost(endpoint, body);
 }
+
+export const viewAccountByUserName = async (username) => {
+    let endpoint = apiURL + "/users/view/" + username;
+    return await apiGet(endpoint);
+}

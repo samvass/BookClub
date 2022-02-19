@@ -22,6 +22,9 @@ router.post('/login', userController.login);
 // logout user
 router.post('/logout', userController.logout);
 
+// view user
+router.get('/view/:username', userController.viewAccountDetails);
+
 module.exports = router;
 
 

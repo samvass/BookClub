@@ -11,22 +11,19 @@ let data = {
   password: "",
 };
 
+let sessionID = "";
 
 Given('the user with username {string} is logged in', async (string) => {
     data.username = string
     data.email = "andrew12@gmail.com"
     data.password = "$Pickles1212"
 
-    await request(app)
+    const res = await request(app)
     .post("/users/login")
     .set("Accept", "application/json")
     .send(data);
 
-  const username = string;
-  const result = await mongoose.connection
-    .collection("sessions")
-    .findOne({ "session.user.username": username });
-  console.log("user is logged in");
+    sessionID = res.sessionID;
   });
 
 
@@ -38,8 +35,15 @@ When('the user selects the My Account page', async () => {
 
 
 Then('the user will be directed to the My Account page, showing username and email', async () => {
+    let res = await request(app)
+    .post("/users/login")
+    .set("Accept", "application/json")
+    .send(data);
+
+    sessionID = res.body.sessionID;
+
     await request(app)
-      .get("/users/get/" + data.username)
+      .get("/users/view/" + data.username)
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
       .expect(200)
@@ -51,14 +55,16 @@ Then('the user will be directed to the My Account page, showing username and ema
     });
 
 Given('the user with username {string} is not logged in', (string) => {
-    mongoose.connection.db.dropCollection("users", function (err, result) {
-        console.log("Collection droped");
-      });
+    console.log("User is not logged in");
     
 });
 
 Then("the user will be prompted to login", async () => {
-    console.log("User is not logged in");
+    await request(app)
+    .get("/users/view/" + data.username)
+    .set("Accept", "application/json")
+    .expect("Content-Type", /json/)
+    .expect(404)
     });
 
 // drop collection

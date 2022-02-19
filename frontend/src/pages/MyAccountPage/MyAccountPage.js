@@ -1,5 +1,5 @@
 import "./MyAccountPage.scss"
-import { getUserByUserName } from "../../api/userAPI"
+import { viewAccountByUserName } from "../../api/userAPI"
 import { useEffect, useState } from "react"
 import { Navigate } from "react-router-dom"
 
@@ -10,7 +10,7 @@ const MyAccountPage = (props) => {
 
     useEffect(async () => {
         if (props.loggedInUser !== "") {
-            const incomingUserData = await getUserByUserName(props.loggedInUser)
+            const incomingUserData = await viewAccountByUserName(props.loggedInUser)
             console.log(incomingUserData)
 
             setUsername(incomingUserData.user.username)
