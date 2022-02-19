@@ -45,6 +45,10 @@ Then('the user will be directed to the My Account page, showing username and ema
         .get("/users/view/" + data.username)
         .set("Accept", "application/json")
         .send({ "sessionID": sessionID })
+
+    let user = res.body.user;
+        assert(user.username, data.username);
+        assert(user.email, data.email);
     });
 
 Given('the user with username {string} is not logged in', (string) => {
