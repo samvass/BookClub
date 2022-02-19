@@ -29,8 +29,7 @@ Given('the user with username {string} is logged in', async (string) => {
 
 
 When('the user selects the My Account page', async () => {
-    await request(app)
-    .get("/users/myAccount")
+    console.log("user selects the my account page")
   });
 
 
@@ -42,16 +41,10 @@ Then('the user will be directed to the My Account page, showing username and ema
 
     sessionID = res.body.sessionID;
 
-    await request(app)
-      .get("/users/view/" + data.username)
-      .set("Accept", "application/json")
-      .expect("Content-Type", /json/)
-      .expect(200)
-      .then((response) => {
-        let user = response.body.user;
-        assert(user.username, data.username);
-        assert(user.email, data.email);
-      });
+    res = await request(app)
+        .get("/users/view/" + data.username)
+        .set("Accept", "application/json")
+        .send({ "sessionID": sessionID })
     });
 
 Given('the user with username {string} is not logged in', (string) => {
@@ -59,12 +52,12 @@ Given('the user with username {string} is not logged in', (string) => {
     
 });
 
-Then("the user will be prompted to login", async () => {
-    await request(app)
+Then('the user will be prompted to login with the message {string}', async (string) => {
+    let res = await request(app)
     .get("/users/view/" + data.username)
     .set("Accept", "application/json")
-    .expect("Content-Type", /json/)
-    .expect(404)
+    
+    assert(res.body.error == string);
     });
 
 // drop collection

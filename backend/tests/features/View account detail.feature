@@ -17,4 +17,4 @@ Scenario Outline: View My Account, guest user (Alternate Flow)
 
     Given the user with username "Andrew1" is not logged in
     When the user selects the My Account page
-    Then the user will be prompted to login
+    Then the user will be prompted to login with the message "user is not logged in"

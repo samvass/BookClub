@@ -1,7 +1,7 @@
 const express = require("express");
 const userController = require("../controllers/userController");
 
-
+const auth = require("./middleware/auth");
 const router = express.Router();
 
 // base url: /users
@@ -23,7 +23,7 @@ router.post('/login', userController.login);
 router.post('/logout', userController.logout);
 
 // view user
-router.get('/view/:username', userController.viewAccountDetails);
+router.get('/view/:username', auth.isLoggedIn, userController.viewAccountDetails);
 
 module.exports = router;
 
