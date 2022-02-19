@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { createAccount } from '../api/userAPI';
 
+import NavBar from '../components/navbar/NavBar';
+
 const CreateAccountPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");

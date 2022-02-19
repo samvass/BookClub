@@ -7,10 +7,11 @@ import {
 import NavigationBar from "./components/navigationBar";
 import CreateAccountPage from "./pages/CreateAccountPage";
 import LoginPage from "./pages/LoginPage";
-import HomePage from "./pages/HomePage";
+import HomePage from "./pages//HomePage/HomePage";
 import MyAccountPage from "./pages/MyAccountPage/MyAccountPage";
 import LogoutPage from "./pages/LogoutPage";
 import MyLibraryPage from "./pages/MyLibraryPage/MyLibraryPage";
+import NavBar from "./components/navbar/NavBar";
 
 import "./App.css"
 
@@ -22,6 +23,7 @@ const App = () => {
         <div className="App">
             <Router>
                 <NavigationBar loggedInUser={username} />
+                {/* <NavBar loggedInUser={username} /> */}
                 <div>
                     <Routes>
                         <Route path='/myLibrary' element={<MyLibraryPage loggedInUser={username} />} />
@@ -35,7 +37,7 @@ const App = () => {
                     </Routes>
                 </div>
             </Router>
-        </div>
+        </div >
     );
 }
 

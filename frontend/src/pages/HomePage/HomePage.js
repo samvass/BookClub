@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { getBookByName } from '../api/bookAPI';
+import React, { useState } from 'react';
+import { getBookByName } from '../../api/bookAPI';
 import { Form, Button } from 'react-bootstrap';
 
 import "./HomePage.css"
-import ArrowUp from '../components/ArrowUp/ArrowUp';
-import ArrowDown from "../components/ArrowDown/ArrowDown"
-import NavBar from '../components/navbar/NavBar';
+import ArrowUp from '../../components/ArrowUp/ArrowUp';
+import ArrowDown from "../../components/ArrowDown/ArrowDown"
+import NavBar from '../../components/navbar/NavBar';
 
 const HomePage = props => {
 
@@ -53,7 +53,6 @@ const HomePage = props => {
     }
 
     return <div>
-        <NavBar />
         <div style={{ "width": 600, "margin": "0 auto", "marginTop": 30 }}>
             <Form>
                 <Form.Group className="mb-3">
