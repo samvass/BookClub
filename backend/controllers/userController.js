@@ -192,6 +192,4 @@ exports.logout = async (req, res, next) => {
             message: "logout error"
         })
     }
-
-    
 };
