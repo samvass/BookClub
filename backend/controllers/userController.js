@@ -128,12 +128,9 @@ exports.createAccount = async (req, res, next) => {
 };
 
 exports.login = async (req, res, next) => {
-
     // get the credentials
     const username = req.body.username;
     const password = req.body.password;
-    // console.log(username)
-    // console.log(password)
 
     const user = await User.findOne({ username: username });
 
@@ -145,21 +142,25 @@ exports.login = async (req, res, next) => {
         });
     }
 
-    console.log(password)
-    console.log(user.password)
-    console.log(user)
     const passwordMatches = await bcrypt.compare(password, user.password);
 
     // login the user
     if (passwordMatches) {
         req.session.isLoggedIn = true;
         req.session.user = user;
-        await req.session.save();
 
-        return res.json({
-            data: user, 
-            message: "Login Successful",
-            error: {}
+        req.session.save(async (err) => {
+            if (!err) {
+                // try searching the session
+                const result = await mongoose.connection.collection('sessions').findOne({ 'session.user.username': username });
+
+                return res.json({
+                    data: user,
+                    message: "Login Successful",
+                    sessionID: result._id,
+                    error: {}
+                });
+            }
         });
     }
 
@@ -174,11 +175,22 @@ exports.login = async (req, res, next) => {
 }
 
 exports.logout = async (req, res, next) => {
-    console.log("logging out...");
-    const err = await req.session.destroy();
-    console.log(err);
-};
+    const sessionID = req.body.sessionID;
 
+    // search the db for the session
+    const result = await mongoose.connection.collection('sessions').deleteOne({ _id: sessionID });
+
+    if (result.acknowledged) {
+        return res.status(200).json({
+            message: "logout successful"
+        })
+    }
+    else {
+        return res.status(404).json({
+            message: "logout error"
+        })
+    }
+};
 
 exports.viewAccountDetails = async (req, res, next) => {
     // get the username parameter from the get request
@@ -204,5 +216,4 @@ exports.viewAccountDetails = async (req, res, next) => {
             error: "user is not logged in"
         });
     }
-
 };
