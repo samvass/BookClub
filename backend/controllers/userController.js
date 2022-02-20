@@ -157,7 +157,7 @@ exports.login = async (req, res, next) => {
         await req.session.save();
 
         return res.json({
-            data: user,
+            data: user, 
             message: "Login Successful",
             error: {}
         });
@@ -185,13 +185,12 @@ exports.viewAccountDetails = async (req, res, next) => {
     const username = req.params.username;
     // search the db for the session
     const result = await mongoose.connection.collection('sessions').findOne({ 'session.user.username': username });
-    // const user = await User.findOne({ username: username })
 
-    // console.log ("Result from view account", result)
+    console.log ("Result from view account", result)
     if (result != null) {
         User.findOne({ username: username }).then(user => {
             // return the user
-            res.json({ user: user });
+            res.json({ user: user, sessionID: result._id });
         })
             .catch(err => {
                 // log any possible errors after connecting to mongo
@@ -199,10 +198,10 @@ exports.viewAccountDetails = async (req, res, next) => {
             });
     }
     else {
-        return res.status(404).json({
+        return res.status(401).json({
             data: {},
             message: {},
-            error: "user must log in"
+            error: "user is not logged in"
         });
     }
 

@@ -51,18 +51,21 @@ Then('the user will be directed to the My Account page, showing username and ema
         assert(user.email, data.email);
     });
 
-Given('the user with username {string} is not logged in', (string) => {
+Given('the user with username {string} is not logged in', async (string) => {
     console.log("User is not logged in");
-    
 });
 
 Then('the user will be prompted to login with the message {string}', async (string) => {
-    let res = await request(app)
-    .get("/users/view/" + data.username)
-    .set("Accept", "application/json")
-    
-    assert(res.body.error == string);
-    });
+    mongoose.connection.db.dropCollection("sessions", async function (err, result) {
+        console.log("Collection droped");
+        let res = await request(app)
+        .get("/users/view/" + data.username)
+        .set("Accept", "application/json")
+        
+        assert(res.body.error == string);
+        });
+      });
+
 
 // drop collection
 AfterAll(function (done) {

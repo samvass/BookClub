@@ -23,7 +23,7 @@ router.post('/login', userController.login);
 router.post('/logout', userController.logout);
 
 // view user
-router.get('/view/:username', auth.isLoggedIn, userController.viewAccountDetails);
+router.get('/view/:username', userController.viewAccountDetails);
 
 module.exports = router;
 
