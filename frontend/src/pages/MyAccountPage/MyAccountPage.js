@@ -8,7 +8,6 @@ const MyAccountPage = (props) => {
 
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
-
     const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
 
     useEffect(async () => {
@@ -29,13 +28,32 @@ const MyAccountPage = (props) => {
         setIsChangePasswordOpen(false);
     }
 
+    const testUser = {
+        genres: ["Comedy", "Horror", "Basketball", "Tech"],
+        authors: ["Adam Geenen", "Lebron James", "LaMelo Ball", "idk authors"]
+    }
+
+    const selectedGenres = testUser.genres.map((genre) => {
+        return <div className="selected-item">{genre}</div>
+    })
+
+    const selectedAuthors = testUser.authors.map((author) => {
+        return <div className="selected-item">{author}</div>
+    })
+
 
     return (
         <div className="text">
             {props.loggedInUser === "" ? <Navigate to="/login" /> : <div className="page">
                 <div className="preferences">
                     <h1>Genres</h1>
+                    <div className="selected-items">
+                        {selectedGenres}
+                    </div>
                     <h1>Authors</h1>
+                    <div className="selected-items">
+                        {selectedAuthors}
+                    </div>
                 </div>
                 <div className="account-info">
                     <h1>Account Info</h1>

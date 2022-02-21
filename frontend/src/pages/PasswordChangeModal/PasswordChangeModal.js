@@ -7,9 +7,18 @@ const PasswordChangeModal = (props) => {
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [newPassword2, setNewPassword2] = useState("");
+    const [errorMsg, setErrorMsg] = useState("");
 
     const changePasswordHandler = () => {
         //use backend to change the password
+        if (newPassword !== newPassword2) {
+            setErrorMsg("Passwords do not match")
+            return
+        }
+
+        // see if old password is user's password
+        // if ()
+
         props.onClosePasswordChange()
     }
 
@@ -30,6 +39,8 @@ const PasswordChangeModal = (props) => {
                 <Form.Control type="password" onChange={(event) => setNewPassword2(event.target.value)} />
             </Form.Group>
             <Button onClick={changePasswordHandler}>Change</Button>
+            <br />
+            {errorMsg !== "" && <Alert variant="danger" style={{ "marginTop": 20 }} key={errorMsg}>{errorMsg}  </Alert>}
         </div>
     </Modal >)
 }
