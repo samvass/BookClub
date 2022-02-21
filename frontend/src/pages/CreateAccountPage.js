@@ -7,6 +7,7 @@ import NavBar from '../components/navbar/NavBar';
 const CreateAccountPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [password2, setPassword2] = useState("");
     const [email, setEmail] = useState("");
     const [errorMsg, setErrorMsg] = useState();
     const [successMsg, setSuccessMsg] = useState("");
@@ -26,8 +27,18 @@ const CreateAccountPage = () => {
         setPassword(typedPassword);
     }
 
+    const password2Handler = (event) => {
+        let typedPassword2 = event.target.value;
+        setPassword2(typedPassword2);
+    }
+
     const signup = async (event) => {
         event.preventDefault();
+
+        if (password !== password2) {
+            setErrorMsg(["Passwords do not match"])
+            return
+        }
 
         // call the backend
         const body = {
@@ -63,20 +74,26 @@ const CreateAccountPage = () => {
             <Form>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Email"
+                    <Form.Control type="email"
                         value={email} onChange={emailHandler} />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicUsername">
                     <Form.Label>Username</Form.Label>
-                    <Form.Control type="text" placeholder="Username"
+                    <Form.Control type="text"
                         value={username} onChange={usernameHandler} />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password"
+                    <Form.Control type="password"
                         value={password} onChange={passwordHandler} />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formBasicPassword2">
+                    <Form.Label>Re-Enter Password</Form.Label>
+                    <Form.Control type="password"
+                        value={password2} onChange={password2Handler} />
                 </Form.Group>
 
                 <Button variant="primary" type="submit" onClick={signup}>

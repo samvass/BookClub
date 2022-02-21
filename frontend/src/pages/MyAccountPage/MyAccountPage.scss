@@ -1,3 +1,32 @@
+.page {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Fjalla One', sans-serif;
+}
+
+#password-button {
+    border-radius: 19px;
+    background-color: #FCFCFC;
+    width: 237px;
+    height: 43px;
+    font-size: 24px;
+    color: #050C4E;
+    font-family: 'Fjalla One', sans-serif;
+}
+
+#password-button:hover {
+    background-color: #919191;
+}
+
+.preferences {
+    margin-left: 30px;
+}
+
+.account-info {
+    margin-right: 192px;
+
+}
+
 .text {
     text-align: center;
 }

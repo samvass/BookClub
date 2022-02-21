@@ -14,6 +14,10 @@
 
 #imgcontainer
 {
+    width: 100%;
+    /* max-width: 200px; */
+    margin-right: auto;
+    margin-left: auto;
     opacity: 1;
     background-color: Black;
     z-index: 10;

@@ -23,7 +23,7 @@ const App = () => {
         <div className="App">
             <Router>
                 <NavigationBar loggedInUser={username} />
-                {/* <NavBar loggedInUser={username} /> */}
+                <NavBar loggedInUser={username} />
                 <div>
                     <Routes>
                         <Route path='/myLibrary' element={<MyLibraryPage loggedInUser={username} />} />
@@ -33,7 +33,7 @@ const App = () => {
                             <LoginPage setUserLoggedIn={setUsername} loggedInUser={username} setSessionID={setSessionID} />
                         } />
                         <Route path='/logout' element={<LogoutPage setUserLoggedIn={setUsername} loggedInUser={username} sessionID={sessionID} />} />
-                        <Route path='/' element={<HomePage loggedInUser={username}/>}/>
+                        <Route path='/' element={<HomePage loggedInUser={username} />} />
                     </Routes>
                 </div>
             </Router>

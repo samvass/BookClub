@@ -5,7 +5,6 @@ import { Form, Button } from 'react-bootstrap';
 import "./HomePage.css"
 import ArrowUp from '../../components/ArrowUp/ArrowUp';
 import ArrowDown from "../../components/ArrowDown/ArrowDown"
-import NavBar from '../../components/navbar/NavBar';
 
 const HomePage = props => {
 
@@ -65,9 +64,8 @@ const HomePage = props => {
                 </Button>
             </Form>
 
-            {/* {bookTitle && <div className='title'>{bookTitle}</div>} */}
             <br />
-            <ArrowUp title={bookTitle} description={bookDescription} author={bookAuthor} genre={bookGenres} thumbnail={bookThumbnail} loggedInUser={props.loggedInUser}/>
+            <ArrowUp title={bookTitle} description={bookDescription} author={bookAuthor} genre={bookGenres} thumbnail={bookThumbnail} loggedInUser={props.loggedInUser} />
             {bookThumbnail &&
                 <div id="imgcontainer">
                     <img className='book' onMouseEnter={hoverShowInfo} onMouseLeave={noHoverShowInfo} src={bookThumbnail}></img>
