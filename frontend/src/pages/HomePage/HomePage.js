@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getBookByName } from '../../api/bookAPI';
 import { Form, Button } from 'react-bootstrap';
 
@@ -23,8 +23,8 @@ const HomePage = props => {
     }
 
     const displayBook = async (event) => {
-        event.preventDefault();
-        const response = await getBookByName(bookName);
+        // event.preventDefault();
+        const response = await getBookByName("Narnia");
         console.log(response)
 
         const book = response.data.book[0];
@@ -41,6 +41,10 @@ const HomePage = props => {
         setBookThumbnail(thumbnail);
     }
 
+    useEffect(() => {
+        displayBook()
+    }, [])
+
     const hoverShowInfo = () => {
         setShowInfo(true)
         console.log("hovering")
@@ -52,8 +56,8 @@ const HomePage = props => {
     }
 
     return <div>
-        <div style={{ "width": 600, "margin": "0 auto", "marginTop": 30 }}>
-            <Form>
+        {/* <div style={{ "width": 600, "margin": "0 auto", "marginTop": 30 }}> */}
+        {/* <Form>
                 <Form.Group className="mb-3">
                     <Form.Control type="text" placeholder="Book Name"
                         value={bookName} onChange={bookHandler} />
@@ -62,20 +66,20 @@ const HomePage = props => {
                 <Button variant="primary" type="submit" onClick={displayBook}>
                     Display Book
                 </Button>
-            </Form>
+            </Form> */}
 
-            <br />
-            <ArrowUp title={bookTitle} description={bookDescription} author={bookAuthor} genre={bookGenres} thumbnail={bookThumbnail} loggedInUser={props.loggedInUser} />
-            {bookThumbnail &&
-                <div id="imgcontainer">
-                    <img className='book' onMouseEnter={hoverShowInfo} onMouseLeave={noHoverShowInfo} src={bookThumbnail}></img>
-                    {showInfo && <div className="bookTitle">{bookTitle}</div>}
-                    {showInfo && <div className="bio">{bookDescription}</div>}
-                    {showInfo && <div className="reviewTitle">Top Review</div>}
-                    {showInfo && <div className="review">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto voluptate minus deserunt voluptatum deleniti maiores repellendus, aut quis iusto distinctio ea quasi dolore</div>}
-                </div>}
-            <ArrowDown />
-        </div>
+        {/* <br /> */}
+        <ArrowUp title={bookTitle} description={bookDescription} author={bookAuthor} genre={bookGenres} thumbnail={bookThumbnail} loggedInUser={props.loggedInUser} setUserLoggedIn={props.setUserLoggedIn} setSessionID={props.setSessionID} />
+        {bookThumbnail &&
+            <div id="imgcontainer">
+                <img className='book' onMouseEnter={hoverShowInfo} onMouseLeave={noHoverShowInfo} src={bookThumbnail}></img>
+                {showInfo && <div className="bookTitle">{bookTitle}</div>}
+                {showInfo && <div className="bio">{bookDescription}</div>}
+                {showInfo && <div className="reviewTitle">Top Review</div>}
+                {showInfo && <div className="review">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto voluptate minus deserunt voluptatum deleniti maiores repellendus, aut quis iusto distinctio ea quasi dolore</div>}
+            </div>}
+        <ArrowDown />
+        {/* </div> */}
     </div>
 }
 
