@@ -19,6 +19,7 @@ const App = () => {
     const [username, setUsername] = useState("");
     const [sessionID, setSessionID] = useState(null);
 
+
     return (
         <div className="App">
             <Router>
@@ -33,7 +34,7 @@ const App = () => {
                             <LoginPage setUserLoggedIn={setUsername} loggedInUser={username} setSessionID={setSessionID} />
                         } />
                         <Route path='/logout' element={<LogoutPage setUserLoggedIn={setUsername} loggedInUser={username} sessionID={sessionID} />} />
-                        <Route path='/' element={<HomePage loggedInUser={username} sessionID={sessionID} />} />
+                        <Route path='/' element={<HomePage loggedInUser={username} setUserLoggedIn={setUsername} setSessionID={setSessionID} />} />
                     </Routes>
                 </div>
             </Router>

@@ -7,7 +7,7 @@ const Book = require('../models/book');
 
 const googleAPIKey = process.env.GOOGLE_API_KEY;
 
-exports.getBookByName = (req,res,next)=>{
+exports.getBookByName = (req, res, next) => {
 
     var options = {
         key: googleAPIKey,
@@ -20,15 +20,15 @@ exports.getBookByName = (req,res,next)=>{
     };
 
     const bookName = req.params.bookName;
-    
-    books.search(bookName, options, function(error, results, apiResponse) {
+
+    books.search(bookName, options, function (error, results, apiResponse) {
 
         // adjust size of the thumbnail
-        const newURL = results[0].thumbnail.replace("zoom=1", "zoom=3");
+        const newURL = results[0].thumbnail.replace("zoom=1", "zoom=1");
 
         results[0].thumbnail = newURL;
 
-        if ( ! error ) {
+        if (!error) {
             return res.status(200).send({
                 data: {
                     book: results
@@ -48,7 +48,7 @@ exports.getBookByName = (req,res,next)=>{
     });
 }
 
-exports.getBookRecommendation = (req, res, next)=>{
+exports.getBookRecommendation = (req, res, next) => {
 
     var options = {
         key: googleAPIKey,
@@ -62,9 +62,9 @@ exports.getBookRecommendation = (req, res, next)=>{
 
     // hardcode for now
     const bookName = "Software";
-    
-    books.search(bookName, options, function(error, results, apiResponse) {
-        if ( ! error ) {
+
+    books.search(bookName, options, function (error, results, apiResponse) {
+        if (!error) {
             return res.status(200).send({
                 data: {
                     book: results
@@ -133,9 +133,9 @@ exports.acceptBookRecommendation = async (req, res, next) => {
     const username = req.body.username;
 
 
-    const user = await User.findOne({username: username});
+    const user = await User.findOne({ username: username });
 
-    if (!user){
+    if (!user) {
         // return error
         return res.status(200).json({
             message: "no user found"
@@ -143,9 +143,9 @@ exports.acceptBookRecommendation = async (req, res, next) => {
     }
 
     // check if the book has been previously accepted
-    let book = await Book.findOne({title: title});
+    let book = await Book.findOne({ title: title });
 
-    if (!book){
+    if (!book) {
         // create the book
         bookModel = new Book({
             title: title,
@@ -156,7 +156,7 @@ exports.acceptBookRecommendation = async (req, res, next) => {
         });
         book = await bookModel.save();
     }
-    
+
     // store the bookID in the users library
     const bookID = book._id;
 
@@ -167,7 +167,7 @@ exports.acceptBookRecommendation = async (req, res, next) => {
     library.push(bookID);
 
     // update the library in db
-    await User.updateOne({username: username}, {$set: {myLibrary: library}});
+    await User.updateOne({ username: username }, { $set: { myLibrary: library } });
 
     return res.status(200).json({
         book: book,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getBookByGenre } from '../../api/bookAPI';
 import { Form, Button } from 'react-bootstrap';
 
@@ -53,6 +53,10 @@ const HomePage = props => {
         setBookGenres(genre);
         setBookThumbnail(thumbnail);
     }
+
+    useEffect(() => {
+        displayBook()
+    }, [])
 
     const hoverShowInfo = () => {
         setShowInfo(true)
