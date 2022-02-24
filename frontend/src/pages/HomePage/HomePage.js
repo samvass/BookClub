@@ -44,7 +44,10 @@ const HomePage = props => {
         const title = book.title;
         const thumbnail = book.thumbnail;
         const description = book.description;
-        const author = book.authors[0];
+        let author = "";
+        if (book.authors && book.authors.length > 0){
+            author = book.authors[0];
+        }
         const genre = book.categories;
 
         setbookDescription(description)

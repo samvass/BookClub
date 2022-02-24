@@ -43,7 +43,8 @@ Then('a list of recommended books is generated', async () => {
     res = await request(app)
         .get("/books/get")
         .set("Accept", "application/json")
-        .send({ "sessionID": sessionID });
+        .set("Authorization", sessionID)
+
     assert(res.body.data.book.length > 0);
 });
 
@@ -55,6 +56,6 @@ Then('an error message {string} is generated', async (string) => {
     const res = await request(app)
         .get("/books/get")
         .set("Accept", "application/json")
-        .send({ "sessionID": "" });
+        .set("Authorization", "");
     assert(res.body.error == string);
 });

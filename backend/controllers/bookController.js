@@ -101,9 +101,11 @@ exports.getBookRecommendationByGenre = (req, res, next)=>{
 
     // generate random index between 0 and 39
     const index = Math.floor(Math.random() * 40);
+    console.log("Index", index);
     
     books.search(bookGenre, options, function(error, results, apiResponse) {
         if ( ! error ) {
+            console.log(results.length)
             return res.status(200).send({
                 data: {
                     book: results[index]

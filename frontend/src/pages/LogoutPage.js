@@ -8,7 +8,7 @@ const LogoutPage = (props) => {
     useEffect(async () => {
         if (props.loggedInUser != ""){
             console.log(props.sessionID)
-            await logout({sessionID: props.sessionID})
+            await logout({}, props.sessionID);
             props.setUserLoggedIn("")
             setLogoutSuccess(true);
         }

@@ -20,10 +20,10 @@ router.post('/create', userController.createAccount);
 router.post('/login', userController.login);
 
 // logout user
-router.post('/logout', userController.logout);
+router.post('/logout', auth.isLoggedIn, userController.logout);
 
 // view user
-router.get('/view/:username', userController.viewAccountDetails);
+router.get('/view/:username', auth.isLoggedIn, userController.viewAccountDetails);
 
 module.exports = router;
 

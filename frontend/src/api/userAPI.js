@@ -1,12 +1,13 @@
 import { apiURL } from "./apiConstants";
 
-const apiGet = async (endpoint) => {
+const apiGet = async (endpoint, sessionID) => {
     try {
         let res = await fetch(endpoint, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': sessionID
             }
         });
         return await res.json();
@@ -15,14 +16,15 @@ const apiGet = async (endpoint) => {
     }
 }
 
-const apiPost = async (endpoint, body) => {
+const apiPost = async (endpoint, body, sessionID) => {
     try {
         let res = await fetch(endpoint, {
             method: 'POST',
             body: JSON.stringify(body),
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': sessionID
             }
         });
 
@@ -52,12 +54,12 @@ export const login = async (body) => {
     return await apiPost(endpoint, body);
 }
 
-export const logout = async (body) => {
+export const logout = async (body, sessionID) => {
     let endpoint = apiURL + "/users/logout";
-    return await apiPost(endpoint, body);
+    return await apiPost(endpoint, body, sessionID);
 }
 
-export const viewAccountByUserName = async (username) => {
+export const viewAccountByUserName = async (username, sessionID) => {
     let endpoint = apiURL + "/users/view/" + username;
-    return await apiGet(endpoint);
+    return await apiGet(endpoint, sessionID);
 }

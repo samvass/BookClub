@@ -19,16 +19,14 @@ When('user {string} accepts the book with title {string} recommendation', async 
     res = await request(app)
         .post("/books/accept")
         .set("Accept", "application/json")
-        .send({ 
-            "sessionID": sessionID,
+        .set("Authorization", sessionID)
+        .send({
             "title": string2,
             "author": "author",
             "description": "description",
             "thumbnail": "thumbnail",
             "genre": ["adventure"]
         });
-
-    console.log(res.body);
 });
 
 Then('the book {string} will be added to user {string} library', async (string, string2) => {
@@ -43,8 +41,8 @@ When('the user accepts the book with title {string} recommendation', async (stri
     let res = await request(app)
         .post("/books/accept")
         .set("Accept", "application/json")
+        .set("sessionID", "")
         .send({ 
-            "sessionID": "",
             "title": string,
             "author": "author",
             "description": "description",

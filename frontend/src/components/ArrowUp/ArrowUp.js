@@ -19,6 +19,7 @@ const ArrowUp = (props) => {
         // if no one is logged in
         if (props.loggedInUser === "") {
             setShowLoginPopup(true);
+            return;
         }
 
 
@@ -28,13 +29,11 @@ const ArrowUp = (props) => {
             author: props.author,
             genre: props.genre,
             username: props.loggedInUser,
-            thumbnail: props.thumbnail,
-            sessionID: props.sessionID
+            thumbnail: props.thumbnail
         };
 
-        const response = await acceptBook(body);
+        const response = await acceptBook(body, props.sessionID);
         props.displayBook();
-        console.log(response)
     }
 
     return (<div>

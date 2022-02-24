@@ -1,12 +1,13 @@
 import { apiURL } from "./apiConstants";
 
-const apiGet = async (endpoint) => {
+const apiGet = async (endpoint, sessionID="") => {
     try {
         let res = await fetch(endpoint, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': sessionID
             }
         });
         return await res.json();
@@ -15,14 +16,15 @@ const apiGet = async (endpoint) => {
     }
 }
 
-const apiPost = async (endpoint, body) => {
+const apiPost = async (endpoint, body, sessionID="") => {
     try {
         let res = await fetch(endpoint, {
             method: 'POST',
             body: JSON.stringify(body),
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': sessionID
             }
         });
 
@@ -42,7 +44,7 @@ export const getBookByGenre = async (genre) => {
     return await apiGet(endpoint);
 }
 
-export const acceptBook = async (body) => {
+export const acceptBook = async (body, sessionID) => {
     let endpoint = apiURL + "/books/accept";
-    return await apiPost(endpoint, body);
+    return await apiPost(endpoint, body, sessionID);
 }
