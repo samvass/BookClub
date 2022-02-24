@@ -13,11 +13,13 @@ const ArrowUp = (props) => {
             author: props.author,
             genre: props.genre,
             username: props.loggedInUser,
-            thumbnail: props.thumbnail
+            thumbnail: props.thumbnail,
+            sessionID: props.sessionID
         };
 
         const response = await acceptBook(body);
-        console.log(response);
+        props.displayBook();
+        console.log(response)
     }
 
     return (<div onClick={arrowUpHandler} className="arrow"><FiArrowUpCircle /></div>)

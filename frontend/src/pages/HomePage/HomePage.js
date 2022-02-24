@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getBookByName } from '../../api/bookAPI';
+import { getBookByGenre } from '../../api/bookAPI';
 import { Form, Button } from 'react-bootstrap';
 
 import "./HomePage.css"
@@ -7,6 +7,19 @@ import ArrowUp from '../../components/ArrowUp/ArrowUp';
 import ArrowDown from "../../components/ArrowDown/ArrowDown"
 
 const HomePage = props => {
+
+    const userGenres = ['Fiction', 'Comedy', 'Horror', 'Non-Fiction', 'History'];
+    
+    const [userGenre, setGenre] = useState(userGenres[0]);
+
+    const getUserGenre = () => {
+        // generate one of the users genres
+        const index = Math.floor(Math.random() * (userGenres.length));
+
+        // set the genre
+        setGenre(userGenres[index]);
+    }
+
 
     const [bookName, setBookName] = useState("");
     const [bookTitle, setBookTitle] = useState(null);
@@ -22,12 +35,12 @@ const HomePage = props => {
         setBookName(typedBookName);
     }
 
-    const displayBook = async (event) => {
-        event.preventDefault();
-        const response = await getBookByName(bookName);
-        console.log(response)
+    const displayBook = async () => {
 
-        const book = response.data.book[0];
+        getUserGenre();
+        const response = await getBookByGenre(userGenre);
+        const book = response.data.book;
+        console.log(book);
         const title = book.title;
         const thumbnail = book.thumbnail;
         const description = book.description;
@@ -43,29 +56,17 @@ const HomePage = props => {
 
     const hoverShowInfo = () => {
         setShowInfo(true)
-        console.log("hovering")
     }
 
     const noHoverShowInfo = () => {
         setShowInfo(false)
-        console.log("not hovering")
     }
 
     return <div>
         <div style={{ "width": 600, "margin": "0 auto", "marginTop": 30 }}>
-            <Form>
-                <Form.Group className="mb-3">
-                    <Form.Control type="text" placeholder="Book Name"
-                        value={bookName} onChange={bookHandler} />
-                </Form.Group>
-
-                <Button variant="primary" type="submit" onClick={displayBook}>
-                    Display Book
-                </Button>
-            </Form>
 
             <br />
-            <ArrowUp title={bookTitle} description={bookDescription} author={bookAuthor} genre={bookGenres} thumbnail={bookThumbnail} loggedInUser={props.loggedInUser} />
+            <ArrowUp title={bookTitle} description={bookDescription} author={bookAuthor} genre={bookGenres} thumbnail={bookThumbnail} loggedInUser={props.loggedInUser} sessionID={props.sessionID} displayBook={displayBook}/>
             {bookThumbnail &&
                 <div id="imgcontainer">
                     <img className='book' onMouseEnter={hoverShowInfo} onMouseLeave={noHoverShowInfo} src={bookThumbnail}></img>
