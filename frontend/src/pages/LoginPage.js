@@ -30,7 +30,6 @@ const LoginPage = (props) => {
         // if backend approves of the info
         if (response.message === "Login Successful") {
             const user = response.data;
-            console.log(user)
             setSuccessMsg(response.message)
             props.setUserLoggedIn(user.username);
             props.setPreferences(user.preferences);
