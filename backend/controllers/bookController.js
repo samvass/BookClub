@@ -79,6 +79,46 @@ exports.getBookRecommendation = (req, res, next) => {
   });
 };
 
+exports.getBookRecommendationByGenre = (req, res, next) => {
+  var options = {
+    key: googleAPIKey,
+    offset: 0,
+    field: "subject",
+    limit: 40,
+    type: "books",
+    order: "relevance",
+    lang: "en",
+  };
+
+  // get one of the genres of the user
+  const bookGenre = req.params.genre;
+
+  // generate random index between 0 and 39
+  const index = Math.floor(Math.random() * 40);
+  console.log("Index", index);
+
+  books.search(bookGenre, options, function (error, results, apiResponse) {
+    if (!error) {
+      console.log(results.length);
+      return res.status(200).send({
+        data: {
+          book: results[index],
+        },
+        message: "",
+        error: {},
+      });
+    }
+
+    return res.status(404).send({
+      data: {},
+      message: "Error",
+      error: {
+        err: error,
+      },
+    });
+  });
+};
+
 exports.acceptBookRecommendation = async (req, res, next) => {
   // get book information from request body
   const title = req.body.title;
@@ -87,20 +127,6 @@ exports.acceptBookRecommendation = async (req, res, next) => {
   const genre = req.body.genre;
   const thumbnail = req.body.thumbnail;
   const username = req.body.username;
-
-  // /////////////////////////////////////////////////////////////////////////////
-  // // for now I will use mock variables since I am not connected to the front end
-  // const mockBook = {
-  //     title: "The Hunger Games",
-  //     description: "First in the ground-breaking HUNGER GAMES trilogy. Set in a dark vision of the near future, a terrifying reality TV show is taking place. Twelve boys and twelve girls are forced to appear in a live event called The Hunger Games. There is only one rule: kill or be killed. When sixteen-year-old Katniss Everdeen steps forward to take her younger sister's place in the games, she sees it as a death sentence. But Katniss has been close to death before. For her, survival is second nature.",
-  //     author: "Suzanne Collins",
-  //     genre: ["Action", "Dystopian"]
-  // }
-
-  // // get mock user
-  // const username = "samvass";
-
-  // /////////////////////////////////////////////////////////////////////////////
 
   const user = await User.findOne({ username: username });
 

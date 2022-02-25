@@ -50,7 +50,7 @@ When("the user {string} tries to log out", async (string) => {
     await request(app)
         .post("/users/logout")
         .set("Accept", "application/json")
-        .send(logoutData);
+        .set("Authorization", logoutData.sessionID)
 });
 
 Then("the user {string} shall be logged out", async (string) => {

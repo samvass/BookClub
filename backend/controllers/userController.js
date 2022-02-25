@@ -198,7 +198,6 @@ exports.viewAccountDetails = async (req, res, next) => {
     // search the db for the session
     const result = await mongoose.connection.collection('sessions').findOne({ 'session.user.username': username });
 
-    console.log ("Result from view account", result)
     if (result != null) {
         User.findOne({ username: username }).then(user => {
             // return the user

@@ -28,13 +28,13 @@ const App = () => {
                 <div>
                     <Routes>
                         <Route path='/myLibrary' element={<MyLibraryPage loggedInUser={username} />} />
-                        <Route path='/myAccount' element={<MyAccountPage loggedInUser={username} />} />
+                        <Route path='/myAccount' element={<MyAccountPage loggedInUser={username} sessionID={sessionID} />} />
                         <Route path='/signup' element={<CreateAccountPage />} />
                         <Route path='/login' element={
                             <LoginPage setUserLoggedIn={setUsername} loggedInUser={username} setSessionID={setSessionID} />
                         } />
                         <Route path='/logout' element={<LogoutPage setUserLoggedIn={setUsername} loggedInUser={username} sessionID={sessionID} />} />
-                        <Route path='/' element={<HomePage loggedInUser={username} setUserLoggedIn={setUsername} setSessionID={setSessionID} />} />
+                        <Route path='/' element={<HomePage loggedInUser={username} setUserLoggedIn={setUsername} setSessionID={setSessionID} sessionID={sessionID} />} />
                     </Routes>
                 </div>
             </Router>

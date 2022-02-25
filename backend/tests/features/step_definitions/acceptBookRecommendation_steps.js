@@ -21,16 +21,14 @@ When(
     res = await request(app)
       .post("/books/accept")
       .set("Accept", "application/json")
+      .set("Authorization", sessionID)
       .send({
-        sessionID: sessionID,
         title: string2,
         author: "author",
         description: "description",
         thumbnail: "thumbnail",
         genre: ["adventure"],
       });
-
-    console.log(res.body);
   }
 );
 
@@ -51,8 +49,8 @@ When(
     let res = await request(app)
       .post("/books/accept")
       .set("Accept", "application/json")
+      .set("sessionID", "")
       .send({
-        sessionID: "",
         title: string,
         author: "author",
         description: "description",

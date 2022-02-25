@@ -48,7 +48,7 @@ Then(
         const result = await mongoose.connection
             .collection("sessions")
             .findOne({ "session.user.username": username });
-        //console.log(result.session.user.username + "~~~~~~~~~~~~~");
+        
         assert(result.session.user.username == username);
     }
 );

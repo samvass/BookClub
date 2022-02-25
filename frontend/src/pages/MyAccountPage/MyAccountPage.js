@@ -12,7 +12,7 @@ const MyAccountPage = (props) => {
 
     useEffect(async () => {
         if (props.loggedInUser !== "") {
-            const incomingUserData = await viewAccountByUserName(props.loggedInUser)
+            const incomingUserData = await viewAccountByUserName(props.loggedInUser, props.sessionID);
             console.log(incomingUserData)
 
             setUsername(incomingUserData.user.username)
