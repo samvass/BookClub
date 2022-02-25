@@ -21,11 +21,6 @@ Then('the following book information is generated', async function (dataTable) {
 
     let [title, author, publisher, publishedDate] = dataTable.rawTable[1];
     const book = res.body.data.book;
-    console.log(book);
-    console.log(title)
-    console.log(author)
-    console.log(publisher)
-    console.log(publishedDate)
 
     assert(book.length != 0);
     assert(book[0].title == title);
