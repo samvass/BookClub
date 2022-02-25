@@ -225,7 +225,7 @@ exports.viewMyLibrary = async (req, res, next) => {
     const username = req.params.username;
 
     // find user in db
-    const user = await User.findOne({username: username});
+    const user = await User.findOne({ username: username });
 
     // if there is no user found
     if (!user) {
@@ -240,22 +240,22 @@ exports.viewMyLibrary = async (req, res, next) => {
     // take each Obj ID and find the corresponding book in the Books collection
     const updatedLibraryPromises = myLibrary.map(async bookID => await Book.findById(bookID));
     const updatedLibrary = await Promise.all(updatedLibraryPromises);
-    
+
     setTimeout(() => {
         return res.status(200).json({
             myLibrary: updatedLibrary,
             message: "successfully retrieved library",
             error: null
         });
-        
+
     }, 1000);
-    
+
 };
 
 exports.getPreferences = async (req, res, next) => {
     const username = req.params.username;
 
-    const user = await User.findOne({username: username});
+    const user = await User.findOne({ username: username });
 
     if (!user) {
         return res.status(404).json({
@@ -269,6 +269,34 @@ exports.getPreferences = async (req, res, next) => {
     return res.status(200).json({
         data: user.preferences,
         message: "successfully retrieved user preferences",
+        error: null
+    })
+};
+
+exports.setPreferences = async (req, res, next) => {
+    const username = req.params.username;
+    const preferences = req.body.preferences
+
+    const user = await User.findOne({ username: username });
+
+    if (!user) {
+        return res.status(404).json({
+            error: "user does not exist",
+            message: null
+        });
+    }
+
+    user.preferences = preferences;
+    await User.updateOne(
+        { username: username },
+        { $set: { preferences: preferences } }
+    );
+
+    console.log(user.preferences);
+
+    return res.status(200).json({
+        data: user.preferences,
+        message: "successfully set user preferences",
         error: null
     })
 };

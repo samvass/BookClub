@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
-import { createAccount } from '../api/userAPI';
+import { Navigate } from 'react-router-dom';
+import { createAccount, login } from '../api/userAPI';
 
 
-const CreateAccountPage = () => {
+const CreateAccountPage = (props) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
@@ -45,14 +46,19 @@ const CreateAccountPage = () => {
             "password": password,
             "email": email
         }
+
         const response = await createAccount(body);
         console.log(response)
 
         if (response.message === "Account successfully created") {
             setErrorMsg(null)
-            setSuccessMsg(response.message);
-            window.location.href = "/setPreferences";
 
+            const response1 = await login(body)
+            await props.setUserLoggedIn(username)
+            await props.setSessionID(response1.sessionID)
+            console.log(response1)
+
+            setSuccessMsg(response.message);
         } else {
             setErrorMsg(response.error)
         }
@@ -103,6 +109,7 @@ const CreateAccountPage = () => {
 
             {errorMsg && displayErrorMessages}
             {successMsg !== "" && <Alert variant="success" key={successMsg}>{successMsg}</Alert>}
+            {successMsg !== "" && <Navigate to="/setPreferences" />}
         </div>
     </div>
 }

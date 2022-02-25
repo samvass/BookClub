@@ -3,11 +3,13 @@ import { viewAccountByUserName } from "../../api/userAPI"
 import { useEffect, useState } from "react"
 import { Navigate } from "react-router-dom"
 import PasswordChangeModal from "../PasswordChangeModal/PasswordChangeModal"
+import { getPreferencesByUsername } from "../../api/userAPI"
 
 const MyAccountPage = (props) => {
 
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
+    const [selectedGenres, setSelectedGenres] = useState([])
     const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
 
     useEffect(async () => {
@@ -17,6 +19,10 @@ const MyAccountPage = (props) => {
 
             setUsername(incomingUserData.user.username)
             setEmail(incomingUserData.user.email)
+
+            const incomingPreferences = await getPreferencesByUsername(props.loggedInUser)
+            console.log(incomingPreferences.data)
+            setSelectedGenres(incomingPreferences.data)
         }
     }, [])
 
@@ -28,23 +34,18 @@ const MyAccountPage = (props) => {
         setIsChangePasswordOpen(false);
     }
 
-    const user = {
-        genres: props.preferences,
-        authors: ["Adam Geenen", "Lebron James", "LaMelo Ball", "idk authors"]
-    }
 
-    const selectedGenres = user.genres.map((genre) => {
-        return <div className="selected-item">{genre}</div>
+    const displaySelectedGenres = selectedGenres.map((genre, index) => {
+        return <div className="selected-item" key={index}>{genre}</div>
     })
 
-    const selectedAuthors = user.authors.map((author) => {
-        return <div className="selected-item">{author}</div>
-    })
+    // const selectedAuthors = user.authors.map((author) => {
+    //     return <div className="selected-item">{author}</div>
+    // })
 
     const changeGenresHandler = () => {
         window.location.href = "/setPreferences";
     }
-
 
     return (
         <div className="text">
@@ -55,12 +56,12 @@ const MyAccountPage = (props) => {
                         <button id="password-button" onClick={changeGenresHandler}>Change Genres</button>
                     </div>
                     <div className="selected-items">
-                        {selectedGenres}
+                        {displaySelectedGenres}
                     </div>
-                    <h1>Authors</h1>
+                    {/* <h1>Authors</h1>
                     <div className="selected-items">
                         {selectedAuthors}
-                    </div>
+                    </div> */}
                 </div>
                 <div className="account-info">
                     <h1>Account Info</h1>

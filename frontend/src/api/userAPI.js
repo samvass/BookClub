@@ -63,3 +63,13 @@ export const viewAccountByUserName = async (username, sessionID) => {
     let endpoint = apiURL + "/users/view/" + username;
     return await apiGet(endpoint, sessionID);
 }
+
+export const getPreferencesByUsername = async (username, sessionID) => {
+    let endpoint = apiURL + "/users/get/preferences/" + username;
+    return await apiGet(endpoint, sessionID);
+}
+
+export const setPreferencesByUsername = async (username, body) => {
+    let endpoint = apiURL + "/users/set/preferences/" + username;
+    return await apiPost(endpoint, body);
+}

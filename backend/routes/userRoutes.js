@@ -31,6 +31,9 @@ router.get('/get/myLibrary/:username', userController.viewMyLibrary);
 // get user preferences
 router.get('/get/preferences/:username', userController.getPreferences);
 
+// set user preferences
+router.post("/set/preferences/:username", userController.setPreferences)
+
 module.exports = router;
 
 

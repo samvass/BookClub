@@ -11,9 +11,8 @@
 }
 
 .selected-items {
-    height: 260px;
-    width: 500px;
-    // background-color: green;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .selected-item {
@@ -76,4 +75,4 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-} 
+}

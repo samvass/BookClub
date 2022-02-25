@@ -17,9 +17,8 @@ import SelectPreferencesPage from "./pages/SelectPreferencesPage/SelectPreferenc
 import "./App.css"
 
 const App = () => {
-    const [username, setUsername] = useState("");
-    const [preferences, setPreferences] = useState(null);
-    const [sessionID, setSessionID] = useState(null);
+    const [username, setUsername] = useState("andrew1");
+    const [sessionID, setSessionID] = useState("bO7jZbxqdmTo3Af1XXVtH54ElkyQx-8n");
 
 
     return (
@@ -32,9 +31,9 @@ const App = () => {
                         <Route path='/myLibrary' element={<MyLibraryPage loggedInUser={username} />} />
                         <Route path='/myAccount' element={<MyAccountPage loggedInUser={username} sessionID={sessionID} />} />
                         <Route path='/setPreferences' element={<SelectPreferencesPage loggedInUser={username} sessionID={sessionID} />} />
-                        <Route path='/signup' element={<CreateAccountPage />} />
+                        <Route path='/signup' element={<CreateAccountPage setSessionID={setSessionID} setUserLoggedIn={setUsername} />} />
                         <Route path='/login' element={
-                            <LoginPage setUserLoggedIn={setUsername} loggedInUser={username} setSessionID={setSessionID} setPreferences={setPreferences} />
+                            <LoginPage setUserLoggedIn={setUsername} loggedInUser={username} setSessionID={setSessionID} />
                         } />
                         <Route path='/logout' element={<LogoutPage setUserLoggedIn={setUsername} loggedInUser={username} sessionID={sessionID} />} />
                         <Route path='/' element={<HomePage loggedInUser={username} setUserLoggedIn={setUsername} setSessionID={setSessionID} sessionID={sessionID} />} />
