@@ -20,13 +20,13 @@ Then('the following book information is generated', async function (dataTable) {
         .set("Accept", "application/json")
 
     let [title, author, publisher, publishedDate] = dataTable.rawTable[1];
+    const book = res.body.data.book;
     console.log(book);
     console.log(title)
     console.log(author)
     console.log(publisher)
     console.log(publishedDate)
 
-    const book = res.body.data.book;
     assert(book.length != 0);
     assert(book[0].title == title);
     assert(book[0].authors[0] == author);
