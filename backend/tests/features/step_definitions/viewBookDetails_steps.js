@@ -20,6 +20,11 @@ Then('the following book information is generated', async function (dataTable) {
         .set("Accept", "application/json")
 
     let [title, author, publisher, publishedDate] = dataTable.rawTable[1];
+    console.log(book);
+    console.log(title)
+    console.log(author)
+    console.log(publisher)
+    console.log(publishedDate)
 
     const book = res.body.data.book;
     assert(book.length != 0);
