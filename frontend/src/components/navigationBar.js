@@ -15,6 +15,9 @@ const NavigationBar = (props) => {
                     <Nav.Link as={Link} to="/" title="Home">
                         Home
                     </Nav.Link>
+                    {props.loggedInUser !== "" && <Nav.Link as={Link} to="/myLibrary" title="My Library">
+                        My Library
+                    </Nav.Link>}
                     {props.loggedInUser !== "" && <Nav.Link as={Link} to="/myAccount" title="My Account">
                         My Account
                     </Nav.Link>}

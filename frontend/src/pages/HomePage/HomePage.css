@@ -21,7 +21,8 @@
     opacity: 1;
     /* background-color: Black; */
     z-index: 10;
-    display: inline-block
+    display: inline-block;
+    color: black
 }
 
 #imgcontainer img
@@ -29,19 +30,22 @@
       Z-index: 5;
 }
 
+
 .bookTitle {
-    color: white;
+    color: black;
     font-size: 36px;
     max-width: 450px;
     position: absolute;
-    top: 25%;
-    left: 47%;
+    top: 28%;
+    left: 50%;
     transform: translate(-50%, -50%);
+    background-color: white;
 }
 
 
 .bio {
-    color: white;
+    color: black;
+    background-color: white;
     max-width: 450px;
     position: absolute;
     top: 50%;
@@ -50,23 +54,25 @@
 }
 
 .reviewTitle {
+    color: black;
+    background-color: white;
     text-decoration: underline;
     font-family: Fjalla One;
     font-size: 36px;
-    color: white;
     max-width: 450px;
     position: absolute;
     top: 75%;
-    left: 47%;
+    left: 40.5%;
     transform: translate(-50%, -50%);
 }
 
 .review {
+    color: black;
+    background-color: white;
     font-family: Fjalla One;
-    color: white;
     max-width: 440px;
     position: absolute;
     top: 81%;
-    left: 47%;
+    left: 50%;
     transform: translate(-50%, -50%);
 }

@@ -1,7 +1,5 @@
 import bookWorm from "../../images/bookworm.png"
 import "./NavBar.css"
-import PopOut from "../PopOut/PopOut"
-import NavItem from "../NavItem/NavItem"
 
 import { AiOutlineHome } from 'react-icons/ai';
 import { MdOutlineCreate } from 'react-icons/md';

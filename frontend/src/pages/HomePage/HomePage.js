@@ -9,7 +9,7 @@ import ArrowDown from "../../components/ArrowDown/ArrowDown"
 const HomePage = props => {
 
     const userGenres = ['Fiction', 'Comedy', 'Horror', 'Non-Fiction', 'History'];
-    
+
     const [userGenre, setGenre] = useState(userGenres[0]);
 
     const getUserGenre = () => {
@@ -21,19 +21,12 @@ const HomePage = props => {
     }
 
 
-    const [bookName, setBookName] = useState("");
     const [bookTitle, setBookTitle] = useState(null);
     const [bookDescription, setbookDescription] = useState(null);
     const [bookAuthor, setBookAuthor] = useState(null);
     const [bookGenres, setBookGenres] = useState(null);
     const [bookThumbnail, setBookThumbnail] = useState(null);
     const [showInfo, setShowInfo] = useState(false);
-
-
-    const bookHandler = (event) => {
-        let typedBookName = event.target.value;
-        setBookName(typedBookName);
-    }
 
     const displayBook = async () => {
 
@@ -45,7 +38,7 @@ const HomePage = props => {
         const thumbnail = book.thumbnail;
         const description = book.description;
         let author = "";
-        if (book.authors && book.authors.length > 0){
+        if (book.authors && book.authors.length > 0) {
             author = book.authors[0];
         }
         const genre = book.categories;
@@ -70,20 +63,16 @@ const HomePage = props => {
     }
 
     return <div>
-        <div style={{ "width": 600, "margin": "0 auto", "marginTop": 30 }}>
-
-            <br />
-            <ArrowUp title={bookTitle} description={bookDescription} author={bookAuthor} genre={bookGenres} thumbnail={bookThumbnail} loggedInUser={props.loggedInUser} sessionID={props.sessionID} displayBook={displayBook}/>
-            {bookThumbnail &&
-                <div id="imgcontainer">
-                    <img className='book' onMouseEnter={hoverShowInfo} onMouseLeave={noHoverShowInfo} src={bookThumbnail}></img>
-                    {showInfo && <div className="bookTitle">{bookTitle}</div>}
-                    {showInfo && <div className="bio">{bookDescription}</div>}
-                    {showInfo && <div className="reviewTitle">Top Review</div>}
-                    {showInfo && <div className="review">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto voluptate minus deserunt voluptatum deleniti maiores repellendus, aut quis iusto distinctio ea quasi dolore</div>}
-                </div>}
-            <ArrowDown />
-        </div>
+        <ArrowUp title={bookTitle} description={bookDescription} author={bookAuthor} genre={bookGenres} thumbnail={bookThumbnail} loggedInUser={props.loggedInUser} setUserLoggedIn={props.setUserLoggedIn} setSessionID={props.setSessionID} sessionID={props.sessionID} displayBook={displayBook} />
+        {bookThumbnail &&
+            <div id="imgcontainer">
+                <img className='book' onMouseEnter={hoverShowInfo} onMouseLeave={noHoverShowInfo} src={bookThumbnail}></img>
+                {showInfo && <div className="bookTitle">{bookTitle}</div>}
+                {showInfo && <div className="bio">{bookDescription}</div>}
+                {showInfo && <div className="reviewTitle">Top Review</div>}
+                {showInfo && <div className="review">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto voluptate minus deserunt voluptatum deleniti maiores repellendus, aut quis iusto distinctio ea quasi dolore</div>}
+            </div>}
+        <ArrowDown />
     </div>
 }
 
