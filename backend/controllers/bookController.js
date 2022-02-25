@@ -30,7 +30,7 @@ exports.getBookByName = (req, res, next) => {
       });
     }
     // adjust size of the thumbnail
-    const newURL = results[0].thumbnail.replace("zoom=1", "zoom=3");
+    const newURL = results[0].thumbnail.replace("zoom=1", "zoom=1");
 
     results[0].thumbnail = newURL;
 

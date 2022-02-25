@@ -18,6 +18,7 @@ import "./App.css"
 
 const App = () => {
     const [username, setUsername] = useState("");
+    const [preferences, setPreferences] = useState(null);
     const [sessionID, setSessionID] = useState(null);
 
 
@@ -33,7 +34,7 @@ const App = () => {
                         <Route path='/setPreferences' element={<SelectPreferencesPage loggedInUser={username} sessionID={sessionID} />} />
                         <Route path='/signup' element={<CreateAccountPage />} />
                         <Route path='/login' element={
-                            <LoginPage setUserLoggedIn={setUsername} loggedInUser={username} setSessionID={setSessionID} />
+                            <LoginPage setUserLoggedIn={setUsername} loggedInUser={username} setSessionID={setSessionID} setPreferences={setPreferences} />
                         } />
                         <Route path='/logout' element={<LogoutPage setUserLoggedIn={setUsername} loggedInUser={username} sessionID={sessionID} />} />
                         <Route path='/' element={<HomePage loggedInUser={username} setUserLoggedIn={setUsername} setSessionID={setSessionID} sessionID={sessionID} />} />
