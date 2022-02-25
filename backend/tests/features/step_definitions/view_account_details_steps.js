@@ -65,7 +65,6 @@ Then(
         let res = await request(app)
           .get("/users/view/" + data.username)
           .set("Accept", "application/json");
-
         assert(res.body.error == string);
       }
     );

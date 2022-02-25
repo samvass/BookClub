@@ -73,8 +73,8 @@ When("the user {string} views their library", (string) => {
 
 Then("the user {string} will see their liked books", async (string) => {
   let user = await User.findOne({ username: string });
-  console.log(user.myLibrary);
-  assert(!user.myLibrary[0].equals(null));
+  console.log(user.myLibrary + "123456");
+  assert(user.myLibrary[0] != null);
 });
 
 Given("a user is not logged in", () => {
