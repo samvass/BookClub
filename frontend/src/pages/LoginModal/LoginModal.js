@@ -11,8 +11,7 @@ const LoginModal = (props) => {
     const [errorMsg, setErrorMsg] = useState("");
     const [successMsg, setSuccessMsg] = useState("");
 
-    const loginUser = async (event) => {
-        // event.preventDefault();
+    const loginUser = async () => {
 
         setSuccessMsg("");
         setErrorMsg("");
@@ -25,6 +24,7 @@ const LoginModal = (props) => {
 
         // send entered username and password to backend
         let response = await login(body);
+        console.log(response)
 
         // if backend approves of the info
         if (response.message === "Login Successful") {
