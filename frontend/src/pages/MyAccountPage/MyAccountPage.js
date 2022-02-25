@@ -41,12 +41,19 @@ const MyAccountPage = (props) => {
         return <div className="selected-item">{author}</div>
     })
 
+    const changeGenresHandler = () => {
+        window.location.href = "/setPreferences";
+    }
+
 
     return (
         <div className="text">
             {props.loggedInUser === "" ? <Navigate to="/login" /> : <div className="page">
                 <div className="preferences">
-                    <h1>Genres</h1>
+                    <div className="display-properly">
+                        <h1>Genres</h1>
+                        <button id="password-button" onClick={changeGenresHandler}>Change Genres</button>
+                    </div>
                     <div className="selected-items">
                         {selectedGenres}
                     </div>

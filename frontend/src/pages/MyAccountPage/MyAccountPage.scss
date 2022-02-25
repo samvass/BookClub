@@ -2,6 +2,7 @@
     display: flex;
     justify-content: space-between;
     font-family: 'Fjalla One', sans-serif;
+    color: #050C4E;
 }
 
 .page h1 {
@@ -37,7 +38,6 @@
     height: 43px;
     font-size: 24px;
     color: #050C4E;
-    font-family: 'Fjalla One', sans-serif;
 }
 
 #password-button:hover {
@@ -50,7 +50,6 @@
 
 .account-info {
     margin-right: 192px;
-
 }
 
 .text {
@@ -72,3 +71,9 @@
     margin-bottom: 30px;
     font-weight: 400;
 }
+
+.display-properly {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+} 

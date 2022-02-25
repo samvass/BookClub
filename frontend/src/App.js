@@ -12,6 +12,7 @@ import MyAccountPage from "./pages/MyAccountPage/MyAccountPage";
 import LogoutPage from "./pages/LogoutPage";
 import MyLibraryPage from "./pages/MyLibraryPage/MyLibraryPage";
 import NavBar from "./components/navbar/NavBar";
+import SelectPreferencesPage from "./pages/SelectPreferencesPage/SelectPreferencesPage"
 
 import "./App.css"
 
@@ -29,10 +30,11 @@ const App = () => {
                 <div>
                     <Routes>
                         <Route path='/myLibrary' element={<MyLibraryPage loggedInUser={username} />} />
-                        <Route path='/myAccount' element={<MyAccountPage loggedInUser={username} sessionID={sessionID} preferences={preferences}/>} />
+                        <Route path='/myAccount' element={<MyAccountPage loggedInUser={username} sessionID={sessionID} />} />
+                        <Route path='/setPreferences' element={<SelectPreferencesPage loggedInUser={username} sessionID={sessionID} />} />
                         <Route path='/signup' element={<CreateAccountPage />} />
                         <Route path='/login' element={
-                            <LoginPage setUserLoggedIn={setUsername} loggedInUser={username} setSessionID={setSessionID} setPreferences={setPreferences}/>
+                            <LoginPage setUserLoggedIn={setUsername} loggedInUser={username} setSessionID={setSessionID} setPreferences={setPreferences} />
                         } />
                         <Route path='/logout' element={<LogoutPage setUserLoggedIn={setUsername} loggedInUser={username} sessionID={sessionID} />} />
                         <Route path='/' element={<HomePage loggedInUser={username} setUserLoggedIn={setUsername} setSessionID={setSessionID} sessionID={sessionID} />} />

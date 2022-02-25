@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { createAccount } from '../api/userAPI';
 
-import NavBar from '../components/navbar/NavBar';
 
 const CreateAccountPage = () => {
     const [username, setUsername] = useState("");
@@ -52,7 +51,7 @@ const CreateAccountPage = () => {
         if (response.message === "Account successfully created") {
             setErrorMsg(null)
             setSuccessMsg(response.message);
-            window.location.href = "/login";
+            window.location.href = "/setPreferences";
 
         } else {
             setErrorMsg(response.error)
