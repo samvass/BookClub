@@ -11,8 +11,8 @@ Scenario Outline: Valid Credentials (Normal Flow)
     Then a new account will be created with username "<username>", email "<email>", and password "<password>"
     
     Examples:
-    | username       | email              | password     |
-    | Andrew321      | andrew@domain.com  | Pickles1212$ |
+    | username       | email                 | password     |
+    | Andrew745      | andrew745@gmail.com  | Pickles1212$ |
 
 
 Scenario Outline: Invalid Credentials (Error Flow)

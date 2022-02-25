@@ -21,18 +21,23 @@ exports.getBookByName = (req, res, next) => {
 
     books.search(bookName, options, function (error, results, apiResponse) {
         if (!error) {
+            // check if any book found
+            let error = "";
+            if (results.length == 0) {
+                error = "Book not found";
+            } else {
+                // adjust size of the thumbnail
+                const newURL = results[0].thumbnail.replace("zoom=1", "zoom=1");
+                results[0].thumbnail = newURL;
+            }
             return res.status(200).send({
                 data: {
                     book: results,
                 },
-                message: "",
+                message: error,
                 error: {},
             });
         }
-        // adjust size of the thumbnail
-        const newURL = results[0].thumbnail.replace("zoom=1", "zoom=1");
-
-        results[0].thumbnail = newURL;
 
         return res.status(404).send({
             data: {},

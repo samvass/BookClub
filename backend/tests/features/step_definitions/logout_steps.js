@@ -8,6 +8,7 @@ const app = require("../../../app");
 let data = {
     username: "",
     password: "",
+    preferences: []
 };
 
 let logoutData = {
@@ -59,16 +60,4 @@ Then("the user {string} shall be logged out", async (string) => {
         .collection("sessions")
         .findOne({ "session.user.username": username });
     assert(result == null);
-});
-
-// drop collection
-AfterAll(function (done) {
-    mongoose.connection.db.dropCollection("sessions", function (err, result) {
-        console.log("Sessions droped");
-        done();
-    });
-    mongoose.connection.db.dropCollection("users", function (err, result) {
-        console.log("Users droped");
-        done();
-    });
 });

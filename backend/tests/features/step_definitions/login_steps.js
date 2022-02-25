@@ -9,6 +9,7 @@ let data = {
     username: "",
     password: "",
     email: "",
+    preferences: []
 };
 
 Given(
@@ -61,15 +62,3 @@ Then("an error message {string} will be issued", async (string) => {
     assert(res.body.error.length > 0);
     assert(res.body.error.includes(string));
 });
-
-// // drop collection
-// AfterAll(function (done) {
-//     mongoose.connection.db.dropCollection("sessions", function (err, result) {
-//         console.log("Collection droped");
-//         done();
-//     });
-//     mongoose.connection.db.dropCollection("users", function (err, result) {
-//         console.log("Collection droped");
-//         done();
-//     });
-// });
