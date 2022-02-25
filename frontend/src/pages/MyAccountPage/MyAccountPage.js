@@ -11,7 +11,7 @@ const MyAccountPage = (props) => {
     const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
 
     useEffect(async () => {
-        if (props.loggedInUser !== "") {
+        if (props.loggedInUser.username !== "") {
             const incomingUserData = await viewAccountByUserName(props.loggedInUser, props.sessionID);
             console.log(incomingUserData)
 
@@ -28,16 +28,16 @@ const MyAccountPage = (props) => {
         setIsChangePasswordOpen(false);
     }
 
-    const testUser = {
-        genres: ["Comedy", "Horror", "Basketball", "Tech"],
+    const user = {
+        genres: props.preferences,
         authors: ["Adam Geenen", "Lebron James", "LaMelo Ball", "idk authors"]
     }
 
-    const selectedGenres = testUser.genres.map((genre) => {
+    const selectedGenres = user.genres.map((genre) => {
         return <div className="selected-item">{genre}</div>
     })
 
-    const selectedAuthors = testUser.authors.map((author) => {
+    const selectedAuthors = user.authors.map((author) => {
         return <div className="selected-item">{author}</div>
     })
 
