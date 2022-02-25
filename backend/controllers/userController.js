@@ -4,6 +4,8 @@ const emailValidator = require("email-validator");
 const passwordValidator = require('password-validator');
 
 const User = require('../models/user');
+const Book = require('../models/book');
+const { update } = require('../models/user');
 
 exports.getUsers = (req, res, next) => {
 
@@ -40,6 +42,7 @@ exports.createAccount = async (req, res, next) => {
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
+    const preferences = req.body.preferences;
 
     // // check username or email doesn't already exist
     const userExists = await User.findOne({ username: username }) ? true : false;
@@ -115,7 +118,8 @@ exports.createAccount = async (req, res, next) => {
     const user = new User({
         username: username,
         email: email,
-        password: hashedPassword
+        password: hashedPassword,
+        preferences: preferences
     });
 
     await user.save();
@@ -216,3 +220,39 @@ exports.viewAccountDetails = async (req, res, next) => {
         });
     }
 };
+
+exports.viewMyLibrary = async (req, res, next) => {
+
+    const username = req.params.username;
+
+    // find user in db
+    const user = await User.findOne({username: username});
+
+    // if there is no user found
+    if (!user) {
+        return res.status(404).json({
+            message: null,
+            error: "user does not exist"
+        });
+    }
+
+    const myLibrary = user.myLibrary;
+
+    // take each Obj ID and find the corresponding book in the Books collection
+    const updatedLibrary = myLibrary.map(async bookID => await Book.findById(bookID));
+
+    
+    setTimeout(() => {
+        return res.status(200).json({
+            myLibrary: updatedLibrary,
+            message: "successfully retrieved library",
+            error: null
+        });
+        
+    }, 1000);
+    
+};
+
+const getBook = async (bookID) => {
+
+}

@@ -25,6 +25,9 @@ router.post('/logout', auth.isLoggedIn, userController.logout);
 // view user
 router.get('/view/:username', auth.isLoggedIn, userController.viewAccountDetails);
 
+// get user library
+router.get('/get/myLibrary/:username', userController.viewMyLibrary);
+
 module.exports = router;
 
 

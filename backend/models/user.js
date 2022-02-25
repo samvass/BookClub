@@ -18,6 +18,11 @@ const userSchema = new Schema({
     myLibrary: [{
         type: Schema.Types.ObjectId,
         ref: "Book"
+    }], 
+
+    preferences : [{
+        type: String,
+        unique: true
     }]
 });
 
