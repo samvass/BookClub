@@ -61,11 +61,3 @@ When(
     assert(res.status == 401);
   }
 );
-
-// drop collection
-AfterAll(function (done) {
-  mongoose.connection.db.dropCollection("books", function (err, result) {
-    console.log("Books droped");
-    done();
-  });
-});

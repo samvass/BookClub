@@ -22,7 +22,6 @@ const userSchema = new Schema({
 
     preferences : [{
         type: String,
-        unique: true
     }]
 });
 

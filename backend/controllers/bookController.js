@@ -7,41 +7,47 @@ const Book = require("../models/book");
 const googleAPIKey = process.env.GOOGLE_API_KEY;
 
 exports.getBookByName = (req, res, next) => {
-  var options = {
-    key: googleAPIKey,
-    offset: 0,
-    field: "title",
-    limit: 1,
-    type: "books",
-    order: "relevance",
-    lang: "en",
-  };
+    var options = {
+        key: googleAPIKey,
+        offset: 0,
+        field: "title",
+        limit: 1,
+        type: "books",
+        order: "relevance",
+        lang: "en",
+    };
 
-  const bookName = req.params.bookName;
+    const bookName = req.params.bookName;
 
-  books.search(bookName, options, function (error, results, apiResponse) {
-    if (!error) {
-      return res.status(200).send({
-        data: {
-          book: results,
-        },
-        message: "",
-        error: {},
-      });
-    }
-    // adjust size of the thumbnail
-    const newURL = results[0].thumbnail.replace("zoom=1", "zoom=1");
+    books.search(bookName, options, function (error, results, apiResponse) {
+        if (!error) {
+            // check if any book found
+            let error = "";
+            if (results.length == 0) {
+                error = "Book not found";
+            } else {
+                // adjust size of the thumbnail
+                const newURL = results[0].thumbnail.replace("zoom=1", "zoom=1");
+                results[0].thumbnail = newURL;
+            }
+            return res.status(200).send({
+                data: {
+                    book: results,
+                },
+                message: error,
+                error: {},
+            });
+        }
 
-    results[0].thumbnail = newURL;
-
-    return res.status(404).send({
-      data: {},
-      message: "Error",
-      error: {
-        err: error,
-      },
+        return res.status(404).send({
+            data: {},
+            message: "Error",
+            error: {
+                err: error,
+            },
+        });
+        
     });
-  });
 };
 
 exports.getBookRecommendation = (req, res, next) => {

@@ -43,7 +43,7 @@ Then(
     res = await request(app)
       .get("/users/view/" + data.username)
       .set("Accept", "application/json")
-      .send({ sessionID: sessionID });
+      .set("Authorization", sessionID);
 
     let user = res.body.user;
     assert(user.username, data.username);
@@ -70,11 +70,3 @@ Then(
     );
   }
 );
-
-// drop collection
-AfterAll(function (done) {
-  mongoose.connection.db.dropCollection("users", function (err, result) {
-    console.log("Collection droped");
-    done();
-  });
-});

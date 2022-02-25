@@ -36,7 +36,6 @@ exports.getByUsername = (req, res, next) => {
 };
 
 exports.createAccount = async (req, res, next) => {
-
     var error = [];
 
     const username = req.body.username;
