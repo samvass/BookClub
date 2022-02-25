@@ -11,6 +11,7 @@ on:
     
 env:
   MONGODB_URI: "mongodb+srv://group10:group10@bookclub.z8jza.mongodb.net/test?retryWrites=true&w=majority"   
+  GOOGLE_API_KEY: "AIzaSyCLfxcZ7TMprwmHpF70OX5C5t_Ml2jFxIA"
 
 jobs:
   backend:
