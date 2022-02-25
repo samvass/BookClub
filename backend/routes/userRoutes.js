@@ -28,6 +28,9 @@ router.get('/view/:username', auth.isLoggedIn, userController.viewAccountDetails
 // get user library
 router.get('/get/myLibrary/:username', userController.viewMyLibrary);
 
+// get user preferences
+router.get('/get/preferences/:username', userController.getPreferences);
+
 module.exports = router;
 
 

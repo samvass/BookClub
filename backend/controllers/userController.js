@@ -253,6 +253,23 @@ exports.viewMyLibrary = async (req, res, next) => {
     
 };
 
-const getBook = async (bookID) => {
+exports.getPreferences = async (req, res, next) => {
+    const username = req.params.username;
 
-}
+    const user = await User.findOne({username: username});
+
+    if (!user) {
+        return res.status(404).json({
+            error: "user does not exist",
+            message: null
+        });
+    }
+
+    console.log(user.preferences);
+
+    return res.status(200).json({
+        data: user.preferences,
+        message: "successfully retrieved user preferences",
+        error: null
+    })
+};

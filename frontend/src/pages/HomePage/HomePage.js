@@ -72,7 +72,7 @@ const HomePage = props => {
                 {showInfo && <div className="reviewTitle">Top Review</div>}
                 {showInfo && <div className="review">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto voluptate minus deserunt voluptatum deleniti maiores repellendus, aut quis iusto distinctio ea quasi dolore</div>}
             </div>}
-        <ArrowDown />
+        <ArrowDown displayBook={displayBook} />
     </div>
 }
 
