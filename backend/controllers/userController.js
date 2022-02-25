@@ -239,8 +239,8 @@ exports.viewMyLibrary = async (req, res, next) => {
     const myLibrary = user.myLibrary;
 
     // take each Obj ID and find the corresponding book in the Books collection
-    const updatedLibrary = myLibrary.map(async bookID => await Book.findById(bookID));
-
+    const updatedLibraryPromises = myLibrary.map(async bookID => await Book.findById(bookID));
+    const updatedLibrary = await Promise.all(updatedLibraryPromises);
     
     setTimeout(() => {
         return res.status(200).json({
