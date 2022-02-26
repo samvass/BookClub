@@ -3,8 +3,6 @@ import { useState } from 'react';
 import { login } from '../api/userAPI';
 import { Navigate } from "react-router-dom"
 
-import NavBar from '../components/navbar/NavBar';
-
 const LoginPage = (props) => {
 
     const [username, setUsername] = useState("");
@@ -32,7 +30,6 @@ const LoginPage = (props) => {
             const user = response.data;
             setSuccessMsg(response.message)
             props.setUserLoggedIn(user.username);
-            props.setPreferences(user.preferences);
             props.setSessionID(response.sessionID);
 
             // if backend sends an error

@@ -34,7 +34,7 @@ const MyLibraryPage = () => {
     return (<div className="myLibrary">
         <h1 className="myLibraryTitle">My Library</h1>
         {/* {userBooks} */}
-        <img src={userBooks[0][0].thumbnail} className="book-on-shelf" alt="A Book"></img>
+        {/* <img src={userBooks[0].thumbnail} className="book-on-shelf" alt="A Book"></img> */}
         <img src={woodshelf} className="shelf" alt="Wood Shelf"></img>
         <img src={woodshelf} className="shelf" alt="Wood Shelf"></img>
     </div>)

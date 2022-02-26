@@ -69,8 +69,8 @@ const HomePage = props => {
                 <img className='book' onMouseEnter={hoverShowInfo} onMouseLeave={noHoverShowInfo} src={bookThumbnail}></img>
                 {showInfo && <div className="bookTitle">{bookTitle}</div>}
                 {showInfo && <div className="bio">{bookDescription}</div>}
-                {showInfo && <div className="reviewTitle">Top Review</div>}
-                {showInfo && <div className="review">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto voluptate minus deserunt voluptatum deleniti maiores repellendus, aut quis iusto distinctio ea quasi dolore</div>}
+                {/* {showInfo && <div className="reviewTitle">Top Review</div>} */}
+                {/* {showInfo && <div className="review">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto voluptate minus deserunt voluptatum deleniti maiores repellendus, aut quis iusto distinctio ea quasi dolore</div>} */}
             </div>}
         <ArrowDown displayBook={displayBook} />
     </div>

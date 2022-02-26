@@ -101,15 +101,12 @@ Then(
 // drop collection
 AfterAll(function (done) {
     mongoose.connection.db.dropCollection("sessions", function (err, result) {
-        console.log("Sessions droped");
         done();
     });
     mongoose.connection.db.dropCollection("users", function (err, result) {
-        console.log("Users droped");
         done();
     });
     mongoose.connection.db.dropCollection("books", function (err, result) {
-        console.log("Books droped");
         done();
     });
 });

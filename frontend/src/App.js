@@ -17,8 +17,8 @@ import SelectPreferencesPage from "./pages/SelectPreferencesPage/SelectPreferenc
 import "./App.css"
 
 const App = () => {
-    const [username, setUsername] = useState("andrew1");
-    const [sessionID, setSessionID] = useState("bO7jZbxqdmTo3Af1XXVtH54ElkyQx-8n");
+    const [username, setUsername] = useState("");
+    const [sessionID, setSessionID] = useState("");
 
 
     return (

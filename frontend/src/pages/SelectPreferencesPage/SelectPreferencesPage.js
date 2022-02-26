@@ -9,7 +9,7 @@ const SelectPreferencesPage = (props) => {
     useEffect(async () => {
         console.log(props.loggedInUser)
         const userPreferences = await getPreferencesByUsername(props.loggedInUser)
-        console.log(userPreferences.data)
+        console.log(userPreferences)
         setSelectedGenres(userPreferences.data)
     }, [])
 

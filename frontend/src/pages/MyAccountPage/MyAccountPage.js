@@ -11,6 +11,8 @@ const MyAccountPage = (props) => {
     const [email, setEmail] = useState("");
     const [selectedGenres, setSelectedGenres] = useState([])
     const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
+    const [redirect, setRedirect] = useState(false)
+
 
     useEffect(async () => {
         if (props.loggedInUser.username !== "") {
@@ -44,7 +46,7 @@ const MyAccountPage = (props) => {
     // })
 
     const changeGenresHandler = () => {
-        window.location.href = "/setPreferences";
+        setRedirect(true)
     }
 
     return (
@@ -77,6 +79,7 @@ const MyAccountPage = (props) => {
                 </div>
             </div>}
             {isChangePasswordOpen && <PasswordChangeModal onClosePasswordChange={closePasswordChanger} />}
+            {redirect && <Navigate to="/setPreferences" />}
         </div>
     )
 
