@@ -73,3 +73,8 @@ export const setPreferencesByUsername = async (username, body) => {
     let endpoint = apiURL + "/users/set/preferences/" + username;
     return await apiPost(endpoint, body);
 }
+
+export const getMyLibraryByUsername = async (username, sessionID) => {
+    let endpoint = apiURL + "/users/get/myLibrary/" + username;
+    return await apiGet(endpoint, sessionID);
+}
