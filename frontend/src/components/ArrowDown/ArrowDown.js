@@ -1,14 +1,27 @@
 import { FiArrowDownCircle } from 'react-icons/fi';
 import "./ArrowDown.css"
 
+import { rejectBook } from '../../api/bookAPI';
 
 const ArrowDown = props => {
+    
+    const arrowDownHandler = async () => {
+        const body = {
+            title: props.title,
+            description: props.description,
+            author: props.author,
+            genre: props.genre,
+            username: props.loggedInUser,
+            thumbnail: props.thumbnail
+        };
 
-    const arrowDownHandler = () => {
+        const response = await rejectBook(body, props.sessionID);
         props.displayBook();
     }
 
-    return (<div onClick={arrowDownHandler} className="arrow"><FiArrowDownCircle /></div>)
+    return (
+        <div onClick={arrowDownHandler} className="arrow"><FiArrowDownCircle /></div>
+    )
 }
 
 export default ArrowDown

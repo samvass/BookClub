@@ -48,3 +48,8 @@ export const acceptBook = async (body, sessionID) => {
     let endpoint = apiURL + "/books/accept";
     return await apiPost(endpoint, body, sessionID);
 }
+
+export const acceptBook = async (body, sessionID) => {
+    let endpoint = apiURL + "/books/reject";
+    return await apiPost(endpoint, body, sessionID);
+}
