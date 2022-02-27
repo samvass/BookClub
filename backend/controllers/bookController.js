@@ -182,4 +182,26 @@ exports.acceptBookRecommendation = async (req, res, next) => {
 exports.rejectBookRecommendation = async (req, res, next) => {
   // since they do not wish to add the book to their library we will not store it in the db
   // we should implement a way to generate the next book from here ...
+
+  // get book information from request body
+  const title = req.body.title;
+  const description = req.body.description;
+  const author = req.body.author;
+  const genre = req.body.genre;
+  const thumbnail = req.body.thumbnail;
+  const username = req.body.username;
+
+  const user = await User.findOne({ username: username });
+
+  if (!user) {
+    // return error
+    return res.status(200).json({
+      message: "no user found",
+    });
+  }
+
+  // console.log("-------------------------------", user.myLibrary)
+  return res.status(200).json({
+    message: "book rejected",
+    });
 };
