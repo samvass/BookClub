@@ -11,6 +11,7 @@ npm install
 Create a .env file in backend
 ```
 MONGODB_URI="MONGODB_URI"
+GOOGLE_API_KEY = "API_KEY"
 ```
 
 Run the server in dev
