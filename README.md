@@ -14,12 +14,14 @@ MONGODB_URI="MONGODB_URI"
 GOOGLE_API_KEY = "API_KEY"
 ```
 
-Run the server in dev
+Run Backend
 ```
 npm run dev
 ```
 
-Run the server in production
+Run Frontend
 ```
+cd ..
+cd frontend
 npm start
 ```
