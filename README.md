@@ -10,8 +10,9 @@ npm install
 
 Create a .env file in backend
 ```
-MONGODB_URI="MONGODB_URI"
-GOOGLE_API_KEY = "API_KEY"
+MONGODB_URI="mongodb+srv://group10:group10@bookclub.z8jza.mongodb.net/BookClub?retryWrites=true&w=majority"
+
+GOOGLE_API_KEY="AIzaSyCLfxcZ7TMprwmHpF70OX5C5t_Ml2jFxIA"
 ```
 
 Run Backend
