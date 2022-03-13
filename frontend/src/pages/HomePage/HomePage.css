@@ -6,11 +6,11 @@
     margin-left: auto;
 }
 
-.book:hover {
+/* .book:hover {
     opacity: .5;
    filter: alpha(opacity=50);
    background-color: rgba(0, 0, 0, 0.5);
-}
+} */
 
 #imgcontainer
 {

@@ -9,10 +9,6 @@ import { Navigate } from "react-router-dom"
 
 const MyLibraryPage = props => {
 
-    const user = {
-        books: ["Cat in the hat",]
-    }
-
     const [userBooks, setUserBooks] = useState([])
     const [redirect, setRedirect] = useState(false)
 
@@ -39,11 +35,6 @@ const MyLibraryPage = props => {
     //     {/* {displayUserBooks} */}
     //     {/* <img src={woodshelf} className="shelf" alt="Wood Shelf"></img> */}
     // </div>)
-
-    // const isThisWorking = () => {
-    //     return (<div>Hello</div>)
-    // }
-
 
     return (<div className="myLibrary">
         <h1 className="myLibraryTitle">My Library</h1>

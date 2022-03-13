@@ -1,9 +1,8 @@
 import "./MyAccountPage.scss"
-import { viewAccountByUserName } from "../../api/userAPI"
 import { useEffect, useState } from "react"
 import { Navigate } from "react-router-dom"
 import PasswordChangeModal from "../PasswordChangeModal/PasswordChangeModal"
-import { getPreferencesByUsername } from "../../api/userAPI"
+import { getPreferencesByUsername, viewAccountByUserName } from "../../api/userAPI"
 
 const MyAccountPage = (props) => {
 

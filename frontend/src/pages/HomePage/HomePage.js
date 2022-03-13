@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { getBookByGenre } from '../../api/bookAPI';
+import { getBookByGenre, getBookByName } from '../../api/bookAPI';
+import { getPreferencesByUsername } from "../../api/userAPI"
 import { Form, Button } from 'react-bootstrap';
 
 import "./HomePage.css"
@@ -8,19 +9,7 @@ import ArrowDown from "../../components/ArrowDown/ArrowDown"
 
 const HomePage = props => {
 
-    const userGenres = ['Fiction', 'Comedy', 'Horror', 'Non-Fiction', 'History'];
-
-    const [userGenre, setGenre] = useState(userGenres[0]);
-
-    const getUserGenre = () => {
-        // generate one of the users genres
-        const index = Math.floor(Math.random() * (userGenres.length));
-
-        // set the genre
-        setGenre(userGenres[index]);
-    }
-
-
+    const [userGenre, setGenre] = useState(null);
     const [bookTitle, setBookTitle] = useState(null);
     const [bookDescription, setbookDescription] = useState(null);
     const [bookAuthor, setBookAuthor] = useState(null);
@@ -28,11 +17,33 @@ const HomePage = props => {
     const [bookThumbnail, setBookThumbnail] = useState(null);
     const [showInfo, setShowInfo] = useState(false);
 
-    const displayBook = async () => {
+    useEffect(async () => {
+        displayBook()
+    }, [])
 
-        getUserGenre();
-        const response = await getBookByGenre(userGenre);
-        const book = response.data.book;
+
+    const displayBook = async () => {
+        if (props.loggedInUser !== "") {
+            const userGenres = await getPreferencesByUsername(props.loggedInUser)
+            // console.log(userGenres.data)
+            const shownGenre = userGenres.data[Math.floor(Math.random() * userGenres.data.length)]
+            // console.log(shownGenre)
+            setGenre(shownGenre)
+            // console.log(userGenre)
+        }
+
+        let response;
+        let book;
+        if (props.loggedInUser !== "") {
+            console.log(userGenre)
+            response = await getBookByGenre(userGenre);
+            book = response.data.book;
+        } else {
+            response = await getBookByName("Cat in the hat");
+            book = response.data.book[0];
+        }
+
+
         console.log(book);
         const title = book.title;
         const thumbnail = book.thumbnail;
@@ -50,10 +61,6 @@ const HomePage = props => {
         setBookThumbnail(thumbnail);
     }
 
-    useEffect(() => {
-        displayBook()
-    }, [])
-
     const hoverShowInfo = () => {
         setShowInfo(true)
     }
@@ -67,8 +74,8 @@ const HomePage = props => {
         {bookThumbnail &&
             <div id="imgcontainer">
                 <img className='book' onMouseEnter={hoverShowInfo} onMouseLeave={noHoverShowInfo} src={bookThumbnail}></img>
-                {showInfo && <div className="bookTitle">{bookTitle}</div>}
-                {showInfo && <div className="bio">{bookDescription}</div>}
+                {showInfo && <div onMouseEnter={hoverShowInfo} className="bookTitle">{bookTitle}</div>}
+                {showInfo && <div onMouseEnter={hoverShowInfo} className="bio">{bookDescription}</div>}
                 {/* {showInfo && <div className="reviewTitle">Top Review</div>} */}
                 {/* {showInfo && <div className="review">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto voluptate minus deserunt voluptatum deleniti maiores repellendus, aut quis iusto distinctio ea quasi dolore</div>} */}
             </div>}
