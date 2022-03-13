@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getBookByGenre, getBookByName } from '../../api/bookAPI';
 import { getPreferencesByUsername } from "../../api/userAPI"
-import { Form, Button } from 'react-bootstrap';
 
 import "./HomePage.css"
 import ArrowUp from '../../components/ArrowUp/ArrowUp';
@@ -9,7 +8,7 @@ import ArrowDown from "../../components/ArrowDown/ArrowDown"
 
 const HomePage = props => {
 
-    const [userGenre, setGenre] = useState(null);
+    const [userGenre, setUserGenre] = useState(null);
     const [bookTitle, setBookTitle] = useState(null);
     const [bookDescription, setbookDescription] = useState(null);
     const [bookAuthor, setBookAuthor] = useState(null);
@@ -23,12 +22,14 @@ const HomePage = props => {
 
 
     const displayBook = async () => {
+        let shownGenre
         if (props.loggedInUser !== "") {
             const userGenres = await getPreferencesByUsername(props.loggedInUser)
             // console.log(userGenres.data)
-            const shownGenre = userGenres.data[Math.floor(Math.random() * userGenres.data.length)]
-            // console.log(shownGenre)
-            setGenre(shownGenre)
+            shownGenre = userGenres.data[Math.floor(Math.random() * userGenres.data.length)]
+            console.log(shownGenre)
+
+            // setUserGenre(shownGenre)
             // console.log(userGenre)
         }
 
@@ -36,7 +37,7 @@ const HomePage = props => {
         let book;
         if (props.loggedInUser !== "") {
             console.log(userGenre)
-            response = await getBookByGenre(userGenre);
+            response = await getBookByGenre(shownGenre);
             book = response.data.book;
         } else {
             response = await getBookByName("Cat in the hat");
