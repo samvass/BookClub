@@ -31,4 +31,7 @@
 
 .book-picture {
     height: 250px;
+    /* width: ; */
+    background-color: gray;
+    cursor: pointer;
 }

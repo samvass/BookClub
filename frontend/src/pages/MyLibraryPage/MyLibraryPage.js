@@ -2,7 +2,7 @@ import woodshelf from "../../images/woodshelf.png"
 import "./MyLibraryPage.css"
 import { useEffect, useState } from "react"
 import { getBookByName } from "../../api/bookAPI"
-import { getMyLibraryByUsername } from "../../api/userAPI"
+import { getMyLibraryByUsername, setMyLibraryByUsername } from "../../api/userAPI"
 
 import { Navigate } from "react-router-dom"
 
@@ -19,22 +19,33 @@ const MyLibraryPage = props => {
         }
 
         const usersBooks = await getMyLibraryByUsername(props.loggedInUser)
-        console.log(usersBooks.myLibrary)
+        console.log(usersBooks)
         setUserBooks(usersBooks.myLibrary)
     }, [])
 
+
     const displayUserBooks = userBooks.map((book, index) => {
         return (<div>
-            <img className="book-picture" src={book.thumbnail} alt={book.title} key={index}></img>
+            <img className="book-picture" onClick={async () => {
+                const body = {
+                    username: props.loggedInUser,
+                    removedBook: book
+                };
+
+                const response = await setMyLibraryByUsername(props.loggedInUser, body)
+
+                setTimeout(async () => {
+                    const returnedMyLibrary = await getMyLibraryByUsername(props.loggedInUser)
+                    console.log(returnedMyLibrary.myLibrary)
+                    setUserBooks(returnedMyLibrary.myLibrary)
+                }, 100)
+
+            }} src={book.thumbnail} alt={book.title} key={index}></img>
         </div>)
     })
 
-    // const displayUserBooksAndShelf = () => (<div>
-    //     <h1>hi</h1>
-    //     <div>yo</div>
-    //     {/* {displayUserBooks} */}
-    //     {/* <img src={woodshelf} className="shelf" alt="Wood Shelf"></img> */}
-    // </div>)
+
+
 
     return (<div className="myLibrary">
         <h1 className="myLibraryTitle">My Library</h1>

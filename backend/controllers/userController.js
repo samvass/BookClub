@@ -249,7 +249,49 @@ exports.viewMyLibrary = async (req, res, next) => {
         });
 
     }, 1000);
+};
 
+exports.setMyLibrary = async (req, res, next) => {
+    const username = req.params.username;
+    const removedBook = req.body.removedBook;
+
+    const processedBook = await Book.findById(removedBook._id)
+
+    // find user in db
+    const user = await User.findOne({ username: username });
+
+    // if there is no user found
+    if (!user) {
+        return res.status(404).json({
+            message: null,
+            error: "user does not exist"
+        });
+    }
+
+    const myLibrary = user.myLibrary;
+
+    // take each Obj ID and find the corresponding book in the Books collection
+    const updatedMyLibrary = myLibrary.filter((book) => {
+        return !book.equals(processedBook._id)
+    })
+
+
+    const updatedLibraryPromises = updatedMyLibrary.map(async bookID => await Book.findById(bookID));
+    const updatedLibrary = await Promise.all(updatedLibraryPromises);
+
+    await User.updateOne(
+        { username: username },
+        { $set: { myLibrary: updatedLibrary } }
+    );
+
+    setTimeout(() => {
+        return res.status(200).json({
+            myLibrary: user.myLibrary,
+            message: "successfully retrieved library",
+            error: null
+        });
+
+    }, 100);
 };
 
 exports.getPreferences = async (req, res, next) => {

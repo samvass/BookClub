@@ -8,7 +8,6 @@ import ArrowDown from "../../components/ArrowDown/ArrowDown"
 
 const HomePage = props => {
 
-    const [userGenre, setUserGenre] = useState(null);
     const [bookTitle, setBookTitle] = useState(null);
     const [bookDescription, setbookDescription] = useState(null);
     const [bookAuthor, setBookAuthor] = useState(null);
@@ -25,18 +24,14 @@ const HomePage = props => {
         let shownGenre
         if (props.loggedInUser !== "") {
             const userGenres = await getPreferencesByUsername(props.loggedInUser)
-            // console.log(userGenres.data)
             shownGenre = userGenres.data[Math.floor(Math.random() * userGenres.data.length)]
             console.log(shownGenre)
 
-            // setUserGenre(shownGenre)
-            // console.log(userGenre)
         }
 
         let response;
         let book;
         if (props.loggedInUser !== "") {
-            console.log(userGenre)
             response = await getBookByGenre(shownGenre);
             book = response.data.book;
         } else {
