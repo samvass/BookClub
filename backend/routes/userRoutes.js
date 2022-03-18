@@ -22,6 +22,12 @@ router.post('/login', userController.login);
 // logout user
 router.post('/logout', auth.isLoggedIn, userController.logout);
 
+// change password
+router.put('/update', auth.isLoggedIn, userController.changePassword);
+
+// delete account
+router.delete('/delete', auth.isLoggedIn, userController.deleteAccount);
+
 // view user
 router.get('/view/:username', auth.isLoggedIn, userController.viewAccountDetails);
 

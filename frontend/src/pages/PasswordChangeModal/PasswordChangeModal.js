@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Form, Button, Alert } from 'react-bootstrap';
+import { changePassword } from "../../api/userAPI";
 
 import Modal from "../../components/modal/Modal"
 const PasswordChangeModal = (props) => {
@@ -7,17 +8,21 @@ const PasswordChangeModal = (props) => {
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [newPassword2, setNewPassword2] = useState("");
-    const [errorMsg, setErrorMsg] = useState("");
+    const [errors, setErrors] = useState([]);
 
-    const changePasswordHandler = () => {
+    const changePasswordHandler = async () => {
         //use backend to change the password
-        if (newPassword !== newPassword2) {
-            setErrorMsg("Passwords do not match")
-            return
+        const body = {
+            oldPassword: oldPassword,
+            newPassword: newPassword,
+            newPassword2: newPassword2
         }
 
-        // see if old password is user's password
-        // if ()
+        const res = await changePassword(body, props.sessionID);
+        if (res.error.length !== 0) {
+            setErrors(res.error);
+            return;
+        }
 
         props.onClosePasswordChange()
     }
@@ -40,7 +45,9 @@ const PasswordChangeModal = (props) => {
             </Form.Group>
             <Button onClick={changePasswordHandler}>Change</Button>
             <br />
-            {errorMsg !== "" && <Alert variant="danger" style={{ "marginTop": 20 }} key={errorMsg}>{errorMsg}  </Alert>}
+            {errors.length !== 0 && errors.map((err) => {
+                return <Alert variant="danger" style={{ "marginTop": 20 }} key={err}>{err}</Alert>;
+            })}
         </div>
     </Modal >)
 }

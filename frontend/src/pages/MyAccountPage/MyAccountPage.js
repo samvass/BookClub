@@ -2,7 +2,9 @@ import "./MyAccountPage.scss"
 import { useEffect, useState } from "react"
 import { Navigate } from "react-router-dom"
 import PasswordChangeModal from "../PasswordChangeModal/PasswordChangeModal"
+import ConfirmationModal from "../../components/modal/ConfirmationModal"
 import { getPreferencesByUsername, viewAccountByUserName } from "../../api/userAPI"
+import { deleteAccount } from "../../api/userAPI";
 
 const MyAccountPage = (props) => {
 
@@ -10,19 +12,18 @@ const MyAccountPage = (props) => {
     const [email, setEmail] = useState("");
     const [selectedGenres, setSelectedGenres] = useState([])
     const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
+    const [deleteAccountOpen, setDeleteAccountOpen] = useState(false);
     const [redirect, setRedirect] = useState(false)
 
 
     useEffect(async () => {
         if (props.loggedInUser.username !== "") {
             const incomingUserData = await viewAccountByUserName(props.loggedInUser, props.sessionID);
-            console.log(incomingUserData)
 
             setUsername(incomingUserData.user.username)
             setEmail(incomingUserData.user.email)
 
             const incomingPreferences = await getPreferencesByUsername(props.loggedInUser)
-            console.log(incomingPreferences.data)
             setSelectedGenres(incomingPreferences.data)
         }
     }, [])
@@ -40,9 +41,12 @@ const MyAccountPage = (props) => {
         return <div className="selected-item" key={index}>{genre}</div>
     })
 
-    // const selectedAuthors = user.authors.map((author) => {
-    //     return <div className="selected-item">{author}</div>
-    // })
+    const deleteAccountHanlder = async () => {
+        await deleteAccount({}, props.sessionID);
+        props.setUsername("");
+        props.setSessionID("");
+        return <Navigate to="/signup" />
+    }
 
     const changeGenresHandler = () => {
         setRedirect(true)
@@ -74,10 +78,12 @@ const MyAccountPage = (props) => {
                         <h3>Username</h3>
                         <h4>{username}</h4>
                     </div>
-                    <button id="password-button" onClick={openPasswordChanger}>Change Password</button>
+                    <button className="password-button" onClick={openPasswordChanger}>Change Password</button>
+                    <button className="password-button" onClick={() => setDeleteAccountOpen(true)}>Delete Account</button>
                 </div>
             </div>}
-            {isChangePasswordOpen && <PasswordChangeModal onClosePasswordChange={closePasswordChanger} />}
+            {isChangePasswordOpen && <PasswordChangeModal onClosePasswordChange={closePasswordChanger} sessionID={props.sessionID} />}
+            {deleteAccountOpen && <ConfirmationModal confirmCallback={deleteAccountHanlder} setModalClose={() => setDeleteAccountOpen(false)} title="Delete Account" />}
             {redirect && <Navigate to="/setPreferences" />}
         </div>
     )

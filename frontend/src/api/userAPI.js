@@ -16,10 +16,10 @@ const apiGet = async (endpoint, sessionID) => {
     }
 }
 
-const apiPost = async (endpoint, body, sessionID) => {
+const apiPost = async (endpoint, body, sessionID, method='POST') => {
     try {
         let res = await fetch(endpoint, {
-            method: 'POST',
+            method: method,
             body: JSON.stringify(body),
             headers: {
                 'Accept': 'application/json',
@@ -82,4 +82,14 @@ export const getMyLibraryByUsername = async (username, sessionID) => {
 export const setMyLibraryByUsername = async (username, body) => {
     let endpoint = apiURL + "/users/set/myLibrary/" + username;
     return await apiPost(endpoint, body);
+}
+
+export const changePassword = async (body, sessionID) => {
+    let endpoint = apiURL + "/users/update";
+    return await apiPost(endpoint, body, sessionID, 'PUT');
+}
+
+export const deleteAccount = async (body, sessionID) => {
+    let endpoint = apiURL + "/users/delete";
+    return await apiPost(endpoint, body, sessionID, 'DELETE');
 }

@@ -130,6 +130,79 @@ exports.createAccount = async (req, res, next) => {
     });
 };
 
+exports.changePassword = async (req, res, next) => {
+    var error = [];
+
+    const {oldPassword, newPassword, newPassword2, username} = req.body;
+
+    // check username or email doesn't already exist
+    const user = await User.findOne({ username: username });
+    if (user == null) {
+        error.push("Username does not exist");
+        return res.status(404).send({
+            data: {},
+            error: error
+        });
+    }
+
+    // check if password match
+    const passwordMatches = await bcrypt.compare(oldPassword, user.password);
+    if (!passwordMatches) {
+        error.push("Password does not match");
+    }
+
+    // check if new passwords match
+    if (newPassword.localeCompare(newPassword2) !== 0) {
+        error.push("New passwords do not match");
+    }
+
+    // validate password
+    const passwordSchema = new passwordValidator();
+    passwordSchema
+        .is().min(8)                                    // Minimum length 8
+        .is().max(100)                                  // Maximum length 100
+        .has().uppercase()                              // Must have uppercase letters
+        .has().lowercase()                              // Must have lowercase letters
+        .has().digits(1)                                // Must have at least 1 digits
+        .has().symbols(1)                               // Must have at least 1 symbol
+        .has().not().spaces()                           // Should not have spaces
+
+    if (!passwordSchema.validate(newPassword)) {
+        let errorList = passwordSchema.validate(newPassword, { list: true })
+        if (errorList.includes("spaces")) {
+            error.push("Password cannot contain spaces");
+        }
+        if (errorList.includes("symbols") || errorList.includes("digits") || errorList.includes("symbols") || errorList.includes("uppercase") || errorList.includes("lowercase")) {
+            error.push("Password must contain an upper case, lower case, special character, and number");
+        }
+        if (errorList.includes("min")) {
+            error.push("Password must contain more than 8 characters");
+        }
+    }
+
+    // check if there is any error
+    if (error.length > 0) {
+        return res.status(404).send({
+            data: {},
+            error: error
+        });
+    }
+
+    // hash password
+    let hashedPassword = await bcrypt.hash(newPassword, 12);
+
+    // update the password
+    await User.updateOne(
+        { username: username },
+        { $set: { password: hashedPassword } }
+    );
+
+    return res.json({
+        data: user,
+        error: error
+    });
+};
+
 exports.login = async (req, res, next) => {
     // get the credentials
     const username = req.body.username;
@@ -306,8 +379,6 @@ exports.getPreferences = async (req, res, next) => {
         });
     }
 
-    console.log(user.preferences);
-
     return res.status(200).json({
         data: user.preferences,
         message: "successfully retrieved user preferences",
@@ -334,11 +405,35 @@ exports.setPreferences = async (req, res, next) => {
         { $set: { preferences: preferences } }
     );
 
-    console.log(user.preferences);
-
     return res.status(200).json({
         data: user.preferences,
         message: "successfully set user preferences",
         error: null
+    })
+};
+
+exports.deleteAccount = async (req, res, next) => {
+    const {username, sessionID} = req.body;
+
+    const user = await User.findOne({ username: username });
+
+    if (!user) {
+        return res.status(404).json({
+            error: "User does not exist",
+            data: ""
+        });
+    }
+
+    // delete the user
+    await User.deleteOne(
+        { username: username }
+    );
+
+    // delete the session
+    await mongoose.connection.collection('sessions').deleteOne({ _id: sessionID });
+
+    return res.status(200).json({
+        data: "Account deleted successfully",
+        error: ""
     })
 };

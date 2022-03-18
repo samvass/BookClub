@@ -29,7 +29,7 @@ const App = () => {
                 <div>
                     <Routes>
                         <Route path='/myLibrary' element={<MyLibraryPage loggedInUser={username} />} />
-                        <Route path='/myAccount' element={<MyAccountPage loggedInUser={username} sessionID={sessionID} />} />
+                        <Route path='/myAccount' element={<MyAccountPage loggedInUser={username} sessionID={sessionID} setSessionID={setSessionID} setUsername={setUsername} />} />
                         <Route path='/setPreferences' element={<SelectPreferencesPage loggedInUser={username} sessionID={sessionID} />} />
                         <Route path='/signup' element={<CreateAccountPage setSessionID={setSessionID} setUserLoggedIn={setUsername} />} />
                         <Route path='/login' element={
