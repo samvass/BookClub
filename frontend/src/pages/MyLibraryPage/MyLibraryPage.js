@@ -1,6 +1,9 @@
 import woodshelf from "../../images/woodshelf.png"
 import "./MyLibraryPage.css"
 import { useEffect, useState } from "react"
+import Aos from 'aos'
+import 'aos/dist/aos.css'
+
 import { getBookByName } from "../../api/bookAPI"
 import { getMyLibraryByUsername, setMyLibraryByUsername } from "../../api/userAPI"
 
@@ -21,6 +24,10 @@ const MyLibraryPage = props => {
         console.log(usersBooks)
         setUserBooks(usersBooks.myLibrary)
     }, [])
+
+    useEffect(() => {
+        Aos.init({duration: 1000})
+    });
 
 
     const displayUserBooks = (i) => userBooks.map((book, index) => {
@@ -54,7 +61,7 @@ const MyLibraryPage = props => {
         {userBooks.map((row, index) => {
             // create a new bookshelf every row
             if (index % 5 == 0){
-            return (<div>
+            return (<div data-aos='slide-up'>
                 <div className="displayed-books">{displayUserBooks(index)}</div>
                 <img src={woodshelf} className="shelf" alt="Wood Shelf"></img>
             </div>)
