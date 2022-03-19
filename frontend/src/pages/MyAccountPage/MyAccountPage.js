@@ -58,7 +58,7 @@ const MyAccountPage = (props) => {
                 <div className="preferences">
                     <div className="display-properly">
                         <h1>Genres</h1>
-                        <button id="password-button" onClick={changeGenresHandler}>Change Genres</button>
+                        <button className="password-button" id="password-button" onClick={changeGenresHandler}>Change Genres</button>
                     </div>
                     <div className="selected-items">
                         {displaySelectedGenres}

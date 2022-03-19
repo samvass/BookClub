@@ -89,7 +89,7 @@ const SelectPreferencesPage = (props) => {
             {displayGenres}
         </div>
         <div className="center">
-            <button onClick={setUserGenres}>Set Genres</button>
+            <button className="possible-genre" onClick={setUserGenres}>Set Genres</button>
         </div>
         {successMsg !== "" && <Navigate to="/myAccount" />}
     </div>)
