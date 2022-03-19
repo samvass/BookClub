@@ -5,14 +5,15 @@ I would like to update my account reading preferences
 So that I can be suggested books that are more tailored to me
 
 Background:
-    Given the user with username "test456", password "$Pickles1212", and email "test456@gmail.com" exists in the system:
+    Given the user with username "test456", password "$Pickles1212", and email "test456@gmail.com" exists in the system
+    And the user is on the update preferences page
 
-Scenario: Logged in (Normal Flow)
-    Given a user with username "test456" and password "$Pickles1212" is logged in
-    When user "test456" accepts the book with title "Book1" recommendation
-    Then the book "Book1" will be added to user "test456" library
+Scenario: Update preferences (Normal Flow)
+    Given a user selects at least one reading prefernece
+    When the user updates the account reading preferences
+    Then the user will have their preferences updated
 
-Scenario: Not logged in (Alternate Flow)
-    Given a user with username "test456" is not logged in
-    When the user accepts the book with title "book123" recommendation
-    Then an error message "user is not logged in" is generated
+Scenario: No preferences selected (Error Flow)
+    Given no preferences are selected
+    When the user updates the account reading preferences
+    Then an error message "must select at least 1 reading preference" is generated
