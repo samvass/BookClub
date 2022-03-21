@@ -83,7 +83,7 @@ const MyAccountPage = (props) => {
                 </div>
             </div>}
             {isChangePasswordOpen && <PasswordChangeModal onClosePasswordChange={closePasswordChanger} sessionID={props.sessionID} />}
-            {deleteAccountOpen && <ConfirmationModal confirmCallback={deleteAccountHanlder} setModalClose={() => setDeleteAccountOpen(false)} title="Delete Account" />}
+            {deleteAccountOpen && <ConfirmationModal confirmCallback={deleteAccountHanlder} setModalClose={() => setDeleteAccountOpen(false)} loggedInUser={props.loggedInUser} title="Delete Account" />}
             {redirect && <Navigate to="/setPreferences" />}
         </div>
     )
