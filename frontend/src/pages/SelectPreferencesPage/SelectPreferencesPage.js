@@ -1,15 +1,18 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import { Navigate } from 'react-router-dom';
 import { Alert } from 'react-bootstrap';
 import { getPreferencesByUsername, setPreferencesByUsername } from "../../api/userAPI"
+import UserContext from '../../user/UserContext';
+
 
 import "./SelectPreferencesPage.css"
 
 const SelectPreferencesPage = (props) => {
+    const { username } = useContext(UserContext);
+
 
     useEffect(async () => {
-        console.log(props.loggedInUser)
-        const userPreferences = await getPreferencesByUsername(props.loggedInUser)
+        const userPreferences = await getPreferencesByUsername(username)
         console.log(userPreferences)
         setSelectedGenres(userPreferences.data)
     }, [])
@@ -85,7 +88,7 @@ const SelectPreferencesPage = (props) => {
             preferences: selectedGenres
         }
 
-        const response = await setPreferencesByUsername(props.loggedInUser, body)
+        const response = await setPreferencesByUsername(username, body)
         console.log(response)
         setSuccessMsg("Success")
     }

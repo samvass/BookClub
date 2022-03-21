@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { logout } from "../api/userAPI";
 import { Navigate } from 'react-router-dom';
+import UserContext from '../user/UserContext';
+
 
 const LogoutPage = (props) => {
+    const { username, setUsername } = useContext(UserContext);
+
     const [logoutSuccess, setLogoutSuccess] = useState(false);
 
     useEffect(async () => {
-        if (props.loggedInUser != ""){
+        if (username != "") {
             console.log(props.sessionID)
             await logout({}, props.sessionID);
-            props.setUserLoggedIn("")
+            setUsername("")
             setLogoutSuccess(true);
         }
     }, [])

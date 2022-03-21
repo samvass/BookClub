@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { getBookByGenre, getBookByName } from '../../api/bookAPI';
 import { getPreferencesByUsername } from "../../api/userAPI"
 
 import "./HomePage.css"
 import ArrowUp from '../../components/ArrowUp/ArrowUp';
 import ArrowDown from "../../components/ArrowDown/ArrowDown"
+import UserContext from '../../user/UserContext';
 
 const HomePage = props => {
+    const { username } = useContext(UserContext);
 
     const [bookTitle, setBookTitle] = useState(null);
     const [bookDescription, setbookDescription] = useState(null);
@@ -22,8 +24,8 @@ const HomePage = props => {
 
     const displayBook = async () => {
         let shownGenre
-        if (props.loggedInUser !== "") {
-            const userGenres = await getPreferencesByUsername(props.loggedInUser)
+        if (username !== "") {
+            const userGenres = await getPreferencesByUsername(username)
             shownGenre = userGenres.data[Math.floor(Math.random() * userGenres.data.length)]
             console.log(shownGenre)
 
@@ -31,7 +33,7 @@ const HomePage = props => {
 
         let response;
         let book;
-        if (props.loggedInUser !== "") {
+        if (username !== "") {
             response = await getBookByGenre(shownGenre);
             book = response.data.book;
         } else {
@@ -66,7 +68,7 @@ const HomePage = props => {
     }
 
     return <div>
-        <ArrowUp title={bookTitle} description={bookDescription} author={bookAuthor} genre={bookGenres} thumbnail={bookThumbnail} loggedInUser={props.loggedInUser} setUserLoggedIn={props.setUserLoggedIn} setSessionID={props.setSessionID} sessionID={props.sessionID} displayBook={displayBook} />
+        <ArrowUp title={bookTitle} description={bookDescription} author={bookAuthor} genre={bookGenres} thumbnail={bookThumbnail} setSessionID={props.setSessionID} sessionID={props.sessionID} displayBook={displayBook} />
         {bookThumbnail &&
             <div id="imgcontainer">
                 <img className='book' onMouseEnter={hoverShowInfo} onMouseLeave={noHoverShowInfo} src={bookThumbnail}></img>

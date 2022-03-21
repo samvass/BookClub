@@ -1,9 +1,10 @@
 import { Navbar, Container, Nav } from "react-bootstrap";
 import { Link } from 'react-router-dom';
-
-import { logout } from '../api/userAPI';
+import { useContext } from "react";
+import UserContext from "../user/UserContext";
 
 const NavigationBar = (props) => {
+    const { username } = useContext(UserContext);
 
     return <>
         <Navbar bg="dark" variant="dark">
@@ -15,20 +16,20 @@ const NavigationBar = (props) => {
                     <Nav.Link as={Link} to="/" title="Home">
                         Home
                     </Nav.Link>
-                    {props.loggedInUser !== "" && <Nav.Link as={Link} to="/myLibrary" title="My Library">
+                    {username !== "" && <Nav.Link as={Link} to="/myLibrary" title="My Library">
                         My Library
                     </Nav.Link>}
-                    {props.loggedInUser !== "" && <Nav.Link as={Link} to="/myAccount" title="My Account">
+                    {username !== "" && <Nav.Link as={Link} to="/myAccount" title="My Account">
                         My Account
                     </Nav.Link>}
-                    {props.loggedInUser === "" && <Nav.Link as={Link} to="/signup" title="Create Account">
+                    {username === "" && <Nav.Link as={Link} to="/signup" title="Create Account">
                         Create Account
                     </Nav.Link>}
-                    {props.loggedInUser === "" &&
+                    {username === "" &&
                         <Nav.Link as={Link} to="/login" title="Login">
                             Login
                         </Nav.Link>}
-                    {props.loggedInUser !== "" &&
+                    {username !== "" &&
                         <Nav.Link as={Link} to="/logout" title="Logout" >
                             Logout
                         </Nav.Link>}

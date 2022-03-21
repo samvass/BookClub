@@ -2,12 +2,13 @@ import { FiArrowUpCircle } from 'react-icons/fi';
 import "./ArrowUp.css"
 
 import { acceptBook } from '../../api/bookAPI';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 
 import LoginModal from "../../pages/LoginModal/LoginModal"
+import UserContext from "../../user/UserContext"
 
 const ArrowUp = (props) => {
-
+    const { username } = useContext(UserContext)
     const [showLoginPopup, setShowLoginPopup] = useState(false);
 
     const closeLoginModalHandler = () => {
@@ -17,7 +18,7 @@ const ArrowUp = (props) => {
     const arrowUpHandler = async () => {
 
         // if no one is logged in
-        if (props.loggedInUser === "") {
+        if (username === "") {
             setShowLoginPopup(true);
             return;
         }
@@ -28,7 +29,7 @@ const ArrowUp = (props) => {
             description: props.description,
             author: props.author,
             genre: props.genre,
-            username: props.loggedInUser,
+            username: username,
             thumbnail: props.thumbnail
         };
 
@@ -40,7 +41,7 @@ const ArrowUp = (props) => {
         <div onClick={arrowUpHandler} className="arrow">
             <FiArrowUpCircle />
         </div>
-        {showLoginPopup && <LoginModal onCloseModal={closeLoginModalHandler} setUserLoggedIn={props.setUserLoggedIn} setSessionID={props.setSessionID} />}
+        {showLoginPopup && <LoginModal onCloseModal={closeLoginModalHandler} setSessionID={props.setSessionID} />}
     </div>)
 }
 
