@@ -1,21 +1,21 @@
-Feature: View Book Details
+# Feature: View Book Details
 
-As a BookClub user
-I would like to view the details of a book given the book ISBN number
-So that I can decide if I want to add it to my library
+# As a BookClub user
+# I would like to view the details of a book given the book ISBN number
+# So that I can decide if I want to add it to my library
 
-Scenario: Book details available (Normal Flow)
+# Scenario: Book details available (Normal Flow)
 
-Given the following book information is available in the BookClub system
-| title                          | author          | publisher      | published_date |
-| Software Engineering at Google | Titus Winters   | O'Reilly Media | 2020-02-28     |
-When a user requests the details of the book with title "Software Engineering at Google"
-Then the following book information is generated
-| title                          | author          | publisher      | published_date |
-| Software Engineering at Google | Titus Winters   | O'Reilly Media | 2020-02-28     |
+# Given the following book information is available in the BookClub system
+# | title                          | author          | publisher      | published_date |
+# | Software Engineering at Google | Titus Winters   | O'Reilly Media | 2020-02-28     |
+# When a user requests the details of the book with title "Software Engineering at Google"
+# Then the following book information is generated
+# | title                          | author          | publisher      | published_date |
+# | Software Engineering at Google | Titus Winters   | O'Reilly Media | 2020-02-28     |
 
-Scenario: Book details unavailable (Alternate Flow)
+# Scenario: Book details unavailable (Alternate Flow)
 
-Given the book with title "!:?$%^&*" is unavailable in the BookClub system
-When a user requests the details of the book with title "!:?$%^&*"
-Then the error message "Book not found" is generated
+# Given the book with title "!:?$%^&*" is unavailable in the BookClub system
+# When a user requests the details of the book with title "!:?$%^&*"
+# Then the error message "Book not found" is generated
