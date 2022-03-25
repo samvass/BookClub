@@ -20,7 +20,7 @@ const App = () => {
             <SessionProvider>
                 <UserProvider>
                     <Router>
-                        <NavigationBar />
+                        {/* <NavigationBar /> */}
                         <NavBar />
                         <div>
                             <Routes>
