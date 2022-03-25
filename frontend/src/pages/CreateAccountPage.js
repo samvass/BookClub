@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { Navigate } from 'react-router-dom';
 import { createAccount, login } from '../api/userAPI';
+import UserContext from '../user/UserContext';
 
-const CreateAccountPage = (props) => {
+const CreateAccountPage = () => {
+    const { setUsername } = useContext(UserContext)
 
     const [enteredUsername, setEnteredUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -32,7 +34,7 @@ const CreateAccountPage = (props) => {
         setPassword2(typedPassword2);
     }
 
-    const signup = async (event) => {
+    const signup = async (event, callback) => {
         event.preventDefault();
 
         if (password !== password2) {
@@ -47,7 +49,6 @@ const CreateAccountPage = (props) => {
             "email": email
         }
 
-        console.log(body)
 
         const response = await createAccount(body);
         console.log(response)
@@ -55,14 +56,21 @@ const CreateAccountPage = (props) => {
         if (response.message === "Account successfully created") {
             setErrorMsg(null)
 
+            console.log(body)
             const response1 = await login(body)
             console.log(response1)
 
-            setSuccessMsg(response.message);
+            setUsername(enteredUsername)
+
+            setTimeout(() => {
+                setSuccessMsg(response1.message);
+            }, 400)
+
         } else {
             setErrorMsg(response.error)
         }
     }
+
 
     let displayErrorMessages = []
 

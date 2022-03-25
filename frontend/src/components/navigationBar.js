@@ -22,9 +22,9 @@ const NavigationBar = (props) => {
                     {username !== "" && <Nav.Link as={Link} to="/myAccount" title="My Account">
                         My Account
                     </Nav.Link>}
-                    {username === "" && <Nav.Link as={Link} to="/signup" title="Create Account">
+                    {/* {username === "" && <Nav.Link as={Link} to="/signup" title="Create Account">
                         Create Account
-                    </Nav.Link>}
+                    </Nav.Link>} */}
                     {username === "" &&
                         <Nav.Link as={Link} to="/login" title="Login">
                             Login

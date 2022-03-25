@@ -1,16 +1,23 @@
 import { Form, Button, Alert } from 'react-bootstrap';
 import { useContext, useState } from 'react';
-import { login } from '../api/userAPI';
+import { login } from '../../api/userAPI';
 import { Navigate } from "react-router-dom"
-import UserContext from '../user/UserContext';
+import UserContext from '../../user/UserContext';
+import SessionContext from '../../session/SessionContext';
 
-const LoginPage = (props) => {
+import "./LoginPage.css"
+
+const LoginPage = () => {
     const { setUsername, username } = useContext(UserContext);
+    const { setSession } = useContext(SessionContext);
+
 
     const [enteredUsername, setEnteredUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
     const [successMsg, setSuccessMsg] = useState("");
+    const [redirectMsg, setRedirectMsg] = useState(false);
+
 
     const loginUser = async (event) => {
         event.preventDefault();
@@ -30,8 +37,9 @@ const LoginPage = (props) => {
         // if backend approves of the info
         if (response.message === "Login Successful") {
             setSuccessMsg(response.message)
-            props.setSessionID(response.sessionID);
+            setSession(response.sessionID);
 
+            console.log("seeting username to " + enteredUsername)
             setUsername(enteredUsername)
 
             // if backend sends an error
@@ -41,26 +49,35 @@ const LoginPage = (props) => {
 
     }
 
+    const redirectToCreateAccountPage = () => {
+        setRedirectMsg(true)
+    }
+
     return <div>
         <div style={{ "width": 600, "margin": "0 auto", "marginTop": 30 }}>
             {username !== "" ? <Navigate to="/" /> : <div><Form>
                 <Form.Group className="mb-3" controlId="formBasicUsername">
                     <Form.Label>Username</Form.Label>
-                    <Form.Control type="text" placeholder="Username" onChange={(event) => setEnteredUsername(event.target.value)} />
+                    <Form.Control type="text" onChange={(event) => setEnteredUsername(event.target.value)} />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Group className="last-input" controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" onChange={(event) => setPassword(event.target.value)} />
+                    <Form.Control type="password" onChange={(event) => setPassword(event.target.value)} />
                 </Form.Group>
 
-                <Button variant="primary" type="submit" onClick={loginUser}>
-                    Login
-                </Button>
+                <div className="under-input">
+                    <Button variant="primary" type="submit" onClick={loginUser}>
+                        Login
+                    </Button>
+                    <div className="create-account-link" onClick={redirectToCreateAccountPage}>Create an account</div>
+                </div>
+
             </Form>
                 <br />
                 {successMsg !== "" && <Alert variant="success" key={successMsg}>{successMsg}</Alert>}
                 {errorMsg !== "" && <Alert variant="danger" key={errorMsg}>{errorMsg}</Alert>}</div>}
+            {redirectMsg && <Navigate to="/signup" />}
         </div>
     </div>
 }

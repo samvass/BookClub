@@ -2,11 +2,15 @@ import { useContext, useState } from "react"
 import { Form, Button, Alert } from 'react-bootstrap';
 import { login } from '../../api/userAPI';
 import UserContext from "../../user/UserContext";
+import SessionContext from "../../session/SessionContext";
+
 
 
 import Modal from "../../components/modal/Modal"
 const LoginModal = (props) => {
     const { setUsername } = useContext(UserContext)
+    const { setSession } = useContext(SessionContext)
+
 
     const [enteredUsername, setEnteredUsername] = useState("");
     const [enteredPassword, setEnteredPassword] = useState("");
@@ -32,7 +36,7 @@ const LoginModal = (props) => {
         if (response.message === "Login Successful") {
             setSuccessMsg(response.message)
             setUsername(enteredUsername)
-            props.setSessionID(response.sessionID);
+            setSession(response.sessionID);
 
             setTimeout(() => {
                 props.onCloseModal();
@@ -48,7 +52,7 @@ const LoginModal = (props) => {
 
     return (<Modal onClosePasswordChange={props.onCloseModal}>
         <div style={{ "width": 600, "margin": "0 auto", "marginTop": 0 }}>
-
+            <h3>You must login to add a book to your library</h3>
             <Form.Group className="mb-3" controlId="formBasicUsername">
                 <Form.Label>Enter Username</Form.Label>
                 <Form.Control type="text" onChange={(event) => setEnteredUsername(event.target.value)} />
@@ -61,7 +65,6 @@ const LoginModal = (props) => {
             <br />
             {errorMsg !== "" && <Alert variant="danger" style={{ "marginTop": 20 }} key={errorMsg}>{errorMsg}</Alert>}
             {successMsg !== "" && <Alert variant="success" style={{ "marginTop": 20 }} key={successMsg}>{successMsg}</Alert>}
-
         </div>
     </Modal >)
 }

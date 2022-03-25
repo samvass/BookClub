@@ -7,11 +7,13 @@ import UserContext from '../../user/UserContext';
 
 import "./SelectPreferencesPage.css"
 
-const SelectPreferencesPage = (props) => {
+const SelectPreferencesPage = () => {
     const { username } = useContext(UserContext);
 
 
+
     useEffect(async () => {
+        console.log(username)
         const userPreferences = await getPreferencesByUsername(username)
         console.log(userPreferences)
         setSelectedGenres(userPreferences.data)

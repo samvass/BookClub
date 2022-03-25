@@ -62,9 +62,10 @@ exports.getBookRecommendation = (req, res, next) => {
   };
 
   // hardcode for now
-  const bookName = "Software";
+  // const bookName = "Software";
 
   books.search(bookName, options, function (error, results, apiResponse) {
+
     if (!error) {
       return res.status(200).send({
         data: {
@@ -100,12 +101,27 @@ exports.getBookRecommendationByGenre = (req, res, next) => {
   const bookGenre = req.params.genre;
 
   // generate random index between 0 and 39
-  const index = Math.floor(Math.random() * 40);
-  console.log("Index", index);
+  let index = Math.floor(Math.random() * 40);
+  // console.log("Index", index);
 
   books.search(bookGenre, options, function (error, results, apiResponse) {
+    let shownBook = results[index];
+    console.log(shownBook)
+
+    // if retrieved book doesnt have a description, get a new one
+    while (true) {
+      if (shownBook.description && shownBook.title) {
+        console.log("Good book")
+        break;
+      }
+
+      index = Math.floor(Math.random() * 40);
+      shownBook = results[index];
+    }
+
+
     if (!error) {
-      console.log(results.length);
+      // console.log(results.length);
       return res.status(200).send({
         data: {
           book: results[index],
@@ -203,5 +219,5 @@ exports.rejectBookRecommendation = async (req, res, next) => {
   // console.log("-------------------------------", user.myLibrary)
   return res.status(200).json({
     message: "book rejected",
-    });
+  });
 };

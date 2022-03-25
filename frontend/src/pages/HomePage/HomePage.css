@@ -6,73 +6,31 @@
     margin-left: auto;
 }
 
-/* .book:hover {
-    opacity: .5;
-   filter: alpha(opacity=50);
-   background-color: rgba(0, 0, 0, 0.5);
-} */
 
 #imgcontainer
 {
     width: 100%;
-    /* max-width: 200px; */
+    /* width: fit-content; */
     margin-right: auto;
     margin-left: auto;
-    opacity: 1;
-    /* background-color: Black; */
-    z-index: 10;
-    display: inline-block;
-    color: black
-}
-
-#imgcontainer img
-{
-      Z-index: 5;
-}
-
-
-.bookTitle {
     color: black;
-    font-size: 36px;
-    max-width: 450px;
-    position: absolute;
-    top: 28%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
+    /* background-color: green; */
 }
 
-
-.bio {
-    color: black;
-    background-color: white;
-    max-width: 450px;
+.center-top {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 25%;
+    width: 100%;
+    text-align: center;
+    font-size: 28px;
+    background-color: whitesmoke;
 }
 
-.reviewTitle {
-    color: black;
-    background-color: white;
-    text-decoration: underline;
-    font-family: Fjalla One;
-    font-size: 36px;
-    max-width: 450px;
+.center-bottom {
     position: absolute;
-    top: 75%;
-    left: 40.5%;
-    transform: translate(-50%, -50%);
-}
-
-.review {
-    color: black;
-    background-color: white;
-    font-family: Fjalla One;
-    max-width: 440px;
-    position: absolute;
-    top: 81%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 32%;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    background-color: whitesmoke;
 }

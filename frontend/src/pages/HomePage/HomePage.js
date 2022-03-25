@@ -68,14 +68,12 @@ const HomePage = props => {
     }
 
     return <div>
-        <ArrowUp title={bookTitle} description={bookDescription} author={bookAuthor} genre={bookGenres} thumbnail={bookThumbnail} setSessionID={props.setSessionID} sessionID={props.sessionID} displayBook={displayBook} />
+        <ArrowUp title={bookTitle} description={bookDescription} author={bookAuthor} genre={bookGenres} thumbnail={bookThumbnail} displayBook={displayBook} />
         {bookThumbnail &&
             <div id="imgcontainer">
                 <img className='book' onMouseEnter={hoverShowInfo} onMouseLeave={noHoverShowInfo} src={bookThumbnail}></img>
-                {showInfo && <div onMouseEnter={hoverShowInfo} className="bookTitle">{bookTitle}</div>}
-                {showInfo && <div onMouseEnter={hoverShowInfo} className="bio">{bookDescription}</div>}
-                {/* {showInfo && <div className="reviewTitle">Top Review</div>} */}
-                {/* {showInfo && <div className="review">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto voluptate minus deserunt voluptatum deleniti maiores repellendus, aut quis iusto distinctio ea quasi dolore</div>} */}
+                {showInfo && <div onMouseEnter={hoverShowInfo} className="center-top">{bookTitle}</div>}
+                {showInfo && <div onMouseEnter={hoverShowInfo} className="center-bottom">{bookDescription}</div>}
             </div>}
         <ArrowDown displayBook={displayBook} />
     </div>

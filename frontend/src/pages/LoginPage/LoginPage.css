@@ -1,0 +1,19 @@
+.under-input {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+
+}
+
+.create-account-link {
+    margin-top: 5px;
+    margin-bottom: 0;
+    background-color: #007bff;
+    color: white;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.create-account-link:hover {
+    cursor: pointer;
+}
