@@ -35,7 +35,7 @@ const MyLibraryPage = props => {
     const displayUserBooks = (i) => userBooks.map((book, index) => {
 
         if (index >= i && index < i + 5) {
-            return (<div>
+            return (<div key={index}>
                 <img className="book-picture" onClick={async () => {
                     const body = {
                         username: username,

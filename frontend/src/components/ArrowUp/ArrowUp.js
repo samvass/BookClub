@@ -27,7 +27,6 @@ const ArrowUp = (props) => {
             return;
         }
 
-
         const body = {
             title: props.title,
             description: props.description,
