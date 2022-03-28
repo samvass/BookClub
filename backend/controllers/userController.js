@@ -427,14 +427,13 @@ exports.getMyReadBooks = async (req, res, next) => {
             error: "user does not exist"
         });
     }
-    // console.log(user)
 
     const myReadBooks = user.readBook;
-    // console.log(myReadBooks)
 
     // take each Obj ID and find the corresponding book in the Books collection
     const updatedReadBooksPromises = myReadBooks.map(async bookID => await Book.findById(bookID));
     const updatedReadBooks = await Promise.all(updatedReadBooksPromises);
+    // console.log(updatedReadBooks)
 
     setTimeout(() => {
         return res.status(200).json({
@@ -449,52 +448,51 @@ exports.getMyReadBooks = async (req, res, next) => {
 exports.markBookAsRead = async (req, res, next) => {
     // since they do not wish to add the book to their library we will not store it in the db
     // we should implement a way to generate the next book from here ...
-  
+
     // get book information from request body
     const username = req.params.username;
     const title = req.body.title;
 
     const user = await User.findOne({ username: username });
-    // console.log("--------------------------------")
-    // console.log(user)
-    console.log("--------------------------------")
-    console.log(title)
-    console.log("--------------------------------")
+
     if (!user) {
-      // return error
-      return res.status(200).json({
-        message: "no user found",
-      });
+        // return error
+        return res.status(200).json({
+            message: "no user found",
+        });
     }
-  
+
     let book = await Book.findOne({ title: title });
     if (!book) {
         return res.status(200).json({
             message: "no book found",
-          });
-      }
-    console.log("--------------------------------")
-    console.log(book)
-    console.log("--------------------------------")
-  
+        });
+    }
+
+    if (user.readBook.includes(book._id)){
+        return res.status(200).json({
+            message: "book was already added as read",
+        });
+    }
+
     // store the bookID in the users library
     const bookID = book._id;
-  
+
     // get current user read book
     const rBook = user.readBook;
-  
+
     // add the new book to it
     rBook.push(bookID);
-  
+
     // update the read list in db
     await User.updateOne(
-      { username: username },
-      { $set: { readBook: rBook } }
+        { username: username },
+        { $set: { readBook: rBook } }
     );
-  
+
     return res.status(200).json({
-      book: book,
-      message: "book was added to the read list",
+        book: book,
+        message: "book was added to the read list",
     });
-  };
+};
 

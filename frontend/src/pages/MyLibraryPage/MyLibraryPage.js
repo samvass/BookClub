@@ -22,6 +22,7 @@ const MyLibraryPage = props => {
     const [readBooks, setReadBooks] = useState([])
     const [selectedGenre, setSelectedGenre] = useState("all")
     const [redirect, setRedirect] = useState(false)
+    const [show, setShow] = useState(false)
     
 
     useEffect(async () => {
@@ -61,6 +62,10 @@ const MyLibraryPage = props => {
         const response = await markBookAsRead(username, body);
     }
 
+    const markAsUnread = async (rtitle) => {
+        
+    }
+
 
     const displayUserBooks = (i) => selectedBooks.map((book, index) => {
 
@@ -83,7 +88,10 @@ const MyLibraryPage = props => {
                     }, 100)
 
                 }} src={book.thumbnail} alt={book.title} key={index}></img>
-                <div><button className="readButton" onClick={async () => markAsRead(book.title)}>Read</button></div>
+                <div>
+                    <button className="readButton" onClick={async () => markAsRead(book.title)}>Read</button>
+                    <button className="unreadButton" onClick={async () => markAsUnread(book.title)}>Unread</button>
+                </div>
             </div>
             )
         }
