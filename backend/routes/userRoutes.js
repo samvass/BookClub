@@ -28,9 +28,6 @@ router.put('/update', auth.isLoggedIn, userController.changePassword);
 // delete account
 router.delete('/delete', auth.isLoggedIn, userController.deleteAccount);
 
-// view user
-router.get('/view/:username', auth.isLoggedIn, userController.viewAccountDetails);
-
 // get user library
 router.get('/get/myLibrary/:username', userController.viewMyLibrary);
 

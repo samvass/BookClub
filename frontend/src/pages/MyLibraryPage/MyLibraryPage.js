@@ -5,131 +5,94 @@ import Aos from 'aos'
 import 'aos/dist/aos.css'
 
 import { getBookByName } from "../../api/bookAPI"
-import { getMyLibraryByUsername, setMyLibraryByUsername } from "../../api/userAPI"
-import { Button, Modal, Form } from 'react-bootstrap';
-import { BsFillPencilFill, BsFillStarFill, BsFillFilterCircleFill } from 'react-icons/bs';
+import { getMyLibraryByUsername, setMyLibraryByUsername, getPreferencesByUsername } from "../../api/userAPI"
 
 import { Navigate } from "react-router-dom"
 import UserContext from "../../user/UserContext"
+import SessionContext from "../../session/SessionContext"
 
 
 const MyLibraryPage = props => {
     const { username } = useContext(UserContext);
+    const { session } = useContext(SessionContext);
 
-    const [userBooks, setUserBooks] = useState([]);
-    const [showBookOptions, setShowBookOptions] = useState(false);
-    const [redirect, setRedirect] = useState(false);
-    const [show, setShow] = useState(false);
-    const [preferenceFilter, setpreferenceFilter] = useState("");
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
-    const handleBookOptions = () => {
-        if (showBookOptions) {
-            setShowBookOptions(false);
-        }
-
-        else {
-            setShowBookOptions(true);
-        }
-    }
+    const [userBooks, setUserBooks] = useState([])
+    const [userGenres, setUserGenres] = useState([])
+    const [selectedBooks, setSelectedBooks] = useState([])
+    const [selectedGenre, setSelectedGenre] = useState("all")
+    const [redirect, setRedirect] = useState(false)
 
     useEffect(async () => {
         if (username === "") {
             setRedirect(true)
         }
 
-        const usersBooks = await getMyLibraryByUsername(username)
-        console.log(usersBooks)
-        setUserBooks(usersBooks.myLibrary)
+        // get user preferences
+        const res = await getPreferencesByUsername(username, session);
+        const userGenres = res.data;
+        userGenres.unshift("all");
+        setUserGenres(userGenres);
+
+        const books = await getMyLibraryByUsername(username)
+        setUserBooks(books.myLibrary)
+        setSelectedBooks(books.myLibrary)
     }, [])
 
     useEffect(() => {
         Aos.init({ duration: 1000 })
     });
 
+    const updateFilter = (event) => {
+        const newSelectedGenre = event.target.value;
+        setSelectedGenre(newSelectedGenre);
+        const filteredBooks = userBooks.filter(book => newSelectedGenre=="all" ? true : book.genre[0].toLowerCase().replace(/\s/g, '').includes(newSelectedGenre.toLowerCase().replace(/\s/g, '')))
+        setSelectedBooks(filteredBooks);
+    }
 
-    const displayUserBooks = (i) => userBooks.map((book, index) => {
+
+    const displayUserBooks = (i) => selectedBooks.map((book, index) => {
 
         if (index >= i && index < i + 5) {
-            return (<div>
-            <img className="book-picture" src={book.thumbnail} alt={book.title} key={index}></img>
-            {showBookOptions && 
-            <div>
-                <Button variant="success" onClick={handleShow}>Leave a Review!</Button>
-                <Button variant="danger" onClick={async () => {
+            return (<div key={index}>
+                <img className="book-picture" onClick={async () => {
                     const body = {
-                        username: props.loggedInUser,
+                        username: username,
                         removedBook: book
                     };
-                    
-                    const response = await setMyLibraryByUsername(props.loggedInUser, body)
-                    
+
+                    const response = await setMyLibraryByUsername(username, body)
+
                     setTimeout(async () => {
-                        const returnedMyLibrary = await getMyLibraryByUsername(props.loggedInUser)
+                        const returnedMyLibrary = await getMyLibraryByUsername(username)
                         console.log(returnedMyLibrary.myLibrary)
                         setUserBooks(returnedMyLibrary.myLibrary)
-                    }, 100)}}>X</Button>
-            </div>}
-        </div>)
+                        setSelectedBooks(returnedMyLibrary.myLibrary.filter(book => selectedGenre=="all" ? true : book.genre[0].toLowerCase().replace(/\s/g, '').includes(selectedGenre.toLowerCase().replace(/\s/g, ''))))
+                    }, 100)
+
+                }} src={book.thumbnail} alt={book.title} key={index}></img>
+            </div>)
         }
     })
 
-
     return (<div className="myLibrary">
-        <div className='edit-button'>
-            <Button onClick={handleBookOptions} variant="primary">
-                <BsFillPencilFill />
-            </Button>
-            <Button className='filter-button' variant="dark">
-                <BsFillFilterCircleFill />
-            </Button>
-            <Form.Group className="mb-3" controlId="formBasicUsername">
-                <Form.Label>Username</Form.Label>
-                <Form.Control type="text" placeholder="Username" onChange={(event) => setEnteredUsername(event.target.value)} />
-            </Form.Group>
-        </div>
+        <h1 className="myLibraryTitle">My Library</h1>
+
+        {/* TODO: style this */}
         <div>
-            <h1 className="myLibraryTitle">My Library</h1>
+            <select className="dropDown" value={selectedGenre} onChange={updateFilter}>
+                {userGenres.map(genre => <option key={genre} value={genre}>{genre}</option>)}
+            </select>
         </div>
-        {userBooks.map((row, index) => {
+
+        {selectedBooks.map((row, index) => {
             // create a new bookshelf every row
             if (index % 5 == 0) {
-                return (<div data-aos='slide-up'>
+                return (<div data-aos='slide-up' key={index}>
                     <div className="displayed-books">{displayUserBooks(index)}</div>
                     <img src={woodshelf} className="shelf" alt="Wood Shelf"></img>
                 </div>)
             }
         })}
-
-        <Modal show={show} onHide={handleClose}
-        {...props}
-        size="lg"
-        dialogClassName="modal-100w"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered>
-        <Modal.Header closeButton>
-          <Modal.Title>My Review</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-            <Form>
-                <BsFillStarFill/>
-                <BsFillStarFill/>
-                <BsFillStarFill/>
-                <BsFillStarFill/>
-                <BsFillStarFill/>
-            </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </div>)
 }
 

@@ -133,7 +133,7 @@ exports.createAccount = async (req, res, next) => {
 exports.changePassword = async (req, res, next) => {
     var error = [];
 
-    const {oldPassword, newPassword, newPassword2, username} = req.body;
+    const { oldPassword, newPassword, newPassword2, username } = req.body;
 
     // check username or email doesn't already exist
     const user = await User.findOne({ username: username });
@@ -268,31 +268,6 @@ exports.logout = async (req, res, next) => {
     }
 };
 
-exports.viewAccountDetails = async (req, res, next) => {
-    // get the username parameter from the get request
-    const username = req.params.username;
-    // search the db for the session
-    const result = await mongoose.connection.collection('sessions').findOne({ 'session.user.username': username });
-
-    if (result != null) {
-        User.findOne({ username: username }).then(user => {
-            // return the user
-            res.json({ user: user, sessionID: result._id });
-        })
-            .catch(err => {
-                // log any possible errors after connecting to mongo
-                console.log(err);
-            });
-    }
-    else {
-        return res.status(401).json({
-            data: {},
-            message: {},
-            error: "user is not logged in"
-        });
-    }
-};
-
 exports.viewMyLibrary = async (req, res, next) => {
 
     const username = req.params.username;
@@ -413,7 +388,7 @@ exports.setPreferences = async (req, res, next) => {
 };
 
 exports.deleteAccount = async (req, res, next) => {
-    const {username, sessionID} = req.body;
+    const { username, sessionID } = req.body;
 
     const user = await User.findOne({ username: username });
 

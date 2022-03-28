@@ -6,9 +6,13 @@ import { useState, useContext } from 'react';
 
 import LoginModal from "../../pages/LoginModal/LoginModal"
 import UserContext from "../../user/UserContext"
+import SessionContext from "../../session/SessionContext"
+
 
 const ArrowUp = (props) => {
     const { username } = useContext(UserContext)
+    const { session } = useContext(SessionContext)
+
     const [showLoginPopup, setShowLoginPopup] = useState(false);
 
     const closeLoginModalHandler = () => {
@@ -23,7 +27,6 @@ const ArrowUp = (props) => {
             return;
         }
 
-
         const body = {
             title: props.title,
             description: props.description,
@@ -33,7 +36,7 @@ const ArrowUp = (props) => {
             thumbnail: props.thumbnail
         };
 
-        const response = await acceptBook(body, props.sessionID);
+        const response = await acceptBook(body, session);
         props.displayBook();
     }
 
@@ -41,7 +44,7 @@ const ArrowUp = (props) => {
         <div onClick={arrowUpHandler} className="arrow">
             <FiArrowUpCircle />
         </div>
-        {showLoginPopup && <LoginModal onCloseModal={closeLoginModalHandler} setSessionID={props.setSessionID} />}
+        {showLoginPopup && <LoginModal onCloseModal={closeLoginModalHandler} />}
     </div>)
 }
 

@@ -16,7 +16,7 @@ const apiGet = async (endpoint, sessionID) => {
     }
 }
 
-const apiPost = async (endpoint, body, sessionID, method='POST') => {
+const apiPost = async (endpoint, body, sessionID, method = 'POST') => {
     try {
         let res = await fetch(endpoint, {
             method: method,
@@ -57,11 +57,6 @@ export const login = async (body) => {
 export const logout = async (body, sessionID) => {
     let endpoint = apiURL + "/users/logout";
     return await apiPost(endpoint, body, sessionID);
-}
-
-export const viewAccountByUserName = async (username, sessionID) => {
-    let endpoint = apiURL + "/users/view/" + username;
-    return await apiGet(endpoint, sessionID);
 }
 
 export const getPreferencesByUsername = async (username, sessionID) => {

@@ -3,13 +3,14 @@ import { useEffect, useState, useContext } from "react"
 import { Navigate } from "react-router-dom"
 import PasswordChangeModal from "../PasswordChangeModal/PasswordChangeModal"
 import ConfirmationModal from "../../components/modal/ConfirmationModal"
-import { getPreferencesByUsername, viewAccountByUserName } from "../../api/userAPI"
-import { deleteAccount } from "../../api/userAPI";
+import { getPreferencesByUsername, getUserByUserName, deleteAccount } from "../../api/userAPI"
 import UserContext from '../../user/UserContext';
+import SessionContext from "../../session/SessionContext"
 
 
-const MyAccountPage = (props) => {
+const MyAccountPage = () => {
     const { username, setUsername } = useContext(UserContext);
+    const { session, setSession } = useContext(SessionContext)
 
     const [email, setEmail] = useState("");
     const [selectedGenres, setSelectedGenres] = useState([])
@@ -20,8 +21,11 @@ const MyAccountPage = (props) => {
 
     useEffect(async () => {
         if (username !== "") {
-            const incomingUserData = await viewAccountByUserName(username, props.sessionID);
+            console.log(username)
+            console.log(session)
+            const incomingUserData = await getUserByUserName(username);
 
+            console.log(incomingUserData)
             setEmail(incomingUserData.user.email)
 
             const incomingPreferences = await getPreferencesByUsername(username)
@@ -43,9 +47,9 @@ const MyAccountPage = (props) => {
     })
 
     const deleteAccountHanlder = async () => {
-        await deleteAccount({}, props.sessionID);
+        await deleteAccount({}, session);
         setUsername("");
-        props.setSessionID("");
+        setSession("");
         return <Navigate to="/signup" />
     }
 
@@ -64,10 +68,6 @@ const MyAccountPage = (props) => {
                     <div className="selected-items">
                         {displaySelectedGenres}
                     </div>
-                    {/* <h1>Authors</h1>
-                    <div className="selected-items">
-                        {selectedAuthors}
-                    </div> */}
                 </div>
                 <div className="account-info">
                     <h1>Account Info</h1>
@@ -83,7 +83,7 @@ const MyAccountPage = (props) => {
                     <button className="password-button" onClick={() => setDeleteAccountOpen(true)}>Delete Account</button>
                 </div>
             </div>}
-            {isChangePasswordOpen && <PasswordChangeModal onClosePasswordChange={closePasswordChanger} sessionID={props.sessionID} />}
+            {isChangePasswordOpen && <PasswordChangeModal onClosePasswordChange={closePasswordChanger} />}
             {deleteAccountOpen && <ConfirmationModal confirmCallback={deleteAccountHanlder} setModalClose={() => setDeleteAccountOpen(false)} title="Delete Account" />}
             {redirect && <Navigate to="/setPreferences" />}
         </div>

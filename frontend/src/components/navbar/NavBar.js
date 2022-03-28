@@ -1,20 +1,18 @@
 import bookWorm from "../../images/bookworm.png"
 import "./NavBar.css"
 
-import { AiOutlineHome } from 'react-icons/ai';
-import { MdOutlineCreate } from 'react-icons/md';
-import { CgLogIn, CgLogOut } from 'react-icons/cg';
-import { FiSettings } from 'react-icons/fi';
-import { ImBooks } from 'react-icons/im';
-
+import SpeedDialDown from "../SpeedDialDown/SpeedDialDown"
 
 const NavBar = () => {
 
     return (
         <div className="header">
-            <h1>BookClub</h1>
-            <img src={bookWorm} alt="Book Worm"></img>
-        </div>)
+            <div className="logo-info">
+                <h1>BookClub</h1>
+                <img src={bookWorm} alt="Book Worm"></img>
+            </div>
+            <SpeedDialDown />
+        </div >)
 }
 
 export default NavBar

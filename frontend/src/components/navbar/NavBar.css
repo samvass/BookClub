@@ -1,23 +1,26 @@
-.navibar {
-    display: flex;
-    flex-direction: row;
-}
-
 .header {
     display: flex;
+    flex-direction: column;
     margin-left: 15px;
-    align-items: center;
 }
+
+.logo-info {
+    display: flex;
+}
+
 
 .header h1 {
     margin-left: 15px;
     color: #050C4E;
     font-size: 72px;    
     font-family: 'Lobster', cursive;
+    /* margin-top: 10px; */
 }
 
 .header img {
     margin-left: 15px;
     max-width: 82px;
     max-height: 70px;
+    /* margin-top: 15px; */
+
 }

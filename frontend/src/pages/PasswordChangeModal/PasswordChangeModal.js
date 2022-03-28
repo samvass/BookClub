@@ -1,9 +1,11 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { Form, Button, Alert } from 'react-bootstrap';
 import { changePassword } from "../../api/userAPI";
+import SessionContext from "../../session/SessionContext";
 
 import Modal from "../../components/modal/Modal"
 const PasswordChangeModal = (props) => {
+    const { session, setSession } = useContext(SessionContext)
 
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
@@ -18,7 +20,7 @@ const PasswordChangeModal = (props) => {
             newPassword2: newPassword2
         }
 
-        const res = await changePassword(body, props.sessionID);
+        const res = await changePassword(body, session);
         if (res.error.length !== 0) {
             setErrors(res.error);
             return;
@@ -29,6 +31,7 @@ const PasswordChangeModal = (props) => {
 
     return (<Modal onClosePasswordChange={props.onClosePasswordChange}>
         <div style={{ "width": 600, "margin": "0 auto", "marginTop": 0 }}>
+            <h2>Change Password</h2>
             <Form.Group className="mb-3" controlId="formBasicUsername">
                 <Form.Label>Enter old password</Form.Label>
                 <Form.Control type="password" onChange={(event) => setOldPassword(event.target.value)} />
