@@ -39,3 +39,13 @@
 .dropDown {
     margin-left: 700px;
 }
+
+.readButton {
+    background-color: green;
+    color:  black;
+}
+
+.unreadButton {
+    background-color: red;
+    color:  black;
+}

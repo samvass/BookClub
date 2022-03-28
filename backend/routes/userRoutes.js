@@ -40,6 +40,12 @@ router.get('/get/preferences/:username', userController.getPreferences);
 // set user preferences
 router.post("/set/preferences/:username", userController.setPreferences)
 
+// get user read books
+router.get('/get/myReadBook/:username', userController.getMyReadBooks);
+
+// set user read books
+router.post('/set/myReadBook/:username', userController.markBookAsRead);
+
 module.exports = router;
 
 

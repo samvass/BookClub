@@ -6,7 +6,7 @@ import 'aos/dist/aos.css'
 import { Button, Modal, Form } from 'react-bootstrap';
 import { BsFillPencilFill, BsFillStarFill } from 'react-icons/bs';
 import { getBookByName } from "../../api/bookAPI"
-import { getMyLibraryByUsername, setMyLibraryByUsername, getPreferencesByUsername } from "../../api/userAPI"
+import { getMyLibraryByUsername, setMyLibraryByUsername, getPreferencesByUsername, markBookAsRead, getMyReadBookByUsername } from "../../api/userAPI"
 
 import { Navigate } from "react-router-dom"
 import UserContext from "../../user/UserContext"
@@ -20,6 +20,7 @@ const MyLibraryPage = props => {
     const [userBooks, setUserBooks] = useState([])
     const [userGenres, setUserGenres] = useState([])
     const [selectedBooks, setSelectedBooks] = useState([])
+    const [readBooks, setReadBooks] = useState([])
     const [selectedGenre, setSelectedGenre] = useState("all")
     const [redirect, setRedirect] = useState(false)
     const [showRemoveBook, setShowRemoveBook] = useState(false);
@@ -38,6 +39,9 @@ const MyLibraryPage = props => {
         const books = await getMyLibraryByUsername(username)
         setUserBooks(books.myLibrary)
         setSelectedBooks(books.myLibrary)
+
+        const rbooks = await getMyReadBookByUsername(username)
+        setReadBooks(rbooks.myList)
     }, [])
 
     useEffect(() => {
@@ -47,8 +51,19 @@ const MyLibraryPage = props => {
     const updateFilter = (event) => {
         const newSelectedGenre = event.target.value;
         setSelectedGenre(newSelectedGenre);
-        const filteredBooks = userBooks.filter(book => newSelectedGenre=="all" ? true : book.genre[0].toLowerCase().replace(/\s/g, '').includes(newSelectedGenre.toLowerCase().replace(/\s/g, '')))
+        const filteredBooks = userBooks.filter(book => newSelectedGenre == "all" ? true : book.genre[0].toLowerCase().replace(/\s/g, '').includes(newSelectedGenre.toLowerCase().replace(/\s/g, '')))
         setSelectedBooks(filteredBooks);
+    }
+
+    const markAsRead = async (rtitle) => {
+        const body = {
+            title: rtitle,
+        };
+        const response = await markBookAsRead(username, body);
+    }
+
+    const markAsUnread = async (rtitle) => {
+
     }
 
 
@@ -57,12 +72,16 @@ const MyLibraryPage = props => {
         if (index >= i && index < i + 5) {
             return (<div key={index}>
                 {/*{showRemoveBook && <h1>Remove</h1>}*/}
-                <img className="book-picture" onMouseLeave={()=>{
+                <img className="book-picture" onMouseLeave={() => {
                     setShowRemoveBook(false);
                 }} onMouseEnter={() => {
                     setShowRemoveBook(true);
                 }} src={book.thumbnail} alt={book.title} key={index}>
                 </img>
+                <div>
+                    <button className="readButton" onClick={async () => markAsRead(book.title)}>Read</button>
+                    <button className="unreadButton" onClick={async () => markAsUnread(book.title)}>Unread</button>
+                </div>
             </div>)
         }
     })
@@ -93,6 +112,7 @@ const MyLibraryPage = props => {
                 {userGenres.map(genre => <option key={genre} value={genre}>{genre}</option>)}
             </select>
         </div>
+
 
         {selectedBooks.map((row, index) => {
             // create a new bookshelf every row

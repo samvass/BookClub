@@ -88,3 +88,13 @@ export const deleteAccount = async (body, sessionID) => {
     let endpoint = apiURL + "/users/delete";
     return await apiPost(endpoint, body, sessionID, 'DELETE');
 }
+
+export const getMyReadBookByUsername = async (username, sessionID) => {
+    let endpoint = apiURL + "/users/get/myReadBook/" + username;
+    return await apiGet(endpoint, sessionID);
+}
+
+export const markBookAsRead = async (username, body) => {
+    let endpoint = apiURL + "/users/set/myReadBook/" + username;
+    return await apiPost(endpoint, body);
+}
