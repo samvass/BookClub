@@ -4,6 +4,10 @@
     justify-content: center;
 }
 
+.arrow-icon:hover {
+    background-color: green;
+}
+
 .arrow:hover {
     cursor: pointer;
 }

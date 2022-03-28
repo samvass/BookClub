@@ -20,7 +20,6 @@ const App = () => {
             <SessionProvider>
                 <UserProvider>
                     <Router>
-                        {/* <NavigationBar /> */}
                         <NavBar />
                         <div>
                             <Routes>
