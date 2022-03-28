@@ -49,6 +49,10 @@ const MyLibraryPage = props => {
         setSelectedBooks(filteredBooks);
     }
 
+    const markAsRead = async () => {
+
+    }
+
 
     const displayUserBooks = (i) => selectedBooks.map((book, index) => {
 
@@ -59,6 +63,7 @@ const MyLibraryPage = props => {
                         username: username,
                         removedBook: book
                     };
+                    
 
                     const response = await setMyLibraryByUsername(username, body)
 
@@ -70,7 +75,10 @@ const MyLibraryPage = props => {
                     }, 100)
 
                 }} src={book.thumbnail} alt={book.title} key={index}></img>
-            </div>)
+                <div><label><input type="checkbox" id="myCheck" onclick={markAsRead}></input>    Read</label></div>
+                
+            </div>
+            )
         }
     })
 
@@ -83,12 +91,14 @@ const MyLibraryPage = props => {
                 {userGenres.map(genre => <option key={genre} value={genre}>{genre}</option>)}
             </select>
         </div>
+        
 
         {selectedBooks.map((row, index) => {
             // create a new bookshelf every row
             if (index % 5 == 0) {
                 return (<div data-aos='slide-up' key={index}>
                     <div className="displayed-books">{displayUserBooks(index)}</div>
+                    {/* <div><input type="checkbox" id="myCheck" onclick="myFunction()"></input></div> */}
                     <img src={woodshelf} className="shelf" alt="Wood Shelf"></img>
                 </div>)
             }
