@@ -2,16 +2,18 @@ import { FiArrowDownCircle } from 'react-icons/fi';
 import "./ArrowDown.css"
 
 import { rejectBook } from '../../api/bookAPI';
+import UserContext from "../../user/UserContext"
 
 const ArrowDown = props => {
-    
+    const { username } = useContext(UserContext)
+
     const arrowDownHandler = async () => {
         const body = {
             title: props.title,
             description: props.description,
             author: props.author,
             genre: props.genre,
-            username: props.loggedInUser,
+            username: username,
             thumbnail: props.thumbnail
         };
 

@@ -1,10 +1,12 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Form, Button, Alert } from 'react-bootstrap';
 import { login } from '../../api/userAPI';
+import UserContext from "../../user/UserContext";
 
 
 import Modal from "../../components/modal/Modal"
 const LoginModal = (props) => {
+    const { setUsername } = useContext(UserContext)
 
     const [enteredUsername, setEnteredUsername] = useState("");
     const [enteredPassword, setEnteredPassword] = useState("");
@@ -29,7 +31,7 @@ const LoginModal = (props) => {
         // if backend approves of the info
         if (response.message === "Login Successful") {
             setSuccessMsg(response.message)
-            props.setUserLoggedIn(enteredUsername)
+            setUsername(enteredUsername)
             props.setSessionID(response.sessionID);
 
             setTimeout(() => {

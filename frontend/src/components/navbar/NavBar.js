@@ -8,22 +8,13 @@ import { FiSettings } from 'react-icons/fi';
 import { ImBooks } from 'react-icons/im';
 
 
-const NavBar = (props) => {
+const NavBar = () => {
 
-    return (<div className="navibar">
-        {/* <PopOut loggedInUser={props.loggedInUser} >
-            <NavItem icon={<AiOutlineHome />} label="Home" />
-            <NavItem icon={<FiSettings />} label="Account Settings" />
-            <NavItem icon={<ImBooks />} label="My Library" />
-            <NavItem icon={<MdOutlineCreate />} label="Create Account" />
-            <NavItem icon={<CgLogIn />} label="Login" />
-            <NavItem icon={<CgLogOut />} label="Logout" />
-        </PopOut> */}
+    return (
         <div className="header">
             <h1>BookClub</h1>
             <img src={bookWorm} alt="Book Worm"></img>
-        </div>
-    </div>)
+        </div>)
 }
 
 export default NavBar

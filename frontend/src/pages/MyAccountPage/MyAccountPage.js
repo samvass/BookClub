@@ -1,14 +1,16 @@
 import "./MyAccountPage.scss"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import { Navigate } from "react-router-dom"
 import PasswordChangeModal from "../PasswordChangeModal/PasswordChangeModal"
 import ConfirmationModal from "../../components/modal/ConfirmationModal"
 import { getPreferencesByUsername, viewAccountByUserName } from "../../api/userAPI"
 import { deleteAccount } from "../../api/userAPI";
+import UserContext from '../../user/UserContext';
+
 
 const MyAccountPage = (props) => {
+    const { username, setUsername } = useContext(UserContext);
 
-    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [selectedGenres, setSelectedGenres] = useState([])
     const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
@@ -17,13 +19,12 @@ const MyAccountPage = (props) => {
 
 
     useEffect(async () => {
-        if (props.loggedInUser.username !== "") {
-            const incomingUserData = await viewAccountByUserName(props.loggedInUser, props.sessionID);
+        if (username !== "") {
+            const incomingUserData = await viewAccountByUserName(username, props.sessionID);
 
-            setUsername(incomingUserData.user.username)
             setEmail(incomingUserData.user.email)
 
-            const incomingPreferences = await getPreferencesByUsername(props.loggedInUser)
+            const incomingPreferences = await getPreferencesByUsername(username)
             setSelectedGenres(incomingPreferences.data)
         }
     }, [])
@@ -43,7 +44,7 @@ const MyAccountPage = (props) => {
 
     const deleteAccountHanlder = async () => {
         await deleteAccount({}, props.sessionID);
-        props.setUsername("");
+        setUsername("");
         props.setSessionID("");
         return <Navigate to="/signup" />
     }
@@ -54,7 +55,7 @@ const MyAccountPage = (props) => {
 
     return (
         <div className="text">
-            {props.loggedInUser === "" ? <Navigate to="/login" /> : <div className="page">
+            {username === "" ? <Navigate to="/login" /> : <div className="page">
                 <div className="preferences">
                     <div className="display-properly">
                         <h1>Genres</h1>

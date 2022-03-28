@@ -1,55 +1,58 @@
 import woodshelf from "../../images/woodshelf.png"
 import "./MyLibraryPage.css"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import Aos from 'aos'
 import 'aos/dist/aos.css'
 
 import { getBookByName } from "../../api/bookAPI"
 import { getMyLibraryByUsername, setMyLibraryByUsername } from "../../api/userAPI"
 import { Button, Modal, Form } from 'react-bootstrap';
-import { BsFillPencilFill, BsFillStarFill } from 'react-icons/bs';
+import { BsFillPencilFill, BsFillStarFill, BsFillFilterCircleFill } from 'react-icons/bs';
 
 import { Navigate } from "react-router-dom"
+import UserContext from "../../user/UserContext"
 
 
 const MyLibraryPage = props => {
+    const { username } = useContext(UserContext);
 
     const [userBooks, setUserBooks] = useState([]);
     const [showBookOptions, setShowBookOptions] = useState(false);
     const [redirect, setRedirect] = useState(false);
     const [show, setShow] = useState(false);
-    const [stars, setStars] = useState(0);
+    const [preferenceFilter, setpreferenceFilter] = useState("");
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const handleBookOptions = () => {
+        if (showBookOptions) {
+            setShowBookOptions(false);
+        }
+
+        else {
+            setShowBookOptions(true);
+        }
+    }
+
     useEffect(async () => {
-        if (props.loggedInUser === "") {
+        if (username === "") {
             setRedirect(true)
         }
 
-        const usersBooks = await getMyLibraryByUsername(props.loggedInUser)
+        const usersBooks = await getMyLibraryByUsername(username)
         console.log(usersBooks)
         setUserBooks(usersBooks.myLibrary)
     }, [])
 
     useEffect(() => {
-        Aos.init({duration: 1000})
+        Aos.init({ duration: 1000 })
     });
 
-    useEffect(() => {
-        // recolor the stars
-
-
-    }, stars)
-
-    const clickStar = (starNum) => {
-        setStars(starNum); 
-    }
 
     const displayUserBooks = (i) => userBooks.map((book, index) => {
 
-        if (index >= i && index < i+5){
+        if (index >= i && index < i + 5) {
             return (<div>
             <img className="book-picture" src={book.thumbnail} alt={book.title} key={index}></img>
             {showBookOptions && 
@@ -74,25 +77,30 @@ const MyLibraryPage = props => {
     })
 
 
-
-
     return (<div className="myLibrary">
         <div className='edit-button'>
-            <Button onClick={() => {setShowBookOptions(true)}} variant="primary">
+            <Button onClick={handleBookOptions} variant="primary">
                 <BsFillPencilFill />
             </Button>
+            <Button className='filter-button' variant="dark">
+                <BsFillFilterCircleFill />
+            </Button>
+            <Form.Group className="mb-3" controlId="formBasicUsername">
+                <Form.Label>Username</Form.Label>
+                <Form.Control type="text" placeholder="Username" onChange={(event) => setEnteredUsername(event.target.value)} />
+            </Form.Group>
         </div>
         <div>
             <h1 className="myLibraryTitle">My Library</h1>
         </div>
         {userBooks.map((row, index) => {
             // create a new bookshelf every row
-            if (index % 5 == 0){
-            return (<div data-aos='slide-up'>
-                <div className="displayed-books">{displayUserBooks(index)}</div>
-                <img src={woodshelf} className="shelf" alt="Wood Shelf"></img>
-            </div>)
-        }
+            if (index % 5 == 0) {
+                return (<div data-aos='slide-up'>
+                    <div className="displayed-books">{displayUserBooks(index)}</div>
+                    <img src={woodshelf} className="shelf" alt="Wood Shelf"></img>
+                </div>)
+            }
         })}
 
         <Modal show={show} onHide={handleClose}
@@ -106,11 +114,11 @@ const MyLibraryPage = props => {
         </Modal.Header>
         <Modal.Body>
             <Form>
-                <BsFillStarFill onClick={clickStar(1)}/>
-                <BsFillStarFill onClick={clickStar(2)}/>
-                <BsFillStarFill onClick={clickStar(3)}/>
-                <BsFillStarFill onClick={clickStar(4)}/>
-                <BsFillStarFill onClick={clickStar(5)}/>
+                <BsFillStarFill/>
+                <BsFillStarFill/>
+                <BsFillStarFill/>
+                <BsFillStarFill/>
+                <BsFillStarFill/>
             </Form>
         </Modal.Body>
         <Modal.Footer>

@@ -1,11 +1,13 @@
 import { Form, Button, Alert } from 'react-bootstrap';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { login } from '../api/userAPI';
 import { Navigate } from "react-router-dom"
+import UserContext from '../user/UserContext';
 
 const LoginPage = (props) => {
+    const { setUsername, username } = useContext(UserContext);
 
-    const [username, setUsername] = useState("");
+    const [enteredUsername, setEnteredUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
     const [successMsg, setSuccessMsg] = useState("");
@@ -18,7 +20,7 @@ const LoginPage = (props) => {
 
         // call the backend
         const body = {
-            "username": username,
+            "username": enteredUsername,
             "password": password,
         }
 
@@ -27,10 +29,10 @@ const LoginPage = (props) => {
 
         // if backend approves of the info
         if (response.message === "Login Successful") {
-            const user = response.data;
             setSuccessMsg(response.message)
-            props.setUserLoggedIn(user.username);
             props.setSessionID(response.sessionID);
+
+            setUsername(enteredUsername)
 
             // if backend sends an error
         } else {
@@ -41,10 +43,10 @@ const LoginPage = (props) => {
 
     return <div>
         <div style={{ "width": 600, "margin": "0 auto", "marginTop": 30 }}>
-            {props.loggedInUser !== "" ? <Navigate to="/" /> : <div><Form>
+            {username !== "" ? <Navigate to="/" /> : <div><Form>
                 <Form.Group className="mb-3" controlId="formBasicUsername">
                     <Form.Label>Username</Form.Label>
-                    <Form.Control type="text" placeholder="Username" onChange={(event) => setUsername(event.target.value)} />
+                    <Form.Control type="text" placeholder="Username" onChange={(event) => setEnteredUsername(event.target.value)} />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">

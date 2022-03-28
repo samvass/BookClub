@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { Navigate } from 'react-router-dom';
 import { createAccount, login } from '../api/userAPI';
 
-
 const CreateAccountPage = (props) => {
-    const [username, setUsername] = useState("");
+
+    const [enteredUsername, setEnteredUsername] = useState("");
     const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
     const [email, setEmail] = useState("");
@@ -19,7 +19,7 @@ const CreateAccountPage = (props) => {
 
     const usernameHandler = (event) => {
         let typedUsername = event.target.value;
-        setUsername(typedUsername);
+        setEnteredUsername(typedUsername);
     }
 
     const passwordHandler = (event) => {
@@ -42,10 +42,12 @@ const CreateAccountPage = (props) => {
 
         // call the backend
         const body = {
-            "username": username,
+            "username": enteredUsername,
             "password": password,
             "email": email
         }
+
+        console.log(body)
 
         const response = await createAccount(body);
         console.log(response)
@@ -54,8 +56,6 @@ const CreateAccountPage = (props) => {
             setErrorMsg(null)
 
             const response1 = await login(body)
-            await props.setUserLoggedIn(username)
-            await props.setSessionID(response1.sessionID)
             console.log(response1)
 
             setSuccessMsg(response.message);
@@ -86,7 +86,7 @@ const CreateAccountPage = (props) => {
                 <Form.Group className="mb-3" controlId="formBasicUsername">
                     <Form.Label>Username</Form.Label>
                     <Form.Control type="text"
-                        value={username} onChange={usernameHandler} />
+                        value={enteredUsername} onChange={usernameHandler} />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
