@@ -1,55 +1,34 @@
-import { React, useState, useEffect} from 'react'
-
 import './BookDescription.css';
-import { Button } from 'react-bootstrap';
 
 const BookDescription = props => {
 
-    const [bookDescription, setBookDescription] = useState(props.description);
+    return (
+        <div className="book-desc">
+            <br />
+            <div className="title">
+                {props.title}
+            </div>
 
-    // useEffect(() => {
+            <br />
+            <div className="author">
+                By {props.author}
+            </div>
 
-    //     if (props.description){
+            <div className="genres">
+                {props.genres.map((genre) => {
+                    return <div className='genre'>{genre}</div>
+                })}
+            </div>
+            <br />
 
-    //         // trim length of the description
-    //         if (props.description.length > 250){
-    //             let newDesc = props.description.substring(0, 250);
-    //             newDesc += "...";
-    //             setBookDescription(newDesc);
-    //         }
-    //     }
-    // }, [props.description])
+            <div className="description">
+                {props.description.length > 800 ? props.description.substring(0, 250) + " ..." : props.description}
+                {/* {props.description.length > 800 ? console.log(props.description.substring(0, 250) + " ...") : console.log(props.description)} */}
+            </div>
 
-  return (
-    <div className="book-desc">
-        <br />
-        <br />
-        <div className="title">
-            {props.title}
+            <br />
         </div>
-
-        <br />
-        <div className="author">
-            By {props.author}
-        </div>
-
-        <br />
-        <div className="genres">
-            {props.genres.map((genre)=>{
-                return <div className='genre'>{genre}</div>
-            })}
-        </div>
-
-
-        <br />
-
-        <div className="description">
-            {props.description}
-        </div>
-
-        <br />
-    </div>
-  )
+    )
 }
 
 export default BookDescription

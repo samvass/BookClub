@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { getBookByGenre, getBookByName } from '../../api/bookAPI';
 import { getPreferencesByUsername } from "../../api/userAPI"
 
@@ -10,7 +10,7 @@ import BookDescription from '../../components/BookDescription/BookDescription';
 
 import ReactCardFlip from 'react-card-flip';
 
-const HomePage = props => {
+const HomePage = () => {
     const { username } = useContext(UserContext);
 
     const [bookTitle, setBookTitle] = useState(null);
@@ -79,21 +79,20 @@ const HomePage = props => {
         {bookThumbnail &&
             <div id="imgcontainer">
                 <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
-                
+
                     <div className="front-card">
                         <img className='book' onClick={hoverShowInfo} onMouseLeave={noHoverShowInfo} src={bookThumbnail}></img>
                     </div>
 
-                    <BookDescription 
-                        thumbnail={bookThumbnail}
+                    <BookDescription
                         title={bookTitle}
                         author={bookAuthor}
                         genres={bookGenres}
-                        description={bookDescription}    
+                        description={bookDescription}
                     />
                 </ReactCardFlip>
             </div>}
-            <br />
+        <br />
         <ArrowDown displayBook={displayBook} />
     </div>
 }
