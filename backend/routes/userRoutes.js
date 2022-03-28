@@ -44,7 +44,7 @@ router.post("/set/preferences/:username", userController.setPreferences)
 router.get('/get/myReadBook/:username', userController.getMyReadBooks);
 
 // set user read books
-router.post('/set/read/:username', userController.markBookAsRead);
+router.post('/set/myReadBook/:username', userController.markBookAsRead);
 
 module.exports = router;
 

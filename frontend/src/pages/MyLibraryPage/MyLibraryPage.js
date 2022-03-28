@@ -5,7 +5,7 @@ import Aos from 'aos'
 import 'aos/dist/aos.css'
 
 import { getBookByName } from "../../api/bookAPI"
-import { getMyLibraryByUsername, setMyLibraryByUsername, getPreferencesByUsername, getMyReadBookByUsername } from "../../api/userAPI"
+import { getMyLibraryByUsername, setMyLibraryByUsername, getPreferencesByUsername, markBookAsRead, getMyReadBookByUsername } from "../../api/userAPI"
 
 import { Navigate } from "react-router-dom"
 import UserContext from "../../user/UserContext"
@@ -54,11 +54,11 @@ const MyLibraryPage = props => {
         setSelectedBooks(filteredBooks);
     }
 
-    const markAsRead = async () => {
+    const markAsRead = async (rbook) => {
         // var checkbox = document.getElementById('checkbox').checked;
         // if (checkbox.checked) {
             const body = {
-                title: props.title,
+                title: rbook.title,
                 username: username,
             };
             const response = await markBookAsRead(body, session);
@@ -87,8 +87,7 @@ const MyLibraryPage = props => {
                     }, 100)
 
                 }} src={book.thumbnail} alt={book.title} key={index}></img>
-                <div><label><input type="checkbox" id="myCheck" onclick={markAsRead}></input>    Read</label></div>
-                
+                <div><label><input type="checkbox" id="myCheck" onChange={markAsRead(book)}></input>    Read</label></div>
             </div>
             )
         }

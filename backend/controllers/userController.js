@@ -427,7 +427,7 @@ exports.getMyReadBooks = async (req, res, next) => {
             error: "user does not exist"
         });
     }
-    console.log(user)
+    // console.log(user)
 
     const myReadBooks = user.readBook;
     // console.log(myReadBooks)
@@ -455,7 +455,8 @@ exports.markBookAsRead = async (req, res, next) => {
     const username = req.body.username;
   
     const user = await User.findOne({ username: username });
-  
+    console.log("--------------------------------")
+    console.log(user)
     if (!user) {
       // return error
       return res.status(200).json({
@@ -464,6 +465,7 @@ exports.markBookAsRead = async (req, res, next) => {
     }
   
     let book = await Book.findOne({ title: title });
+    console.log("--------------------------------")
     console.log(book)
   
     // store the bookID in the users library
@@ -483,7 +485,7 @@ exports.markBookAsRead = async (req, res, next) => {
   
     return res.status(200).json({
       book: book,
-      message: "book was added to the library",
+      message: "book was added to the read list",
     });
   };
 
