@@ -51,7 +51,7 @@ const MyLibraryPage = props => {
     const updateFilter = (event) => {
         const newSelectedGenre = event.target.value;
         setSelectedGenre(newSelectedGenre);
-        const filteredBooks = userBooks.filter(book => newSelectedGenre=="all" ? true : book.genre[0].toLowerCase().replace(/\s/g, '').includes(newSelectedGenre.toLowerCase().replace(/\s/g, '')))
+        const filteredBooks = userBooks.filter(book => newSelectedGenre == "all" ? true : book.genre[0].toLowerCase().replace(/\s/g, '').includes(newSelectedGenre.toLowerCase().replace(/\s/g, '')))
         setSelectedBooks(filteredBooks);
     }
 
@@ -63,7 +63,7 @@ const MyLibraryPage = props => {
     }
 
     const markAsUnread = async (rtitle) => {
-        
+
     }
 
 
@@ -72,12 +72,16 @@ const MyLibraryPage = props => {
         if (index >= i && index < i + 5) {
             return (<div key={index}>
                 {/*{showRemoveBook && <h1>Remove</h1>}*/}
-                <img className="book-picture" onMouseLeave={()=>{
+                <img className="book-picture" onMouseLeave={() => {
                     setShowRemoveBook(false);
                 }} onMouseEnter={() => {
                     setShowRemoveBook(true);
                 }} src={book.thumbnail} alt={book.title} key={index}>
                 </img>
+                <div>
+                    <button className="readButton" onClick={async () => markAsRead(book.title)}>Read</button>
+                    <button className="unreadButton" onClick={async () => markAsUnread(book.title)}>Unread</button>
+                </div>
             </div>)
         }
     })
@@ -108,7 +112,7 @@ const MyLibraryPage = props => {
                 {userGenres.map(genre => <option key={genre} value={genre}>{genre}</option>)}
             </select>
         </div>
-        
+
 
         {selectedBooks.map((row, index) => {
             // create a new bookshelf every row
