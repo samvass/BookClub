@@ -94,7 +94,7 @@ export const getMyReadBookByUsername = async (username, sessionID) => {
     return await apiGet(endpoint, sessionID);
 }
 
-export const markBookAsRead = async (body, sessionID) => {
+export const markBookAsRead = async (username, body) => {
     let endpoint = apiURL + "/users/set/myReadBook/" + username;
-    return await apiPost(endpoint, body, sessionID);
+    return await apiPost(endpoint, body);
 }

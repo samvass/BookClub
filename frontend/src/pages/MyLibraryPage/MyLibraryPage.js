@@ -54,15 +54,11 @@ const MyLibraryPage = props => {
         setSelectedBooks(filteredBooks);
     }
 
-    const markAsRead = async (rbook) => {
-        // var checkbox = document.getElementById('checkbox').checked;
-        // if (checkbox.checked) {
-            const body = {
-                title: rbook.title,
-                username: username,
-            };
-            const response = await markBookAsRead(body, session);
-        // }
+    const markAsRead = async (rtitle) => {
+        const body = {
+            title: rtitle,
+        };
+        const response = await markBookAsRead(username, body);
     }
 
 
@@ -87,7 +83,7 @@ const MyLibraryPage = props => {
                     }, 100)
 
                 }} src={book.thumbnail} alt={book.title} key={index}></img>
-                <div><label><input type="checkbox" id="myCheck" onChange={markAsRead(book)}></input>    Read</label></div>
+                <div><button className="readButton" onClick={async () => markAsRead(book.title)}>Read</button></div>
             </div>
             )
         }

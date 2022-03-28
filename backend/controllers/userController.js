@@ -451,12 +451,15 @@ exports.markBookAsRead = async (req, res, next) => {
     // we should implement a way to generate the next book from here ...
   
     // get book information from request body
+    const username = req.params.username;
     const title = req.body.title;
-    const username = req.body.username;
-  
+
     const user = await User.findOne({ username: username });
+    // console.log("--------------------------------")
+    // console.log(user)
     console.log("--------------------------------")
-    console.log(user)
+    console.log(title)
+    console.log("--------------------------------")
     if (!user) {
       // return error
       return res.status(200).json({
@@ -465,8 +468,14 @@ exports.markBookAsRead = async (req, res, next) => {
     }
   
     let book = await Book.findOne({ title: title });
+    if (!book) {
+        return res.status(200).json({
+            message: "no book found",
+          });
+      }
     console.log("--------------------------------")
     console.log(book)
+    console.log("--------------------------------")
   
     // store the bookID in the users library
     const bookID = book._id;
