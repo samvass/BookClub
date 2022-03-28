@@ -46,6 +46,12 @@ router.get('/get/myReadBook/:username', userController.getMyReadBooks);
 // set user read books
 router.post('/set/myReadBook/:username', userController.markBookAsRead);
 
+// get user unread books
+router.get('/get/myUnReadBook/:username', userController.getMyUnReadBooks);
+
+// set user unread books
+router.post('/set/myUnReadBook/:username', userController.markBookAsUnRead);
+
 module.exports = router;
 
 

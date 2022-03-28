@@ -41,11 +41,13 @@
 }
 
 .readButton {
-    background-color: green;
+    background-color: rgb(34, 199, 89);
     color:  black;
+    font-family: 'lobster' ;
 }
 
 .unreadButton {
-    background-color: red;
+    background-color: rgb(197, 39, 39);
     color:  black;
+    font-family: 'lobster' ;
 }

@@ -7,6 +7,7 @@ import { Button, Modal, Form } from 'react-bootstrap';
 import { BsFillPencilFill, BsFillStarFill } from 'react-icons/bs';
 import { getBookByName } from "../../api/bookAPI"
 import { getMyLibraryByUsername, setMyLibraryByUsername, getPreferencesByUsername, markBookAsRead, getMyReadBookByUsername } from "../../api/userAPI"
+import {  markBookAsUnRead, getMyUnReadBookByUsername } from "../../api/userAPI"
 
 import { Navigate } from "react-router-dom"
 import UserContext from "../../user/UserContext"
@@ -21,6 +22,7 @@ const MyLibraryPage = props => {
     const [userGenres, setUserGenres] = useState([])
     const [selectedBooks, setSelectedBooks] = useState([])
     const [readBooks, setReadBooks] = useState([])
+    const [unreadBooks, setUnReadBooks] = useState([])
     const [selectedGenre, setSelectedGenre] = useState("all")
     const [redirect, setRedirect] = useState(false)
     const [showRemoveBook, setShowRemoveBook] = useState(false);
@@ -42,6 +44,9 @@ const MyLibraryPage = props => {
 
         const rbooks = await getMyReadBookByUsername(username)
         setReadBooks(rbooks.myList)
+
+        const urbooks = await getMyUnReadBookByUsername(username)
+        setUnReadBooks(urbooks.myList)
     }, [])
 
     useEffect(() => {
@@ -62,7 +67,11 @@ const MyLibraryPage = props => {
         const response = await markBookAsRead(username, body);
     }
 
-    const markAsUnread = async (rtitle) => {
+    const markAsUnread = async (urtitle) => {
+        const body = {
+            title: urtitle,
+        };
+        const response = await markBookAsRead(username, body);
 
     }
 
