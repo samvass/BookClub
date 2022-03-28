@@ -30,9 +30,7 @@
     margin: 0;
     box-sizing: border-box;
   }
-  body {
-    background-image: url("./images/waves1.png");
-  }
+
   #toggle-btn,
   .menu a {
     position: absolute;
@@ -42,23 +40,23 @@
   }
   .menu a {
     background-color: #ffffff;
-    height: 70px;
-    width: 70px;
+    height: 50px;
+    width: 50px;
     font-size: 22px;
     color: #4249ed;
     text-decoration: none;
-    top: 30px;
-    left: 30px;
+    top: 155px;
+    left: 90px;
     transition: 0.5s;
   }
   #toggle-btn {
-    background-color: #0f1730;
+    background-color: #4249ed;
     color: #ffffff;
-    height: 100px;
-    width: 100px;
+    height: 60px;
+    width: 60px;
     border: none;
-    font-size: 40px;
-    top: 15px;
+    font-size: 25px;
+    top:150px;
     left: 15px;
     transition: 0.3s;
     cursor: pointer;
