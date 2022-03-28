@@ -6,8 +6,11 @@ import "./HomePage.css"
 import ArrowUp from '../../components/ArrowUp/ArrowUp';
 import ArrowDown from "../../components/ArrowDown/ArrowDown"
 import UserContext from '../../user/UserContext';
+import BookDescription from '../../components/BookDescription/BookDescription';
 
-const HomePage = props => {
+import ReactCardFlip from 'react-card-flip';
+
+const HomePage = () => {
     const { username } = useContext(UserContext);
 
     const [bookTitle, setBookTitle] = useState(null);
@@ -16,6 +19,7 @@ const HomePage = props => {
     const [bookGenres, setBookGenres] = useState(null);
     const [bookThumbnail, setBookThumbnail] = useState(null);
     const [showInfo, setShowInfo] = useState(false);
+    const [isFlipped, setIsFlipped] = useState(false);
 
     useEffect(async () => {
         displayBook()
@@ -60,21 +64,35 @@ const HomePage = props => {
     }
 
     const hoverShowInfo = () => {
-        setShowInfo(true)
+        //setShowInfo(true)
+        setIsFlipped(true)
     }
 
     const noHoverShowInfo = () => {
-        setShowInfo(false)
+        //setShowInfo(false)
+        setIsFlipped(false)
     }
 
     return <div>
         <ArrowUp title={bookTitle} description={bookDescription} author={bookAuthor} genre={bookGenres} thumbnail={bookThumbnail} displayBook={displayBook} />
+        <br />
         {bookThumbnail &&
             <div id="imgcontainer">
-                <img className='book' onMouseEnter={hoverShowInfo} onMouseLeave={noHoverShowInfo} src={bookThumbnail}></img>
-                {showInfo && <div onMouseEnter={hoverShowInfo} className="center-top">{bookTitle}</div>}
-                {showInfo && <div onMouseEnter={hoverShowInfo} className="center-bottom">{bookDescription}</div>}
+                <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
+
+                    <div className="front-card">
+                        <img className='book' onClick={hoverShowInfo} onMouseLeave={noHoverShowInfo} src={bookThumbnail}></img>
+                    </div>
+
+                    <BookDescription
+                        title={bookTitle}
+                        author={bookAuthor}
+                        genres={bookGenres}
+                        description={bookDescription}
+                    />
+                </ReactCardFlip>
             </div>}
+        <br />
         <ArrowDown displayBook={displayBook} />
     </div>
 }

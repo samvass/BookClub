@@ -4,6 +4,8 @@ import { useContext } from 'react';
 import { rejectBook } from '../../api/bookAPI';
 import UserContext from "../../user/UserContext"
 import SessionContext from "../../session/SessionContext"
+import { AwesomeButton } from 'react-awesome-button';
+import "react-awesome-button/dist/styles.css";
 
 
 const ArrowDown = props => {
@@ -26,7 +28,11 @@ const ArrowDown = props => {
     }
 
     return (
-        <div onClick={arrowDownHandler} className="arrow"><FiArrowDownCircle /></div>
+        <div onClick={arrowDownHandler} className="arrow">
+            <AwesomeButton type="primary" size="large">
+                REJECT
+            </AwesomeButton>
+        </div>
     )
 }
 

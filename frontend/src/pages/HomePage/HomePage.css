@@ -6,31 +6,17 @@
     margin-left: auto;
 }
 
+.book:hover {
+    cursor: pointer;
+}
 
 #imgcontainer
 {
     width: 100%;
-    /* width: fit-content; */
     margin-right: auto;
     margin-left: auto;
     color: black;
-    /* background-color: green; */
 }
 
-.center-top {
-    position: absolute;
-    top: 25%;
-    width: 100%;
-    text-align: center;
-    font-size: 28px;
-    background-color: whitesmoke;
-}
 
-.center-bottom {
-    position: absolute;
-    top: 32%;
-    width: 100%;
-    text-align: center;
-    font-size: 18px;
-    background-color: whitesmoke;
-}
+
