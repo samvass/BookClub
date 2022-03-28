@@ -5,7 +5,7 @@ import Aos from 'aos'
 import 'aos/dist/aos.css'
 
 import { getBookByName } from "../../api/bookAPI"
-import { getMyLibraryByUsername, setMyLibraryByUsername, getPreferencesByUsername } from "../../api/userAPI"
+import { getMyLibraryByUsername, setMyLibraryByUsername, getPreferencesByUsername, getMyReadBookByUsername } from "../../api/userAPI"
 
 import { Navigate } from "react-router-dom"
 import UserContext from "../../user/UserContext"
@@ -19,8 +19,10 @@ const MyLibraryPage = props => {
     const [userBooks, setUserBooks] = useState([])
     const [userGenres, setUserGenres] = useState([])
     const [selectedBooks, setSelectedBooks] = useState([])
+    const [readBooks, setReadBooks] = useState([])
     const [selectedGenre, setSelectedGenre] = useState("all")
     const [redirect, setRedirect] = useState(false)
+    
 
     useEffect(async () => {
         if (username === "") {
@@ -36,6 +38,9 @@ const MyLibraryPage = props => {
         const books = await getMyLibraryByUsername(username)
         setUserBooks(books.myLibrary)
         setSelectedBooks(books.myLibrary)
+
+        const rbooks = await getMyReadBookByUsername(username)
+        setReadBooks(rbooks.myList)
     }, [])
 
     useEffect(() => {
@@ -50,7 +55,14 @@ const MyLibraryPage = props => {
     }
 
     const markAsRead = async () => {
-
+        // var checkbox = document.getElementById('checkbox').checked;
+        // if (checkbox.checked) {
+            const body = {
+                title: props.title,
+                username: username,
+            };
+            const response = await markBookAsRead(body, session);
+        // }
     }
 
 
@@ -98,7 +110,6 @@ const MyLibraryPage = props => {
             if (index % 5 == 0) {
                 return (<div data-aos='slide-up' key={index}>
                     <div className="displayed-books">{displayUserBooks(index)}</div>
-                    {/* <div><input type="checkbox" id="myCheck" onclick="myFunction()"></input></div> */}
                     <img src={woodshelf} className="shelf" alt="Wood Shelf"></img>
                 </div>)
             }
