@@ -3,6 +3,8 @@ import "./ArrowUp.css"
 
 import { acceptBook } from '../../api/bookAPI';
 import { useState, useContext } from 'react';
+import { AwesomeButton } from 'react-awesome-button';
+import "react-awesome-button/dist/styles.css";
 
 import LoginModal from "../../pages/LoginModal/LoginModal"
 import UserContext from "../../user/UserContext"
@@ -27,7 +29,6 @@ const ArrowUp = (props) => {
             return;
         }
 
-
         const body = {
             title: props.title,
             description: props.description,
@@ -43,7 +44,9 @@ const ArrowUp = (props) => {
 
     return (<div>
         <div onClick={arrowUpHandler} className="arrow">
-            <FiArrowUpCircle />
+            <AwesomeButton type="primary" size="large">
+                ACCEPT
+            </AwesomeButton>
         </div>
         {showLoginPopup && <LoginModal onCloseModal={closeLoginModalHandler} />}
     </div>)

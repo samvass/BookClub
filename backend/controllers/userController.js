@@ -118,7 +118,9 @@ exports.createAccount = async (req, res, next) => {
         username: username,
         email: email,
         password: hashedPassword,
-        preferences: preferences
+        preferences: preferences,
+        readBook: [],
+        unreadBook: []
     });
 
     await user.save();
@@ -411,4 +413,168 @@ exports.deleteAccount = async (req, res, next) => {
         data: "Account deleted successfully",
         error: ""
     })
+};
+
+exports.getMyReadBooks = async (req, res, next) => {
+    const username = req.params.username;
+
+    // find user in db
+    const user = await User.findOne({ username: username });
+
+    // if there is no user found
+    if (!user) {
+        return res.status(404).json({
+            message: null,
+            error: "user does not exist"
+        });
+    }
+
+    const myReadBooks = user.readBook;
+
+    // take each Obj ID and find the corresponding book in the Books collection
+    const updatedReadBooksPromises = myReadBooks.map(async bookID => await Book.findById(bookID));
+    const updatedReadBooks = await Promise.all(updatedReadBooksPromises);
+    // console.log(updatedReadBooks)
+
+    setTimeout(() => {
+        return res.status(200).json({
+            myList: updatedReadBooks,
+            message: "successfully retrieved library",
+            error: null
+        });
+
+    }, 1000);
+};
+
+exports.markBookAsRead = async (req, res, next) => {
+    // since they do not wish to add the book to their library we will not store it in the db
+    // we should implement a way to generate the next book from here ...
+
+    // get book information from request body
+    const username = req.params.username;
+    const title = req.body.title;
+
+    const user = await User.findOne({ username: username });
+
+    if (!user) {
+        // return error
+        return res.status(200).json({
+            message: "no user found",
+        });
+    }
+
+    let book = await Book.findOne({ title: title });
+    if (!book) {
+        return res.status(200).json({
+            message: "no book found",
+        });
+    }
+
+    if (user.readBook.includes(book._id)){
+        return res.status(200).json({
+            message: "book was already added as read",
+        });
+    }
+
+    // store the bookID in the users library
+    const bookID = book._id;
+
+    // get current user read book
+    const rBook = user.readBook;
+
+    // add the new book to it
+    rBook.push(bookID);
+
+    // update the read list in db
+    await User.updateOne(
+        { username: username },
+        { $set: { readBook: rBook } }
+    );
+
+    return res.status(200).json({
+        book: book,
+        message: "book was added to the read list",
+    });
+};
+
+exports.getMyUnReadBooks = async (req, res, next) => {
+    const username = req.params.username;
+
+    // find user in db
+    const user = await User.findOne({ username: username });
+
+    // if there is no user found
+    if (!user) {
+        return res.status(404).json({
+            message: null,
+            error: "user does not exist"
+        });
+    }
+
+    const myUnReadBooks = user.unreadBook;
+
+    // take each Obj ID and find the corresponding book in the Books collection
+    const updatedUnReadBooksPromises = myUnReadBooks.map(async bookID => await Book.findById(bookID));
+    const updatedUnReadBooks = await Promise.all(updatedUnReadBooksPromises);
+    // console.log(updatedReadBooks)
+
+    setTimeout(() => {
+        return res.status(200).json({
+            myList: updatedUnReadBooks,
+            message: "successfully retrieved library",
+            error: null
+        });
+
+    }, 1000);
+};
+
+exports.markBookAsUnRead = async (req, res, next) => {
+    // since they do not wish to add the book to their library we will not store it in the db
+    // we should implement a way to generate the next book from here ...
+
+    // get book information from request body
+    const username = req.params.username;
+    const title = req.body.title;
+
+    const user = await User.findOne({ username: username });
+
+    if (!user) {
+        // return error
+        return res.status(200).json({
+            message: "no user found",
+        });
+    }
+
+    let book = await Book.findOne({ title: title });
+    if (!book) {
+        return res.status(200).json({
+            message: "no book found",
+        });
+    }
+
+    if (user.unreadBook.includes(book._id)){
+        return res.status(200).json({
+            message: "book was already added as unread",
+        });
+    }
+
+    // store the bookID in the users library
+    const bookID = book._id;
+
+    // get current user unread book
+    const urBook = user.unreadBook;
+
+    // add the new book to unreadbook
+    urBook.push(bookID);
+
+    // update the unread list in db
+    await User.updateOne(
+        { username: username },
+        { $set: { unreadBook: urBook } }
+    );
+
+    return res.status(200).json({
+        book: book,
+        message: "book was added to the unread",
+    });
 };

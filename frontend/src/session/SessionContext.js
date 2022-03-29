@@ -2,7 +2,7 @@ import { createContext } from "react";
 
 const SessionContext = createContext({
     session: "",
-    setUsername: (sessionId) => { }
+    setSession: (sessionId) => { }
 });
 
 export default SessionContext;
