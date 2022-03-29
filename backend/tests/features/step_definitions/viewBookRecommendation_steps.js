@@ -48,7 +48,6 @@ Then("a list of recommended books is generated", async () => {
     .get("/books/get")
     .set("Accept", "application/json")
     .set("Authorization", sessionID);
-
   assert(res.body.data.book.length > 0);
 });
 

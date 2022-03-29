@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const request = require("supertest");
 const assert = require("assert");
 const { Given, When, Then, AfterAll } = require("@cucumber/cucumber");
@@ -38,11 +39,23 @@ Given(
   function (string) {}
 );
 
-Then("the error message {string} is generated", async function (string) {
-  const res = await request(app)
+Then("the error message {string} is generated", async (string) => {
+  res = await request(app)
     .get("/books/get/" + book_title)
     .set("Accept", "application/json");
-
-  assert(res.body.data.book.length == 0);
+  //assert(res.body.data.book.length == 0);
   assert(res.body.message == string);
+});
+
+// drop collection
+AfterAll(function (done) {
+  mongoose.connection.db.dropCollection("sessions", function (err, result) {
+    done();
+  });
+  mongoose.connection.db.dropCollection("users", function (err, result) {
+    done();
+  });
+  mongoose.connection.db.dropCollection("books", function (err, result) {
+    done();
+  });
 });

@@ -5,14 +5,14 @@ I would like to view the library on my account
 So that I can find all my liked books
 
 Background:
-Given user with username "tester789", password "$Pickles1212", and email "tester789@gmail.com" exists in the system:
+Given user with username "tester7892", password "$Pickles1212", and email "tester7892@gmail.com" exists in the system:
 
 Scenario: View Account Library, user already logged in (Normal Flow)
 
-Given user "tester789" with password "$Pickles1212" is logged in
-And the user "tester789" has books, including book "narnia" in their library
-When the user "tester789" views their library 
-Then the user "tester789" will see their liked books
+Given user "tester7892" with password "$Pickles1212" is logged in
+And the user "tester7892" has books, including book "narnia" in their library
+When the user "tester7892" views their library 
+Then the user "tester7892" will see their liked books
 
 Scenario: View Account Library, user not logged in (Alternate Flow)
 
