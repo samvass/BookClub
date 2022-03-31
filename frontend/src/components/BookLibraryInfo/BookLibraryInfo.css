@@ -1,0 +1,31 @@
+
+.book-lib-info {
+    display: flex;
+    justify-content: space-around;
+}
+
+.section-header {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 60px;
+}
+
+.title-txt {
+    font-size: 30px;
+}
+.author-txt {
+    font-size: 25px;
+}
+.genres-txt {
+    font-size: 20px;
+}
+.description-txt {
+    font-size: 15px;
+}
+
+.remove-book {
+    margin: 30px;
+    text-align: center;
+}

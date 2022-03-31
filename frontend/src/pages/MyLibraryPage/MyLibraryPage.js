@@ -12,6 +12,7 @@ import {  markBookAsUnRead, getMyUnReadBookByUsername } from "../../api/userAPI"
 import { Navigate } from "react-router-dom"
 import UserContext from "../../user/UserContext"
 import SessionContext from "../../session/SessionContext"
+import BookLibraryInfo from "../../components/BookLibraryInfo/BookLibraryInfo"
 
 
 const MyLibraryPage = props => {
@@ -26,6 +27,15 @@ const MyLibraryPage = props => {
     const [selectedGenre, setSelectedGenre] = useState("all")
     const [redirect, setRedirect] = useState(false)
     const [showRemoveBook, setShowRemoveBook] = useState(false);
+
+    const [currentTitle, setCurrentTitle] = useState("");
+    const [currentAuthor, setCurrentAuthor] = useState("");
+    const [currentDescription, setCurrentDescription] = useState("");
+
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     useEffect(async () => {
         if (username === "") {
@@ -81,36 +91,23 @@ const MyLibraryPage = props => {
         if (index >= i && index < i + 5) {
             return (<div key={index}>
                 {/*{showRemoveBook && <h1>Remove</h1>}*/}
-                <img className="book-picture" onMouseLeave={() => {
-                    setShowRemoveBook(false);
-                }} onMouseEnter={() => {
-                    setShowRemoveBook(true);
+                <img className="book-picture" onClick={() => {
+                    setShow(true)
+                    setCurrentTitle(book.title);
+                    setCurrentAuthor(book.author);
+                    setCurrentDescription(book.description);
                 }} src={book.thumbnail} alt={book.title} key={index}>
                 </img>
-                <div>
-                    <button className="readButton" onClick={async () => markAsRead(book.title)}>Read</button>
-                    <button className="unreadButton" onClick={async () => markAsUnread(book.title)}>Unread</button>
-                </div>
             </div>)
         }
     })
 
-    // async () => {
-    //     const body = {
-    //         username: username,
-    //         removedBook: book
-    //     };
+    // <div>
+    //     <button className="readButton" onClick={async () => markAsRead(book.title)}>Read</button>
+    //     <button className="unreadButton" onClick={async () => markAsUnread(book.title)}>Unread</button>
+    // </div>
 
-    //     const response = await setMyLibraryByUsername(username, body)
 
-    //     setTimeout(async () => {
-    //         const returnedMyLibrary = await getMyLibraryByUsername(username)
-    //         console.log(returnedMyLibrary.myLibrary)
-    //         setUserBooks(returnedMyLibrary.myLibrary)
-    //         setSelectedBooks(returnedMyLibrary.myLibrary.filter(book => selectedGenre=="all" ? true : book.genre[0].toLowerCase().replace(/\s/g, '').includes(selectedGenre.toLowerCase().replace(/\s/g, ''))))
-    //     }, 100)
-
-    // }
 
     return (<div className="myLibrary">
         <h1 className="myLibraryTitle">My Library</h1>
@@ -121,6 +118,15 @@ const MyLibraryPage = props => {
                 {userGenres.map(genre => <option key={genre} value={genre}>{genre}</option>)}
             </select>
         </div>
+
+        <Modal size="lg" show={show} centered={true} onHide={handleClose}>
+            <BookLibraryInfo 
+                title={currentTitle}
+                author={currentAuthor}
+                description={currentDescription}
+                username={username}
+            />
+        </Modal>
 
 
         {selectedBooks.map((row, index) => {
