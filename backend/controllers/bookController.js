@@ -106,17 +106,16 @@ exports.getBookRecommendationByGenre = (req, res, next) => {
 
   books.search(bookGenre, options, function (error, results, apiResponse) {
     let shownBook = results[index];
+    console.log("orig " + index)
     console.log(shownBook)
 
     // if retrieved book doesnt have a description, get a new one
-    while (true) {
-      if (shownBook.description && shownBook.title) {
-        console.log("Good book")
-        break;
-      }
-
+    while (!shownBook.description || !shownBook.title) {
+      console.log("Finding new book")
       index = Math.floor(Math.random() * 40);
-      shownBook = results[index];
+      console.log("new " + index)
+      shownBook = results[index + 1];
+      console.log(shownBook)
     }
 
 

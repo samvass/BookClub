@@ -1,21 +1,21 @@
-import woodshelf from "../../images/woodshelf.png"
-import "./MyLibraryPage.css"
 import { useEffect, useState, useContext } from "react"
-import Aos from 'aos'
-import 'aos/dist/aos.css'
+import { getMyLibraryByUsername, getPreferencesByUsername, markBookAsRead, getMyReadBookByUsername, markBookAsUnRead, getMyUnReadBookByUsername } from "../../api/userAPI"
+import { getBookByName } from "../../api/bookAPI"
 import { Button, Modal, Form } from 'react-bootstrap';
 import { BsFillPencilFill, BsFillStarFill } from 'react-icons/bs';
-import { getBookByName } from "../../api/bookAPI"
-import { getMyLibraryByUsername, setMyLibraryByUsername, getPreferencesByUsername, markBookAsRead, getMyReadBookByUsername } from "../../api/userAPI"
-import {  markBookAsUnRead, getMyUnReadBookByUsername } from "../../api/userAPI"
-
 import { Navigate } from "react-router-dom"
+
+import Aos from 'aos'
+import 'aos/dist/aos.css'
+import "./MyLibraryPage.css"
+import woodshelf from "../../images/woodshelf.png"
+
 import UserContext from "../../user/UserContext"
 import SessionContext from "../../session/SessionContext"
-import BookLibraryInfo from "../../components/BookLibraryInfo/BookLibraryInfo"
+import BookInfoModal from "../../components/BookInfoModal/BookInfoModal"
 
 
-const MyLibraryPage = props => {
+const MyLibraryPage = () => {
     const { username } = useContext(UserContext);
     const { session } = useContext(SessionContext);
 
@@ -27,22 +27,16 @@ const MyLibraryPage = props => {
     const [selectedGenre, setSelectedGenre] = useState("all")
     const [redirect, setRedirect] = useState(false)
     const [showRemoveBook, setShowRemoveBook] = useState(false);
+    const [curBook, setCurBook] = useState(null);
 
-    const [currentTitle, setCurrentTitle] = useState("");
-    const [currentAuthor, setCurrentAuthor] = useState("");
-    const [currentDescription, setCurrentDescription] = useState("");
-
-    const [show, setShow] = useState(false);
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
 
     useEffect(async () => {
         if (username === "") {
             setRedirect(true)
         }
 
-        // get user preferences
+        Aos.init({ duration: 500 })
+
         const res = await getPreferencesByUsername(username, session);
         const userGenres = res.data;
         userGenres.unshift("all");
@@ -58,10 +52,6 @@ const MyLibraryPage = props => {
         const urbooks = await getMyUnReadBookByUsername(username)
         setUnReadBooks(urbooks.myList)
     }, [])
-
-    useEffect(() => {
-        Aos.init({ duration: 1000 })
-    });
 
     const updateFilter = (event) => {
         const newSelectedGenre = event.target.value;
@@ -82,64 +72,36 @@ const MyLibraryPage = props => {
             title: urtitle,
         };
         const response = await markBookAsRead(username, body);
-
     }
 
-
     const displayUserBooks = (i) => selectedBooks.map((book, index) => {
-
         if (index >= i && index < i + 5) {
             return (<div key={index}>
-                {/*{showRemoveBook && <h1>Remove</h1>}*/}
-                <img className="book-picture" onClick={() => {
-                    setShow(true)
-                    setCurrentTitle(book.title);
-                    setCurrentAuthor(book.author);
-                    setCurrentDescription(book.description);
-                }} src={book.thumbnail} alt={book.title} key={index}>
-                </img>
-            </div>)
+                <img className="book-picture" onClick={() => setCurBook(book)} src={book.thumbnail} alt={book.title} key={index} />
+            </div >)
         }
     })
 
-    // <div>
-    //     <button className="readButton" onClick={async () => markAsRead(book.title)}>Read</button>
-    //     <button className="unreadButton" onClick={async () => markAsUnread(book.title)}>Unread</button>
-    // </div>
+    return (
+        <div className="myLibrary">
+            <h1 className="myLibraryTitle">My Library</h1>
+            <div>
+                <select className="dropDown" value={selectedGenre} onChange={updateFilter}>
+                    {userGenres.map(genre => <option key={genre} value={genre}>{genre}</option>)}
+                </select>
+            </div>
 
-
-
-    return (<div className="myLibrary">
-        <h1 className="myLibraryTitle">My Library</h1>
-
-        {/* TODO: style this */}
-        <div>
-            <select className="dropDown" value={selectedGenre} onChange={updateFilter}>
-                {userGenres.map(genre => <option key={genre} value={genre}>{genre}</option>)}
-            </select>
-        </div>
-
-        <Modal size="lg" show={show} centered={true} onHide={handleClose}>
-            <BookLibraryInfo 
-                title={currentTitle}
-                author={currentAuthor}
-                description={currentDescription}
-                username={username}
-            />
-        </Modal>
-
-
-        {selectedBooks.map((row, index) => {
-            // create a new bookshelf every row
-            if (index % 5 == 0) {
-                return (<div data-aos='slide-up' key={index}>
-                    <div className="displayed-books">{displayUserBooks(index)}</div>
-                    <img src={woodshelf} className="shelf" alt="Wood Shelf"></img>
-                </div>)
-            }
-        })}
-
-    </div>)
+            {selectedBooks.map((row, index) => {
+                // create a new bookshelf every row
+                if (index % 5 == 0) {
+                    return (<div data-aos='slide-up' key={index}>
+                        <div className="displayed-books">{displayUserBooks(index)}</div>
+                        <img src={woodshelf} className="shelf" alt="Wood Shelf"></img>
+                    </div>)
+                }
+            })}
+            {curBook && <BookInfoModal updateUsersLibrary={setSelectedBooks} book={curBook} onCloseModal={() => { setCurBook(null) }} />}
+        </div>)
 }
 
 export default MyLibraryPage
