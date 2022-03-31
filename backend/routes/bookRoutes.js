@@ -17,4 +17,6 @@ router.post('/accept', auth.isLoggedIn, bookController.acceptBookRecommendation)
 
 router.post('/reject', bookController.rejectBookRecommendation);
 
+router.post('/set/rating/:bookName', bookController.setBookRating);
+
 module.exports = router;

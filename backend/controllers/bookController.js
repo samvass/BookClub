@@ -220,3 +220,29 @@ exports.rejectBookRecommendation = async (req, res, next) => {
     message: "book rejected",
   });
 };
+
+
+exports.setBookRating = async (req, res, next) => {
+  const bookName = req.params.bookName;
+  const book = await Book.findOne({ title: bookName });
+
+  // get current rating
+  const currentRating = book.rating;
+  const incomingRating = req.body.newRating;
+
+  const ratingCount = book.ratingCount;
+  const newRatingCount = ratingCount+1;
+
+  // get new rating average
+  const newRating = round((incomingRating + (currentRating*ratingCount)) / newRatingCount);
+
+  Book.updateOne(
+    {title: bookName},
+    {$set: {rating: newRating, ratingCount: newRatingCount}}
+  );
+
+  return res.status(200).json({
+    message: "book rating has been updated successfully",
+  });
+
+}
