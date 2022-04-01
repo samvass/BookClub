@@ -3,7 +3,6 @@ import { getBookByGenre, getBookByName } from '../../api/bookAPI';
 import { getPreferencesByUsername } from "../../api/userAPI"
 import { getBookByNameInDatabase } from '../../api/bookAPI';
 
-
 import "./HomePage.css"
 import ArrowUp from '../../components/ArrowUp/ArrowUp';
 import ArrowDown from "../../components/ArrowDown/ArrowDown";
@@ -21,7 +20,6 @@ const HomePage = () => {
     const [bookAuthor, setBookAuthor] = useState(null);
     const [bookGenres, setBookGenres] = useState(null);
     const [bookThumbnail, setBookThumbnail] = useState(null);
-    const [showInfo, setShowInfo] = useState(false);
     const [isFlipped, setIsFlipped] = useState(false);
     const [rejectedBooks, setRejectedBooks] = useState([]);
 
@@ -34,11 +32,11 @@ const HomePage = () => {
     }, [])
 
 
-    useEffect(async ()=> {
+    useEffect(async () => {
         // get the rating of the book
         const res = await getBookByNameInDatabase(bookTitle);
 
-        if (res.error){
+        if (res.error) {
             console.log(res.error)
             setErrorMessage(res.error);
         }
@@ -92,17 +90,8 @@ const HomePage = () => {
         setBookThumbnail(thumbnail);
     }
 
-    const hoverShowInfo = () => {
-        //setShowInfo(true)
-        setIsFlipped(true)
-    }
-
-    const noHoverShowInfo = () => {
-        //setShowInfo(false)
-        setIsFlipped(false)
-    }
-
     const saveRejectedBook = () => {
+
         setRejectedBooks((rejectedBooks) => {
             rejectedBooks.push({
                 description: bookDescription,
@@ -127,11 +116,11 @@ const HomePage = () => {
         <ArrowUp title={bookTitle} description={bookDescription} author={bookAuthor} genre={bookGenres} thumbnail={bookThumbnail} displayBook={displayBook} />
         <br />
         {bookThumbnail &&
-            <div id="imgcontainer">
+            <div id="imgcontainer" onClick={() => (setIsFlipped(!isFlipped))}>
                 <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
 
-                    <div className="front-card">
-                        <img className='book' onClick={hoverShowInfo} onMouseLeave={noHoverShowInfo} src={bookThumbnail}></img>
+                    <div className="front-card" >
+                        <img className='book' src={bookThumbnail}></img>
                     </div>
 
                     <BookDescription
@@ -145,11 +134,11 @@ const HomePage = () => {
                         errorMessage={errorMessage}
                     />
                 </ReactCardFlip>
-            </div>}
+            </div >}
         <br />
         <ArrowDown displayBook={displayBook} callback={saveRejectedBook} />
         {rejectedBooks.length !== 0 && <UndoButton callback={undoRejection} />}
-    </div>
+    </div >
 }
 
 export default HomePage;  

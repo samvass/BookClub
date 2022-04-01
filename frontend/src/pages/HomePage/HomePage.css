@@ -16,6 +16,11 @@
     margin-right: auto;
     margin-left: auto;
     color: black;
+
+}
+
+#imgcontainer:hover {
+    cursor: pointer;
 }
 
 .book {

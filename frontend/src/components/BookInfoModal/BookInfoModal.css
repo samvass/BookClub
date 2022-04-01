@@ -1,0 +1,19 @@
+.modal-container {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+}
+
+.modal-container h3 {
+    font-size: 45px;
+}
+
+.modal-container h5 {
+    font-size: 27px;
+}
+
+.remove-book-button {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}

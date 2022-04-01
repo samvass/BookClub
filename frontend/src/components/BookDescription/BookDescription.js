@@ -1,8 +1,5 @@
 import './BookDescription.css';
-
 import Rating from '@mui/material/Rating';
-import { useState, useEffect } from 'react';
-import { withTheme } from '@emotion/react';
 
 const BookDescription = (props) => {
 
@@ -24,41 +21,35 @@ const BookDescription = (props) => {
 
     return (
         <div style={sectionStyle}>
-            <div style={{}}>
-            <br />
-            <div className="title">
-                {props.title}
-            </div>
+            <div>
+                <br />
+                <div className="title">
+                    {props.title}
+                </div>
 
-            <br />
-            <div className="author">
-                By {props.author}
-            </div>
+                <div className="author">
+                    {props.author}
+                </div>
 
-            <div className="genres">
-                {props.genres && props.genres.map((genre) => {
-                    return <div className='genre'>{genre}</div>
-                })}
-            </div>
-            <br />
+                <div className="genres">
+                    {props.genres && props.genres.map((genre) => {
+                        return <div className='genre'>{genre}</div>
+                    })}
+                </div>
+                <br />
 
-            <div className="description">
-                {props.description && props.description.length > 800 ? props.description.substring(0, 250) + " ..." : props.description}
-                {/* {props.description.length > 800 ? console.log(props.description.substring(0, 250) + " ...") : console.log(props.description)} */}
-            </div>
+                <div className="description">
+                    {props.description && props.description.length > 800 ? props.description.substring(0, 250) + " ..." : props.description}
+                </div>
 
-            <div style={{display: "flex", justifyContent: "center", paddingTop: "20px"}}>
-                <Rating name="read-only" value={props.rating} readOnly />
+                <div className='ratings-div'>
+                    <Rating name="read-only" value={props.rating} readOnly />
+                </div>
+                <div className='ratings-error-div'>
+                    {props.errorMessage ? <div>{props.errorMessage}</div> : <div>Based on {props.ratingCount} ratings</div>}
+                </div>
             </div>
-            <div style={{display: "flex", justifyContent: "center", padding: "5px", color: "white"}}>
-                {props.errorMessage && <div>{props.errorMessage}</div>}
-                {!props.errorMessage && <div>Based on {props.ratingCount} ratings</div>}
-            </div>
-
-            <br />
-                            
-            </div>
-        </div>
+        </div >
     )
 }
 
