@@ -5,6 +5,7 @@ import UserContext from "../../user/UserContext";
 import { setMyLibraryByUsername, getMyLibraryByUsername } from "../../api/userAPI"
 import Rating from '@mui/material/Rating';
 import { leaveBookRating } from "../../api/bookAPI";
+import { Alert } from "react-bootstrap";
 
 
 const LoginModal = (props) => {
@@ -12,6 +13,7 @@ const LoginModal = (props) => {
     let { username } = useContext(UserContext)
     
     const [value, setValue] = useState(2);
+    const [ratingSuccess, setRatingSuccess] = useState(null);
 
     
     const leaveRating = async () => {
@@ -20,8 +22,11 @@ const LoginModal = (props) => {
             newRating: value
         }
 
-        const res = await leaveRating(body, selectedBook.title);
-        console.log(res);
+        setRatingSuccess(null);
+
+        const res = await leaveBookRating(body, selectedBook.title);
+        setRatingSuccess(res.message);
+
     }
 
     const removeBookFromLibrary = async () => {
@@ -56,7 +61,12 @@ const LoginModal = (props) => {
                     }}
                     />
             </div>
-            <Button onClick={leaveRating}>Leave Rating</Button>
+            <div>
+                <Button onClick={leaveRating}>Leave Rating</Button>
+            </div>
+            <div style={{ paddingTop: "20px", width: "270px"}}>
+                {ratingSuccess && <Alert variant="success">{ratingSuccess}</Alert>}
+            </div>
             <div style={{ display: "flex", justifyContent:'center'}}>
                 <div style={{ paddingTop: "50px" }}>
                     <Button variant='danger' onClick={removeBookFromLibrary}>Remove Book</Button>

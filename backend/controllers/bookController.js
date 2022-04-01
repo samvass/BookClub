@@ -218,6 +218,7 @@ exports.rejectBookRecommendation = async (req, res, next) => {
 
 
 exports.setBookRating = async (req, res, next) => {
+
   const bookName = req.params.bookName;
   const book = await Book.findOne({ title: bookName });
 
@@ -229,15 +230,20 @@ exports.setBookRating = async (req, res, next) => {
   const newRatingCount = ratingCount + 1;
 
   // get new rating average
-  const newRating = Math.round((incomingRating + (currentRating * ratingCount)) / newRatingCount);
 
-  Book.updateOne(
+  // when displaying the rating, you will round it but not in the db
+  const newRating = (incomingRating + (currentRating * ratingCount)) / newRatingCount;
+
+
+  await Book.updateOne(
     { title: bookName },
     { $set: { rating: newRating, ratingCount: newRatingCount } }
   );
 
+  const updatedBook = await Book.findOne({ title: bookName });
+
   return res.status(200).json({
-    message: "book rating has been updated successfully",
+    message: "Thank you for your rating!",
   });
 
 }
