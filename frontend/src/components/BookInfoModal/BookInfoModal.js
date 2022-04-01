@@ -22,7 +22,8 @@ const LoginModal = (props) => {
             newRating: value
         }
 
-        await leaveRating(body, selectedBook.title);
+        const res = await leaveRating(body, selectedBook.title);
+        console.log(res);
     }
 
     const removeBookFromLibrary = async () => {
