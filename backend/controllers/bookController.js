@@ -98,17 +98,19 @@ exports.getBookRecommendationByGenre = (req, res, next) => {
   // get one of the genres of the user
   const bookGenre = req.params.genre;
 
+  // generate random index between 0 and 39
+  let index = Math.floor(Math.random() * 40);
+  // console.log("Index", index);
+
   books.search(bookGenre, options, function (error, results, apiResponse) {
-    // generate random index between 0 and 39
-    let index = Math.floor(Math.random() * 40);
-    let k = 0;
     let shownBook = results[index];
+    let n = 0;
     // if retrieved book doesnt have a description, get a new one
     while (!shownBook || !shownBook.description || !shownBook.title || !shownBook.categories || !shownBook.thumbnail) {
       index = (index + 1) % 40;
-      k += 1;
+      n += 1;
       // avoid infinite loop
-      if (k == 40) break;
+      if (n == 40) break;
       shownBook = results[index];
     }
 

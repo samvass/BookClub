@@ -46,16 +46,18 @@ const HomePage = () => {
         }
 
         console.log(book);
-        const title = book.title;
-        const thumbnail = book.thumbnail;
-        const description = book.description;
-        let author = "";
-        if (book.authors && book.authors.length > 0) {
-            author = book.authors[0];
-        }
-        const genre = book.categories;
+        if (book != null) {
+            const title = book.title;
+            const thumbnail = book.thumbnail;
+            const description = book.description;
+            let author = "";
+            if (book.authors && book.authors.length > 0) {
+                author = book.authors[0];
+            }
+            const genre = book.categories;
 
-        setDisplayBook(description, title, author, genre, thumbnail);
+            setDisplayBook(description, title, author, genre, thumbnail);
+        }
     }
 
     const setDisplayBook = (description, title, author, genre, thumbnail) => {
@@ -91,7 +93,7 @@ const HomePage = () => {
 
     const undoRejection = () => {
         setRejectedBooks((rejectedBooks) => {
-            const {description, title, author, genre, thumbnail} = rejectedBooks.pop();
+            const { description, title, author, genre, thumbnail } = rejectedBooks.pop();
             setDisplayBook(description, title, author, genre, thumbnail);
             return rejectedBooks;
         })

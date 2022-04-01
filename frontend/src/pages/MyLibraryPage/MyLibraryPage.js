@@ -43,7 +43,9 @@ const MyLibraryPage = () => {
         
         let userGenres = books.myLibrary.map(book => {
             return book.genre[0];
-        })
+        }).filter((value, index, self) => {
+            return self.indexOf(value) === index;
+        });
         userGenres.unshift("all");
         setUserGenres(userGenres);
 
