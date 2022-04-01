@@ -1,12 +1,30 @@
 import './BookDescription.css';
 
 import Rating from '@mui/material/Rating';
+import { useState, useEffect } from 'react';
+import { withTheme } from '@emotion/react';
 
-const BookDescription = props => {
+const BookDescription = (props) => {
 
+    var sectionStyle = {
+        width: "473px",
+        height: "618px",
+        display: "block",
+        marginRight: "auto",
+        marginLeft: "auto",
+        boxShadow: "4px 4px 12px 6px rgba(0, 0, 0, 0.25)",
+        borderRadius: "20px",
+        //backgroundImage: `url(${props.thumbnail})`,
+        backgroundColor: "black",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+        filter: "blur(0px)",
+    }
 
     return (
-        <div className="book-desc">
+        <div style={sectionStyle}>
+            <div style={{}}>
             <br />
             <div className="title">
                 {props.title}
@@ -32,12 +50,14 @@ const BookDescription = props => {
             <div style={{display: "flex", justifyContent: "center", paddingTop: "20px"}}>
                 <Rating name="read-only" value={props.rating} readOnly />
             </div>
-            <div style={{display: "flex", justifyContent: "center", padding: "5px"}}>
+            <div style={{display: "flex", justifyContent: "center", padding: "5px", color: "white"}}>
                 {props.errorMessage && <div>{props.errorMessage}</div>}
                 {!props.errorMessage && <div>Based on {props.ratingCount} ratings</div>}
             </div>
 
             <br />
+                            
+            </div>
         </div>
     )
 }

@@ -135,6 +135,7 @@ const HomePage = () => {
                     </div>
 
                     <BookDescription
+                        thumbnail={bookThumbnail}
                         title={bookTitle}
                         author={bookAuthor}
                         genres={bookGenres}

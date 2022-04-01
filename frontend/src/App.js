@@ -16,6 +16,7 @@ import SessionProvider from "./session/SessionProvider";
 const App = () => {
 
     return (
+        <div>
         <div className="App">
             <SessionProvider>
                 <UserProvider>
@@ -35,6 +36,8 @@ const App = () => {
                     </Router>
                 </UserProvider>
             </SessionProvider>
+        </div>
+        <div className='spacer'></div>
         </div >
     );
 }
