@@ -1,6 +1,8 @@
 import { useEffect, useState, useContext } from 'react';
 import { getBookByGenre, getBookByName } from '../../api/bookAPI';
 import { getPreferencesByUsername } from "../../api/userAPI"
+import { getBookByNameInDatabase } from '../../api/bookAPI';
+
 
 import "./HomePage.css"
 import ArrowUp from '../../components/ArrowUp/ArrowUp';
@@ -23,9 +25,31 @@ const HomePage = () => {
     const [isFlipped, setIsFlipped] = useState(false);
     const [rejectedBooks, setRejectedBooks] = useState([]);
 
+    const [rating, setRating] = useState(null);
+    const [ratingCount, setRatingCount] = useState(0);
+    const [errorMessage, setErrorMessage] = useState(null);
+
     useEffect(async () => {
         displayBook()
     }, [])
+
+
+    useEffect(async ()=> {
+        // get the rating of the book
+        const res = await getBookByNameInDatabase(bookTitle);
+
+        if (res.error){
+            console.log(res.error)
+            setErrorMessage(res.error);
+        }
+
+        else {
+            setErrorMessage(null);
+            setRatingCount(res.book.ratingCount);
+            setRating(res.book.rating);
+        }
+
+    }, [bookTitle]);
 
 
     const displayBook = async () => {
@@ -115,6 +139,9 @@ const HomePage = () => {
                         author={bookAuthor}
                         genres={bookGenres}
                         description={bookDescription}
+                        rating={rating}
+                        ratingCount={ratingCount}
+                        errorMessage={errorMessage}
                     />
                 </ReactCardFlip>
             </div>}

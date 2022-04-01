@@ -8,6 +8,8 @@ const auth = require("./middleware/auth");
 // load book by name
 router.get('/get/:bookName', bookController.getBookByName);
 
+router.get('/get/db/:bookName', bookController.getBookByNameInDatabase);
+
 // get book recommendation
 router.get('/get', auth.isLoggedIn, bookController.getBookRecommendation);
 

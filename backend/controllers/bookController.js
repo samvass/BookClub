@@ -247,3 +247,23 @@ exports.setBookRating = async (req, res, next) => {
   });
 
 }
+
+exports.getBookByNameInDatabase = async (req, res, next) => {
+  const bookName = req.params.bookName;
+
+  // search the book db
+  const book = await Book.findOne({title: bookName});
+
+  if (book && book.rating != 0) {
+    return res.status(200).json({
+      book: book,
+      error: null
+    })
+  }
+
+  return res.status(404).json({
+    book: null,
+    error: "This book has no ratings yet"
+  })
+
+}
