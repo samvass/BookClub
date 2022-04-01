@@ -15,14 +15,14 @@ const BookDescription = props => {
             </div>
 
             <div className="genres">
-                {props.genres.map((genre) => {
+                {props.genres && props.genres.map((genre) => {
                     return <div className='genre'>{genre}</div>
                 })}
             </div>
             <br />
 
             <div className="description">
-                {props.description.length > 800 ? props.description.substring(0, 250) + " ..." : props.description}
+                {props.description && props.description.length > 800 ? props.description.substring(0, 250) + " ..." : props.description}
                 {/* {props.description.length > 800 ? console.log(props.description.substring(0, 250) + " ...") : console.log(props.description)} */}
             </div>
 

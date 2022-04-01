@@ -54,7 +54,7 @@ export const rejectBook = async (body, sessionID) => {
     return await apiPost(endpoint, body, sessionID);
 }
 
-export const leaveRating = async (body, bookName) => {
-    let endpoint = apiURL + "/books/set/rating" + bookName;
+export const leaveBookRating = async (body, bookName) => {
+    let endpoint = apiURL + "/books/set/rating/" + bookName;
     return await apiPost(endpoint, body);
 }

@@ -4,7 +4,8 @@ import { getPreferencesByUsername } from "../../api/userAPI"
 
 import "./HomePage.css"
 import ArrowUp from '../../components/ArrowUp/ArrowUp';
-import ArrowDown from "../../components/ArrowDown/ArrowDown"
+import ArrowDown from "../../components/ArrowDown/ArrowDown";
+import UndoButton from '../../components/ArrowDown/UndoButton';
 import UserContext from '../../user/UserContext';
 import BookDescription from '../../components/BookDescription/BookDescription';
 
@@ -20,6 +21,7 @@ const HomePage = () => {
     const [bookThumbnail, setBookThumbnail] = useState(null);
     const [showInfo, setShowInfo] = useState(false);
     const [isFlipped, setIsFlipped] = useState(false);
+    const [rejectedBooks, setRejectedBooks] = useState([]);
 
     useEffect(async () => {
         displayBook()
@@ -31,8 +33,6 @@ const HomePage = () => {
         if (username !== "") {
             const userGenres = await getPreferencesByUsername(username)
             shownGenre = userGenres.data[Math.floor(Math.random() * userGenres.data.length)]
-            console.log(shownGenre)
-
         }
 
         let response;
@@ -41,10 +41,9 @@ const HomePage = () => {
             response = await getBookByGenre(shownGenre);
             book = response.data.book;
         } else {
-            response = await getBookByName("Cat in the hat");
+            response = await getBookByName("Plato's Sun");
             book = response.data.book[0];
         }
-
 
         console.log(book);
         const title = book.title;
@@ -56,6 +55,10 @@ const HomePage = () => {
         }
         const genre = book.categories;
 
+        setDisplayBook(description, title, author, genre, thumbnail);
+    }
+
+    const setDisplayBook = (description, title, author, genre, thumbnail) => {
         setbookDescription(description)
         setBookTitle(title);
         setBookAuthor(author);
@@ -71,6 +74,27 @@ const HomePage = () => {
     const noHoverShowInfo = () => {
         //setShowInfo(false)
         setIsFlipped(false)
+    }
+
+    const saveRejectedBook = () => {
+        setRejectedBooks((rejectedBooks) => {
+            rejectedBooks.push({
+                description: bookDescription,
+                title: bookTitle,
+                author: bookAuthor,
+                genre: bookGenres,
+                thumbnail: bookThumbnail
+            })
+            return rejectedBooks;
+        })
+    }
+
+    const undoRejection = () => {
+        setRejectedBooks((rejectedBooks) => {
+            const {description, title, author, genre, thumbnail} = rejectedBooks.pop();
+            setDisplayBook(description, title, author, genre, thumbnail);
+            return rejectedBooks;
+        })
     }
 
     return <div>
@@ -93,7 +117,8 @@ const HomePage = () => {
                 </ReactCardFlip>
             </div>}
         <br />
-        <ArrowDown displayBook={displayBook} />
+        <ArrowDown displayBook={displayBook} callback={saveRejectedBook} />
+        {rejectedBooks.length !== 0 && <UndoButton callback={undoRejection} />}
     </div>
 }
 

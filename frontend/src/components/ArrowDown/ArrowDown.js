@@ -24,6 +24,7 @@ const ArrowDown = props => {
         };
 
         const response = await rejectBook(body, session);
+        props.callback();
         props.displayBook();
     }
 

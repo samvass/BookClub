@@ -37,14 +37,15 @@ const MyLibraryPage = () => {
 
         Aos.init({ duration: 500 })
 
-        const res = await getPreferencesByUsername(username, session);
-        const userGenres = res.data;
-        userGenres.unshift("all");
-        setUserGenres(userGenres);
-
         const books = await getMyLibraryByUsername(username)
         setUserBooks(books.myLibrary)
         setSelectedBooks(books.myLibrary)
+        
+        let userGenres = books.myLibrary.map(book => {
+            return book.genre[0];
+        })
+        userGenres.unshift("all");
+        setUserGenres(userGenres);
 
         const rbooks = await getMyReadBookByUsername(username)
         setReadBooks(rbooks.myList)
@@ -56,7 +57,7 @@ const MyLibraryPage = () => {
     const updateFilter = (event) => {
         const newSelectedGenre = event.target.value;
         setSelectedGenre(newSelectedGenre);
-        const filteredBooks = userBooks.filter(book => newSelectedGenre == "all" ? true : book.genre[0].toLowerCase().replace(/\s/g, '').includes(newSelectedGenre.toLowerCase().replace(/\s/g, '')))
+        const filteredBooks = userBooks.filter(book => newSelectedGenre == "all" ? true : book.genre[0].includes(newSelectedGenre))
         setSelectedBooks(filteredBooks);
     }
 
@@ -85,8 +86,8 @@ const MyLibraryPage = () => {
     return (
         <div className="myLibrary">
             <h1 className="myLibraryTitle">My Library</h1>
-            <div>
-                <select className="dropDown" value={selectedGenre} onChange={updateFilter}>
+            <div className="bookFilter">
+                <select value={selectedGenre} onChange={updateFilter}>
                     {userGenres.map(genre => <option key={genre} value={genre}>{genre}</option>)}
                 </select>
             </div>
