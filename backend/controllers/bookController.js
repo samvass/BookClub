@@ -27,8 +27,6 @@ exports.getBookByName = (req, res, next) => {
         error = "Book not found";
       } else {
         // adjust size of the thumbnail
-        const newURL = results[0].thumbnail.replace("zoom=1", "zoom=3");
-        results[0].thumbnail = newURL;
       }
       return res.status(200).send({
         data: {
@@ -106,18 +104,15 @@ exports.getBookRecommendationByGenre = (req, res, next) => {
 
   books.search(bookGenre, options, function (error, results, apiResponse) {
     let shownBook = results[index];
-    console.log("orig " + index)
-    console.log(shownBook)
-
+    let n = 0;
     // if retrieved book doesnt have a description, get a new one
-    while (!shownBook.description || !shownBook.title) {
-      console.log("Finding new book")
-      index = Math.floor(Math.random() * 40);
-      console.log("new " + index)
-      shownBook = results[index + 1];
-      console.log(shownBook)
+    while (!shownBook || !shownBook.description || !shownBook.title || !shownBook.categories || !shownBook.thumbnail) {
+      index = (index + 1) % 40;
+      n += 1;
+      // avoid infinite loop
+      if (n == 40) break;
+      shownBook = results[index];
     }
-
 
     if (!error) {
       // console.log(results.length);
@@ -231,14 +226,14 @@ exports.setBookRating = async (req, res, next) => {
   const incomingRating = req.body.newRating;
 
   const ratingCount = book.ratingCount;
-  const newRatingCount = ratingCount+1;
+  const newRatingCount = ratingCount + 1;
 
   // get new rating average
-  const newRating = round((incomingRating + (currentRating*ratingCount)) / newRatingCount);
+  const newRating = Math.round((incomingRating + (currentRating * ratingCount)) / newRatingCount);
 
   Book.updateOne(
-    {title: bookName},
-    {$set: {rating: newRating, ratingCount: newRatingCount}}
+    { title: bookName },
+    { $set: { rating: newRating, ratingCount: newRatingCount } }
   );
 
   return res.status(200).json({

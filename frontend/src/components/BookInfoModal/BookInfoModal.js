@@ -4,9 +4,7 @@ import Modal from "../../components/modal/Modal"
 import UserContext from "../../user/UserContext";
 import { setMyLibraryByUsername, getMyLibraryByUsername } from "../../api/userAPI"
 import Rating from '@mui/material/Rating';
-import { leaveRating } from "../../api/bookAPI";
-
-
+import { leaveBookRating } from "../../api/bookAPI";
 
 
 const LoginModal = (props) => {

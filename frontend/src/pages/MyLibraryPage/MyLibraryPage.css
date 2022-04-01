@@ -36,10 +36,6 @@
     cursor: pointer;
 }
 
-.dropDown {
-    margin-left: 700px;
-}
-
 .readButton {
     background-color: rgb(34, 199, 89);
     color:  black;
@@ -50,4 +46,10 @@
     background-color: rgb(197, 39, 39);
     color:  black;
     font-family: 'lobster' ;
+}
+
+.bookFilter {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
 }
