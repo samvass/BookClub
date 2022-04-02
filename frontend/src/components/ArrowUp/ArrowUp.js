@@ -1,10 +1,9 @@
-import { FiArrowUpCircle } from 'react-icons/fi';
-import "./ArrowUp.css"
-
 import { acceptBook } from '../../api/bookAPI';
 import { useState, useContext } from 'react';
 import { AwesomeButton } from 'react-awesome-button';
+
 import "react-awesome-button/dist/styles.css";
+import "./ArrowUp.css"
 
 import LoginModal from "../../pages/LoginModal/LoginModal"
 import UserContext from "../../user/UserContext"
@@ -16,10 +15,6 @@ const ArrowUp = (props) => {
     const { session } = useContext(SessionContext)
 
     const [showLoginPopup, setShowLoginPopup] = useState(false);
-
-    const closeLoginModalHandler = () => {
-        setShowLoginPopup(false)
-    }
 
     const arrowUpHandler = async () => {
 
@@ -42,14 +37,15 @@ const ArrowUp = (props) => {
         props.displayBook();
     }
 
-    return (<div>
-        <div onClick={arrowUpHandler} className="arrow">
-            <AwesomeButton type="primary" size="large">
-                ACCEPT
-            </AwesomeButton>
-        </div>
-        {showLoginPopup && <LoginModal onCloseModal={closeLoginModalHandler} />}
-    </div>)
+    return (
+        <>
+            <div onClick={arrowUpHandler} className="arrow">
+                <AwesomeButton type="primary" size="large">
+                    ACCEPT
+                </AwesomeButton>
+            </div>
+            {showLoginPopup && <LoginModal onCloseModal={() => { setShowLoginPopup(false) }} />}
+        </>)
 }
 
 export default ArrowUp

@@ -52,7 +52,7 @@ const LoginModal = (props) => {
 
     return (<Modal onClosePasswordChange={props.onCloseModal}>
         <div style={{ "width": 600, "margin": "0 auto", "marginTop": 0 }}>
-            <h3>You must login to add a book to your library</h3>
+            <h2>Login</h2>
             <Form.Group className="mb-3" controlId="formBasicUsername">
                 <Form.Label>Enter Username</Form.Label>
                 <Form.Control type="text" onChange={(event) => setEnteredUsername(event.target.value)} />

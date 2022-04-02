@@ -1,11 +1,11 @@
 import { useState, useContext } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { login, deleteAccount } from "../../api/userAPI"
+import { useNavigate } from 'react-router-dom';
 
 import UserContext from '../../user/UserContext';
 import SessionContext from "../../session/SessionContext"
 import Modal from "../modal/Modal";
-import { useNavigate } from 'react-router-dom';
 
 const DeleteAccountModal = (props) => {
     const { session, setSession } = useContext(SessionContext)
@@ -35,18 +35,19 @@ const DeleteAccountModal = (props) => {
         }
     }
 
-    return (<Modal onClosePasswordChange={props.setModalClose}>
-        <h2>Delete Account</h2>
-        <div>
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Enter your password</Form.Label>
-                <Form.Control type="password" onChange={(event) => setEnteredPassword(event.target.value)} />
-            </Form.Group>
-            {errors !== "" && <Alert variant="danger" style={{ "marginTop": 20 }} key={errors}>{errors}</Alert>}
-            <Button variant="light" onClick={props.setModalClose}>Cancel</Button>
-            <Button variant="danger" onClick={deleteAccountHandler}>Confirm</Button>
-        </div>
-    </Modal >)
+    return (
+        <Modal onClosePasswordChange={props.setModalClose}>
+            <h2>Delete Account</h2>
+            <div>
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Label>Enter your password</Form.Label>
+                    <Form.Control type="password" onChange={(event) => setEnteredPassword(event.target.value)} />
+                </Form.Group>
+                {errors !== "" && <Alert variant="danger" style={{ "marginTop": 20 }} key={errors}>{errors}</Alert>}
+                <Button variant="light" onClick={props.setModalClose}>Cancel</Button>
+                <Button variant="danger" onClick={deleteAccountHandler}>Confirm</Button>
+            </div>
+        </Modal >)
 }
 
 export default DeleteAccountModal;
