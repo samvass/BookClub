@@ -1,69 +1,51 @@
 import "./MyAccountPage.scss"
 import { useEffect, useState, useContext } from "react"
-import { Navigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import { getPreferencesByUsername, getUserByUserName } from "../../api/userAPI"
+
 import PasswordChangeModal from "../PasswordChangeModal/PasswordChangeModal"
-import ConfirmationModal from "../../components/modal/ConfirmationModal"
-import { getPreferencesByUsername, getUserByUserName, deleteAccount } from "../../api/userAPI"
+import DeleteAccountModal from "../../components/DeleteAccountModal/DeleteAccountModal"
 import UserContext from '../../user/UserContext';
 import SessionContext from "../../session/SessionContext"
 
 
 const MyAccountPage = () => {
-    const { username, setUsername } = useContext(UserContext);
-    const { session, setSession } = useContext(SessionContext)
+    const { username } = useContext(UserContext);
+    const { session } = useContext(SessionContext)
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState("");
     const [selectedGenres, setSelectedGenres] = useState([])
     const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
     const [deleteAccountOpen, setDeleteAccountOpen] = useState(false);
-    const [redirect, setRedirect] = useState(false)
 
 
     useEffect(async () => {
-        if (username !== "") {
-            console.log(username)
-            console.log(session)
-            const incomingUserData = await getUserByUserName(username);
-
-            console.log(incomingUserData)
-            setEmail(incomingUserData.user.email)
-
-            const incomingPreferences = await getPreferencesByUsername(username)
-            setSelectedGenres(incomingPreferences.data)
+        if (username === "") {
+            navigate("/login")
         }
+        console.log(username)
+        console.log(session)
+        const incomingUserData = await getUserByUserName(username);
+
+        console.log(incomingUserData)
+        setEmail(incomingUserData.user.email)
+
+        const incomingPreferences = await getPreferencesByUsername(username)
+        setSelectedGenres(incomingPreferences.data)
     }, [])
-
-    const openPasswordChanger = () => {
-        setIsChangePasswordOpen(true);
-    }
-
-    const closePasswordChanger = () => {
-        setIsChangePasswordOpen(false);
-    }
-
 
     const displaySelectedGenres = selectedGenres.map((genre, index) => {
         return <div className="selected-item" key={index}>{genre}</div>
     })
 
-    const deleteAccountHanlder = async () => {
-        await deleteAccount({}, session);
-        setUsername("");
-        setSession("");
-        return <Navigate to="/signup" />
-    }
-
-    const changeGenresHandler = () => {
-        setRedirect(true)
-    }
-
     return (
         <div className="text">
-            {username === "" ? <Navigate to="/login" /> : <div className="page">
+            <div className="page">
                 <div className="preferences">
                     <div className="display-properly">
                         <h1>Genres</h1>
-                        <button className="password-button" id="password-button" onClick={changeGenresHandler}>Change Genres</button>
+                        <button className="password-button" id="password-button" onClick={() => { navigate("/setPreferences") }}>Change Genres</button>
                     </div>
                     <div className="selected-items">
                         {displaySelectedGenres}
@@ -79,13 +61,12 @@ const MyAccountPage = () => {
                         <h3>Username</h3>
                         <h4>{username}</h4>
                     </div>
-                    <button className="password-button" onClick={openPasswordChanger}>Change Password</button>
+                    <button className="password-button" onClick={() => { setIsChangePasswordOpen(true) }}>Change Password</button>
                     <button className="password-button" onClick={() => setDeleteAccountOpen(true)}>Delete Account</button>
                 </div>
-            </div>}
-            {isChangePasswordOpen && <PasswordChangeModal onClosePasswordChange={closePasswordChanger} />}
-            {deleteAccountOpen && <ConfirmationModal confirmCallback={deleteAccountHanlder} setModalClose={() => setDeleteAccountOpen(false)} title="Delete Account" />}
-            {redirect && <Navigate to="/setPreferences" />}
+            </div>
+            {isChangePasswordOpen && <PasswordChangeModal onClosePasswordChange={() => { setIsChangePasswordOpen(false) }} />}
+            {deleteAccountOpen && <DeleteAccountModal setModalClose={() => setDeleteAccountOpen(false)} />}
         </div>
     )
 

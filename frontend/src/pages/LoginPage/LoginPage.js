@@ -56,7 +56,7 @@ const LoginPage = () => {
     return <div>
         <div style={{ "width": 600, "margin": "0 auto", "marginTop": 30 }}>
             {username !== "" ? <Navigate to="/" /> : <div><Form>
-                <Form.Group className="mb-3" controlId="formBasicUsername">
+                <Form.Group className="mb-3 input-lg" controlId="formBasicUsername">
                     <Form.Label>Username</Form.Label>
                     <Form.Control type="text" onChange={(event) => setEnteredUsername(event.target.value)} />
                 </Form.Group>

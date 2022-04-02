@@ -137,6 +137,7 @@ const HomePage = () => {
             </div >}
         <br />
         <ArrowDown displayBook={displayBook} callback={saveRejectedBook} />
+        <br></br>
         {rejectedBooks.length !== 0 && <UndoButton callback={undoRejection} />}
     </div >
 }

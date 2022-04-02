@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import NavigationBar from "./components/navigationBar";
 import CreateAccountPage from "./pages/CreateAccountPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import HomePage from "./pages//HomePage/HomePage";
@@ -17,27 +16,27 @@ const App = () => {
 
     return (
         <div>
-        <div className="App">
-            <SessionProvider>
-                <UserProvider>
-                    <Router>
-                        <NavBar />
-                        <div>
-                            <Routes>
-                                <Route path='/myLibrary' element={<MyLibraryPage />} />
-                                <Route path='/myAccount' element={<MyAccountPage />} />
-                                <Route path='/setPreferences' element={<SelectPreferencesPage />} />
-                                <Route path='/signup' element={<CreateAccountPage />} />
-                                <Route path='/login' element={<LoginPage />} />
-                                <Route path='/logout' element={<LogoutPage />} />
-                                <Route path='/' element={<HomePage />} />
-                            </Routes>
-                        </div>
-                    </Router>
-                </UserProvider>
-            </SessionProvider>
-        </div>
-        <div className='spacer'></div>
+            <div className="App">
+                <SessionProvider>
+                    <UserProvider>
+                        <Router>
+                            <NavBar />
+                            <div>
+                                <Routes>
+                                    <Route path='/myLibrary' element={<MyLibraryPage />} />
+                                    <Route path='/myAccount' element={<MyAccountPage />} />
+                                    <Route path='/setPreferences' element={<SelectPreferencesPage />} />
+                                    <Route path='/signup' element={<CreateAccountPage />} />
+                                    <Route path='/login' element={<LoginPage />} />
+                                    <Route path='/logout' element={<LogoutPage />} />
+                                    <Route path='/' element={<HomePage />} />
+                                </Routes>
+                            </div>
+                        </Router>
+                    </UserProvider>
+                </SessionProvider>
+            </div>
+            <div className='spacer'></div>
         </div >
     );
 }
