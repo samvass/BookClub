@@ -20,15 +20,15 @@ export default function BasicSpeedDial() {
 
     if (username === "") {
         actions = [
-            { icon: <AiOutlineHome />, name: 'Home', link: "/" },
-            { icon: <CgLogIn />, name: 'Login', link: "/login" },
+            { icon: <AiOutlineHome size={30} />, name: 'Home', link: "/" },
+            { icon: <CgLogIn size={30} />, name: 'Login', link: "/login" },
         ];
     } else {
         actions = [
-            { icon: <AiOutlineHome />, name: 'Home', link: "/" },
-            { icon: <ImBooks />, name: 'My Library', link: "/mylibrary" },
-            { icon: <FiSettings />, name: 'My Account', link: "/myaccount" },
-            { icon: <CgLogOut />, name: 'Log Out', link: "/logout" },
+            { icon: <AiOutlineHome size={30} />, name: 'Home', link: "/" },
+            { icon: <ImBooks size={30} />, name: 'My Library', link: "/mylibrary" },
+            { icon: <FiSettings size={30} />, name: 'My Account', link: "/myaccount" },
+            { icon: <CgLogOut size={30} />, name: 'Log Out', link: "/logout" },
         ];
     }
 
