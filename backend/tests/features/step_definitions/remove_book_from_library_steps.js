@@ -20,23 +20,20 @@ When("user {string} removes the {string} book", (string, string2) => {
 Then(
   "user {string} will no longer see {string} in their library",
   async (string, string2) => {
-    let user = await User.findOne({ username: string });
     let book = await Book.findOne({ title: string2 });
-    console.log(book);
-    console.log(book._id);
 
     // data.removedbook = book;
 
     await request(app)
       .post("/users/set/myLibrary/" + string)
       .set("Accept", "application/json")
-      .send(book);
+      .send({
+        removedBook: book
+      });
 
-    console.log(user + "~~~~~~~~~~~~~~~");
-    //let user = await User.findOne({ username: string });
+    let user = await User.findOne({ username: string });
 
-    //assert(user.myLibrary.includes(book._id) == false);
-    //assert(book == null);
+    assert(user.myLibrary.includes(book._id) == false);
   }
 );
 

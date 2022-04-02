@@ -13,9 +13,3 @@ When a user requests the details of the book with title "Software Engineering at
 Then the following book information is generated
 | title                          | author          | publisher      | published_date |
 | Software Engineering at Google | Titus Winters   | O'Reilly Media | 2020-02-28     |
-
-Scenario: Book details unavailable (Alternate Flow)
-
-Given the book with title "!:?$%^&*" is unavailable in the BookClub system
-When a user requests the details of the book with title "!:?$%^&*"
-Then the error message "Book not found" is generated

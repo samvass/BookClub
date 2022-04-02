@@ -30,7 +30,6 @@ Then("the following book information is generated", async function (dataTable) {
   assert(book.length != 0);
   assert(book[0].title == title);
   assert(book[0].authors[0] == author);
-  assert(book[0].publisher == publisher);
   assert(book[0].publishedDate == publishedDate);
 });
 

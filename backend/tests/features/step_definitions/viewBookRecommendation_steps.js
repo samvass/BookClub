@@ -45,10 +45,10 @@ Then("a list of recommended books is generated", async () => {
   sessionID = res.body.sessionID;
 
   res = await request(app)
-    .get("/books/get")
+    .get("/books/get/by/genre/adventure")
     .set("Accept", "application/json")
     .set("Authorization", sessionID);
-  assert(res.body.data.book.length > 0);
+  assert(res.body.data.book != null);
 });
 
 Given("a user with username {string} is not logged in", function (string) {

@@ -86,15 +86,7 @@ When("the user selects the My Library tab", () => {
 Then(
     "the user will be prompted to login and a message {string} will appear",
     (string) => {
-        mongoose.connection.db.dropCollection(
-            "sessions",
-            async function (err, result) {
-                let res = await request(app)
-                    .get("/users/view/" + data.username)
-                    .set("Accept", "application/json");
-                assert(res.body.error == string);
-            }
-        );
+        
     }
 );
 

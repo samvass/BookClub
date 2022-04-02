@@ -5,7 +5,7 @@
 # So that I can be suggested books that are more tailored to me
 
 # Background:
-#     Given the user with username "test456", password "$Pickles1212", and email "test456@gmail.com" exists in the system
+#     Given the user with username "test45623443", password "$Pickles1212", and email "test45623443@gmail.com" exists in the system
 #     And the user is on the update preferences page
 
 # Scenario: Update preferences (Normal Flow)

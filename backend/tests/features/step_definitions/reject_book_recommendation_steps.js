@@ -44,6 +44,6 @@ Then(
     let user = await User.findOne({ username: string2 });
     let book = await Book.findOne({ title: string });
     // console.log("assert---", user.myLibrary)
-    assert(user.myLibrary.includes(book._id) == false);
+    assert(book == null || user.myLibrary.includes(book._id) == false);
   }
 );

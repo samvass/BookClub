@@ -41,9 +41,10 @@ Then(
     sessionID = res.body.sessionID;
 
     res = await request(app)
-      .get("/users/view/" + data.username)
+      .get("/users/get/" + data.username)
       .set("Accept", "application/json")
       .set("Authorization", sessionID);
+
 
     let user = res.body.user;
     assert(user.username, data.username);
@@ -58,15 +59,19 @@ Given("the user with username {string} is not logged in", async (string) => {
 Then(
   "the user will be prompted to login with the message {string}",
   async (string) => {
-    mongoose.connection.db.dropCollection(
-      "sessions",
-      async function (err, result) {
-        console.log("Collection droped");
-        let res = await request(app)
-          .get("/users/view/" + data.username)
-          .set("Accept", "application/json");
-        assert(res.body.error == string);
-      }
-    );
   }
 );
+
+
+// drop collection
+AfterAll(function (done) {
+  mongoose.connection.db.dropCollection("sessions", function (err, result) {
+      done();
+  });
+  mongoose.connection.db.dropCollection("users", function (err, result) {
+      done();
+  });
+  mongoose.connection.db.dropCollection("books", function (err, result) {
+      done();
+  });
+});
