@@ -3,7 +3,8 @@ import { getMyLibraryByUsername, getPreferencesByUsername, markBookAsRead, getMy
 import { getBookByName } from "../../api/bookAPI"
 import { Button, Modal, Form } from 'react-bootstrap';
 import { BsFillPencilFill, BsFillStarFill } from 'react-icons/bs';
-import { Navigate } from "react-router-dom"
+import { useNavigate } from 'react-router-dom';
+
 
 import Aos from 'aos'
 import 'aos/dist/aos.css'
@@ -13,26 +14,31 @@ import woodshelf from "../../images/woodshelf.png"
 import UserContext from "../../user/UserContext"
 import SessionContext from "../../session/SessionContext"
 import BookInfoModal from "../../components/BookInfoModal/BookInfoModal"
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 
 const MyLibraryPage = () => {
     const { username } = useContext(UserContext);
     const { session } = useContext(SessionContext);
+    const navigate = useNavigate();
 
     const [userBooks, setUserBooks] = useState([])
     const [userGenres, setUserGenres] = useState([])
     const [selectedBooks, setSelectedBooks] = useState([])
     const [readBooks, setReadBooks] = useState([])
     const [unreadBooks, setUnReadBooks] = useState([])
-    const [selectedGenre, setSelectedGenre] = useState("all")
-    const [redirect, setRedirect] = useState(false)
+    const [selectedGenre, setSelectedGenre] = useState("")
     const [showRemoveBook, setShowRemoveBook] = useState(false);
     const [curBook, setCurBook] = useState(null);
 
 
     useEffect(async () => {
         if (username === "") {
-            setRedirect(true)
+            navigate("/login");
         }
 
         Aos.init({ duration: 500 })
@@ -40,7 +46,7 @@ const MyLibraryPage = () => {
         const books = await getMyLibraryByUsername(username)
         setUserBooks(books.myLibrary)
         setSelectedBooks(books.myLibrary)
-        
+
         let userGenres = books.myLibrary.map(book => {
             return book.genre[0];
         }).filter((value, index, self) => {
@@ -89,9 +95,21 @@ const MyLibraryPage = () => {
         <div className="myLibrary">
             <h1 className="myLibraryTitle">My Library</h1>
             <div className="bookFilter">
-                <select value={selectedGenre} onChange={updateFilter}>
-                    {userGenres.map(genre => <option key={genre} value={genre}>{genre}</option>)}
-                </select>
+                <Box sx={{ minWidth: 120 }}>
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Genre</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={selectedGenre}
+                            defaultValue="All"
+                            label="Genre"
+                            onChange={updateFilter}
+                        >
+                            {userGenres.map(genre => <MenuItem key={genre} value={genre}>{genre}</MenuItem>)}
+                        </Select>
+                    </FormControl>
+                </Box>
             </div>
 
             {selectedBooks.map((row, index) => {
