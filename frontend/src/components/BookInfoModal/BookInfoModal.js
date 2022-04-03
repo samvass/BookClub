@@ -1,7 +1,7 @@
 import { useContext, useState } from "react"
 import { Button, Alert } from 'react-bootstrap';
 import { leaveBookRating } from "../../api/bookAPI";
-import { setMyLibraryByUsername, getMyLibraryByUsername, markBookAsRead, markBookAsUnRead, } from "../../api/userAPI"
+import { setMyLibraryByUsername, getMyLibraryByUsername, getMyReadBookByUsername, markBookAsRead, markBookAsUnRead, } from "../../api/userAPI"
 
 import Modal from "../../components/modal/Modal"
 import UserContext from "../../user/UserContext";
@@ -51,6 +51,11 @@ const LoginModal = (props) => {
             title: rtitle,
         };
         const response = await markBookAsRead(username, body);
+
+        setTimeout(async () => {
+            const myReadingList = await getMyReadBookByUsername(username)
+            props.updateReadingList(myReadingList.myList)
+        }, 100)
     }
 
     const markAsUnread = async (urtitle) => {
@@ -58,6 +63,11 @@ const LoginModal = (props) => {
             title: urtitle,
         };
         const response = await markBookAsUnRead(username, body);
+
+        setTimeout(async () => {
+            const myReadingList = await getMyReadBookByUsername(username)
+            props.updateReadingList(myReadingList.myList)
+        }, 100)
     }
 
 

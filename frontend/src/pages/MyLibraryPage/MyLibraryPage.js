@@ -107,7 +107,7 @@ const MyLibraryPage = () => {
                     </div>)
                 }
             })}
-            {curBook && <BookInfoModal updateUsersLibrary={setSelectedBooks} book={curBook} rBooks={readBooks} onCloseModal={() => { setCurBook(null) }} />}
+            {curBook && <BookInfoModal updateUsersLibrary={setSelectedBooks} book={curBook} rBooks={readBooks} updateReadingList={setReadBooks} onCloseModal={() => { setCurBook(null) }} />}
         </div>)
 }
 
