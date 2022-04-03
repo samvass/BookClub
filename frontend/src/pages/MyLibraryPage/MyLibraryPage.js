@@ -1,10 +1,9 @@
 import { useEffect, useState, useContext } from "react"
-import { useNavigate } from 'react-router-dom';
 import { getMyLibraryByUsername, getPreferencesByUsername, markBookAsRead, getMyReadBookByUsername, markBookAsUnRead, getMyUnReadBookByUsername } from "../../api/userAPI"
 import { getBookByName } from "../../api/bookAPI"
 import { Button, Modal, Form } from 'react-bootstrap';
 import { BsFillPencilFill, BsFillStarFill } from 'react-icons/bs';
-
+import { useNavigate } from "react-router-dom"
 
 import Aos from 'aos'
 import 'aos/dist/aos.css'
@@ -24,7 +23,8 @@ import Select from '@mui/material/Select';
 const MyLibraryPage = () => {
     const { username } = useContext(UserContext);
     const { session } = useContext(SessionContext);
-    const navigate = useNavigate();
+
+    const navigate = useNavigate()
 
     const [userBooks, setUserBooks] = useState([])
     const [userGenres, setUserGenres] = useState([])
@@ -37,7 +37,7 @@ const MyLibraryPage = () => {
 
     useEffect(async () => {
         if (username === "") {
-            navigate("/login");
+            navigate("/")
         }
 
         Aos.init({ duration: 500 })

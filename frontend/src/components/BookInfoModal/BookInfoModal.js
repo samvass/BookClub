@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useState, useEffect } from "react"
 import { Button, Alert } from 'react-bootstrap';
 import { leaveBookRating } from "../../api/bookAPI";
 import { setMyLibraryByUsername, getMyLibraryByUsername, getMyReadBookByUsername, markBookAsRead, markBookAsUnRead, } from "../../api/userAPI"
@@ -7,7 +7,7 @@ import Modal from "../../components/modal/Modal"
 import UserContext from "../../user/UserContext";
 import Rating from '@mui/material/Rating';
 import './BookInfoModal.css';
-
+import SessionProvider from "../../session/SessionProvider";
 
 const LoginModal = (props) => {
     const selectedBook = props.book
@@ -16,6 +16,35 @@ const LoginModal = (props) => {
 
     const [value, setValue] = useState(0);
     const [ratingSuccess, setRatingSuccess] = useState(null);
+    const [isRead, setIsRead] = useState(false);
+
+    useEffect(async () => {
+        // check if the book is read
+        // get sessionID somehow
+        const getMyReadBookByUsernameResponse = await getMyReadBookByUsername(username, {});
+        // get current book ID
+        const bookID = selectedBook._id;
+
+        // This is slow
+        for (let i = 0; i < getMyReadBookByUsernameResponse.myList.length; i++) {
+            if (getMyReadBookByUsernameResponse.myList[i]._id == bookID) {
+                setIsRead(true);
+            }
+        }
+
+    }, [])
+
+    const markBookRead = async () => {
+        const body = {
+            title: selectedBook.title
+        }
+
+        const markBookAsReadResponse = await markBookAsRead(username, body);
+
+        if (markBookAsReadResponse.message === "book was added to the read list") {
+            setIsRead(true);
+        }
+    }
 
 
     const leaveRating = async () => {
@@ -77,18 +106,15 @@ const LoginModal = (props) => {
             <h3>{selectedBook.title}</h3>
             <h5>{selectedBook.author}</h5>
             <h6>{selectedBook.description}</h6>
-            <div>
-                <Rating name="simple-controlled" value={value} onChange={(event, newValue) => { setValue(newValue) }} />
-            </div>
 
-            <div className="readButton">{
-                !(readBooks.filter(b => b.title === selectedBook.title).length > 0)
-                ? <Button variant="success" onClick={async () => markAsRead(selectedBook.title)}>Read</Button>
-                : <Button variant="danger" onClick={async () => markAsUnread(selectedBook.title)}>Unread</Button>
-            } 
-            </div>
+            <br />
+            {!isRead ? <Button variant="success" onClick={markBookRead}>Mark As Read</Button> : <div>
+                <div>
+                    <Rating name="simple-controlled" value={value} onChange={(event, newValue) => { setValue(newValue) }} />
+                </div>
+                <Button onClick={leaveRating}>Leave Rating</Button>
+            </div>}
 
-            <Button onClick={leaveRating}>Leave Rating</Button>
             <div className="remove-book-button">
                 <Button variant='danger' onClick={removeBookFromLibrary}>Remove From Library</Button>
             </div>
