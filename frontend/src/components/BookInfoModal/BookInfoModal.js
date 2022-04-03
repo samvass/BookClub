@@ -16,23 +16,6 @@ const LoginModal = (props) => {
 
     const [value, setValue] = useState(0);
     const [ratingSuccess, setRatingSuccess] = useState(null);
-    const [isRead, setIsRead] = useState(false);
-
-    useEffect(async () => {
-        // check if the book is read
-        // get sessionID somehow
-        const getMyReadBookByUsernameResponse = await getMyReadBookByUsername(username, {});
-        // get current book ID
-        const bookID = selectedBook._id;
-
-        // This is slow
-        for (let i = 0; i < getMyReadBookByUsernameResponse.myList.length; i++) {
-            if (getMyReadBookByUsernameResponse.myList[i]._id == bookID) {
-                setIsRead(true);
-            }
-        }
-
-    }, [])
 
     const markBookRead = async () => {
         const body = {
@@ -108,11 +91,15 @@ const LoginModal = (props) => {
             <h6>{selectedBook.description}</h6>
 
             <br />
-            {!isRead ? <Button variant="success" onClick={markBookRead}>Mark As Read</Button> : <div>
-                <div>
-                    <Rating name="simple-controlled" value={value} onChange={(event, newValue) => { setValue(newValue) }} />
-                </div>
-                <Button onClick={leaveRating}>Leave Rating</Button>
+
+            {
+            !(readBooks.filter(b => b.title === selectedBook.title).length > 0) 
+            ? <Button className="readButton" variant="success" onClick={async () => markAsRead(selectedBook.title)}>Mark As Read</Button> 
+            : 
+            <div className="modal-container">
+                <div><Rating name="simple-controlled" value={value} onChange={(event, newValue) => { setValue(newValue) }} /></div>
+                <div className="readButton"> <Button variant="secondary" onClick={async () => markAsUnread(selectedBook.title)}>Unread</Button></div>
+                <div> <Button onClick={leaveRating}>Leave Rating</Button> </div>
             </div>}
 
             <div className="remove-book-button">
