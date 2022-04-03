@@ -43,7 +43,7 @@ const BookDescription = (props) => {
                 </div>
 
                 <div className='ratings-div'>
-                    <Rating name="read-only" value={props.rating} readOnly />
+                   {!props.errorMessage && <Rating name="read-only" value={props.rating} readOnly />}
                 </div>
                 <div className='ratings-error-div'>
                     {props.errorMessage ? <div>{props.errorMessage}</div> : <div>Based on {props.ratingCount} ratings</div>}

@@ -1,11 +1,10 @@
-.App {
+body {
     /*background-image: url("./images/waves1.png"); */
     /* background-image: url("./images/lib-background.avif"); */
     background-size: cover;
     height: 50%;
     aspect-ratio: 900/450;
     width: 100%;
-    background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
     background-image: url('../public/layered-waves-haikei.svg');
@@ -15,15 +14,4 @@ ul {
     list-style: none;
     margin: 0;
     padding: 0;
-}
-
-.spacer {
-    background-size: cover;
-    height: 50%;
-    aspect-ratio: 900/450;
-    width: 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    background-image: url('../public/layered-waves-haikei-bottom.svg');
 }
