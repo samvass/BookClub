@@ -29,11 +29,6 @@ const userSchema = new Schema({
         ref: "Book",
         default: []
     }],
-    unreadBook : [{
-        type: Schema.Types.ObjectId,
-        ref: "Book",
-        default: []
-    }],
 });
 
 module.exports = mongoose.model('User', userSchema);

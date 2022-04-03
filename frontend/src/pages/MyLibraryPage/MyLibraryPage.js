@@ -29,11 +29,10 @@ const MyLibraryPage = () => {
     const [userBooks, setUserBooks] = useState([])
     const [userGenres, setUserGenres] = useState([])
     const [selectedBooks, setSelectedBooks] = useState([])
-    const [readBooks, setReadBooks] = useState([])
-    const [unreadBooks, setUnReadBooks] = useState([])
     const [selectedGenre, setSelectedGenre] = useState("")
     const [showRemoveBook, setShowRemoveBook] = useState(false);
     const [curBook, setCurBook] = useState(null);
+    const [readBooks, setReadBooks] = useState([])
 
 
     useEffect(async () => {
@@ -58,8 +57,8 @@ const MyLibraryPage = () => {
         const rbooks = await getMyReadBookByUsername(username)
         setReadBooks(rbooks.myList)
 
-        const urbooks = await getMyUnReadBookByUsername(username)
-        setUnReadBooks(urbooks.myList)
+        // const urbooks = await getMyUnReadBookByUsername(username)
+        // setUnReadBooks(urbooks.myList)
     }, [])
 
     const updateFilter = (event) => {
@@ -69,19 +68,6 @@ const MyLibraryPage = () => {
         setSelectedBooks(filteredBooks);
     }
 
-    const markAsRead = async (rtitle) => {
-        const body = {
-            title: rtitle,
-        };
-        const response = await markBookAsRead(username, body);
-    }
-
-    const markAsUnread = async (urtitle) => {
-        const body = {
-            title: urtitle,
-        };
-        const response = await markBookAsRead(username, body);
-    }
 
     const displayUserBooks = (i) => selectedBooks.map((book, index) => {
         if (index >= i && index < i + 5) {
@@ -121,7 +107,7 @@ const MyLibraryPage = () => {
                     </div>)
                 }
             })}
-            {curBook && <BookInfoModal updateUsersLibrary={setSelectedBooks} book={curBook} onCloseModal={() => { setCurBook(null) }} />}
+            {curBook && <BookInfoModal updateUsersLibrary={setSelectedBooks} book={curBook} rBooks={readBooks} updateReadingList={setReadBooks} onCloseModal={() => { setCurBook(null) }} />}
         </div>)
 }
 
