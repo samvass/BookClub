@@ -1,13 +1,13 @@
-import { useContext, useState } from "react"
+import { useContext, useState, useEffect } from "react"
 import { Button, Alert } from 'react-bootstrap';
 import { leaveBookRating } from "../../api/bookAPI";
-import { setMyLibraryByUsername, getMyLibraryByUsername } from "../../api/userAPI"
+import { setMyLibraryByUsername, getMyLibraryByUsername, markBookAsRead, getMyReadBookByUsername } from "../../api/userAPI"
 
 import Modal from "../../components/modal/Modal"
 import UserContext from "../../user/UserContext";
 import Rating from '@mui/material/Rating';
 import './BookInfoModal.css';
-
+import SessionProvider from "../../session/SessionProvider";
 
 const LoginModal = (props) => {
     const selectedBook = props.book
@@ -15,6 +15,38 @@ const LoginModal = (props) => {
 
     const [value, setValue] = useState(0);
     const [ratingSuccess, setRatingSuccess] = useState(null);
+    const [isRead, setIsRead] = useState(false);
+
+    useEffect(async () => {
+        // check if the book is read
+
+        // get sessionID somehow
+        const res = await getMyReadBookByUsername(username, {});
+
+        // get current book ID
+        const bookID = selectedBook._id;
+
+        console.log(selectedBook);
+
+        // the selected book has already been read so do not display the 'mark as read' button
+        if (res.myList.includes(bookID)){
+            setIsRead(true);
+        }
+        
+    },)
+    
+    const markBookRead = async () => {
+
+        const body = {
+            title: selectedBook.title
+        }
+
+        const res = await markBookAsRead(username, body);
+        if (message === "book was added to the read list"){
+            setIsRead(true);
+        }
+
+    }
 
     const leaveRating = async () => {
         const body = {
@@ -44,6 +76,7 @@ const LoginModal = (props) => {
         }, 100)
     }
 
+
     return (<Modal onClosePasswordChange={props.onCloseModal}>
         <div className="modal-container">
             <h3>{selectedBook.title}</h3>
@@ -53,6 +86,11 @@ const LoginModal = (props) => {
                 <Rating name="simple-controlled" value={value} onChange={(event, newValue) => { setValue(newValue) }} />
             </div>
             <Button onClick={leaveRating}>Leave Rating</Button>
+            <br />
+            {!isRead && <Button variant="success" onClick={markBookRead}>Mark As Read</Button>}
+            {isRead && <div>Thank you for reading our suggestion!</div>}
+            <br />
+
             <div className="remove-book-button">
                 <Button variant='danger' onClick={removeBookFromLibrary}>Remove From Library</Button>
             </div>
