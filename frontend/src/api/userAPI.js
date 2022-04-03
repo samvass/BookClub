@@ -104,7 +104,7 @@ export const getMyUnReadBookByUsername = async (username, sessionID) => {
     return await apiGet(endpoint, sessionID);
 }
 
-export const markBookAsUnRead = async (body, sessionID) => {
+export const markBookAsUnRead = async (username, body) => {
     let endpoint = apiURL + "/users/set/myUnReadBook/" + username;
-    return await apiPost(endpoint, body, sessionID);
+    return await apiPost(endpoint, body);
 }

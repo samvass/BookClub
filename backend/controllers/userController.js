@@ -491,6 +491,8 @@ exports.markBookAsRead = async (req, res, next) => {
         { $set: { readBook: rBook } }
     );
 
+    // console.log(book)
+
     return res.status(200).json({
         book: book,
         message: "book was added to the read list",
@@ -552,29 +554,87 @@ exports.markBookAsUnRead = async (req, res, next) => {
         });
     }
 
-    if (user.unreadBook.includes(book._id)){
-        return res.status(200).json({
-            message: "book was already added as unread",
-        });
-    }
+    // if (!user.readBook.includes(book._id)){
+    //     return res.status(200).json({
+    //         message: "book was not added as read",
+    //     });
+    // }
 
     // store the bookID in the users library
     const bookID = book._id;
 
-    // get current user unread book
-    const urBook = user.unreadBook;
+    // get current user read books
+    const rBook = user.readBook;
 
-    // add the new book to unreadbook
-    urBook.push(bookID);
+    // remove the book from read book list
+    for(var i = 0; i < rBook.length; i++) {
+        if(rBook[i].equals(bookID)) {
+            rBook.splice(i, 1);
+            break;
+        }
+    }
 
-    // update the unread list in db
+    // update the read list in db
     await User.updateOne(
         { username: username },
-        { $set: { unreadBook: urBook } }
+        { $set: { readBook: rBook } }
     );
+
+    console.log(book)
 
     return res.status(200).json({
         book: book,
-        message: "book was added to the unread",
+        message: "book was added to the read list",
     });
 };
+
+// exports.markBookAsUnRead = async (req, res, next) => {
+//     // since they do not wish to add the book to their library we will not store it in the db
+//     // we should implement a way to generate the next book from here ...
+
+//     // get book information from request body
+//     const username = req.params.username;
+//     const title = req.body.title;
+
+//     const user = await User.findOne({ username: username });
+
+//     if (!user) {
+//         // return error
+//         return res.status(200).json({
+//             message: "no user found",
+//         });
+//     }
+
+//     let book = await Book.findOne({ title: title });
+//     if (!book) {
+//         return res.status(200).json({
+//             message: "no book found",
+//         });
+//     }
+
+//     if (user.unreadBook.includes(book._id)){
+//         return res.status(200).json({
+//             message: "book was already added as unread",
+//         });
+//     }
+
+//     // store the bookID in the users library
+//     const bookID = book._id;
+
+//     // get current user unread book
+//     const urBook = user.unreadBook;
+
+//     // add the new book to unreadbook
+//     urBook.push(bookID);
+
+//     // update the unread list in db
+//     await User.updateOne(
+//         { username: username },
+//         { $set: { unreadBook: urBook } }
+//     );
+
+//     return res.status(200).json({
+//         book: book,
+//         message: "book was added to the unread",
+//     });
+// };

@@ -37,15 +37,14 @@
 }
 
 .readButton {
-    background-color: rgb(34, 199, 89);
+    /* background-color: rgb(34, 199, 89); */
     color:  black;
-    font-family: 'lobster' ;
+    margin-bottom: 5px;
 }
 
 .unreadButton {
     background-color: rgb(197, 39, 39);
     color:  black;
-    font-family: 'lobster' ;
 }
 
 .bookFilter {

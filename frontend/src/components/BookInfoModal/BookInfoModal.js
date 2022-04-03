@@ -1,7 +1,7 @@
 import { useContext, useState } from "react"
 import { Button, Alert } from 'react-bootstrap';
 import { leaveBookRating } from "../../api/bookAPI";
-import { setMyLibraryByUsername, getMyLibraryByUsername } from "../../api/userAPI"
+import { setMyLibraryByUsername, getMyLibraryByUsername, markBookAsRead, markBookAsUnRead, } from "../../api/userAPI"
 
 import Modal from "../../components/modal/Modal"
 import UserContext from "../../user/UserContext";
@@ -11,10 +11,12 @@ import './BookInfoModal.css';
 
 const LoginModal = (props) => {
     const selectedBook = props.book
+    const readBooks = props.rBooks
     let { username } = useContext(UserContext)
 
     const [value, setValue] = useState(0);
     const [ratingSuccess, setRatingSuccess] = useState(null);
+
 
     const leaveRating = async () => {
         const body = {
@@ -44,6 +46,22 @@ const LoginModal = (props) => {
         }, 100)
     }
 
+    const markAsRead = async (rtitle) => {
+        const body = {
+            title: rtitle,
+        };
+        const response = await markBookAsRead(username, body);
+    }
+
+    const markAsUnread = async (urtitle) => {
+        const body = {
+            title: urtitle,
+        };
+        const response = await markBookAsUnRead(username, body);
+    }
+
+
+
     return (<Modal onClosePasswordChange={props.onCloseModal}>
         <div className="modal-container">
             <h3>{selectedBook.title}</h3>
@@ -52,6 +70,14 @@ const LoginModal = (props) => {
             <div>
                 <Rating name="simple-controlled" value={value} onChange={(event, newValue) => { setValue(newValue) }} />
             </div>
+
+            <div className="readButton">{
+                !(readBooks.filter(b => b.title === selectedBook.title).length > 0)
+                ? <Button variant="success" onClick={async () => markAsRead(selectedBook.title)}>Read</Button>
+                : <Button variant="danger" onClick={async () => markAsUnread(selectedBook.title)}>Unread</Button>
+            } 
+            </div>
+
             <Button onClick={leaveRating}>Leave Rating</Button>
             <div className="remove-book-button">
                 <Button variant='danger' onClick={removeBookFromLibrary}>Remove From Library</Button>
