@@ -8,12 +8,14 @@ import ArrowUp from '../../components/ArrowUp/ArrowUp';
 import ArrowDown from "../../components/ArrowDown/ArrowDown";
 import UndoButton from '../../components/ArrowDown/UndoButton';
 import UserContext from '../../user/UserContext';
+import SessionContext from '../../session/SessionContext';
 import BookDescription from '../../components/BookDescription/BookDescription';
 
 import ReactCardFlip from 'react-card-flip';
 
 const HomePage = () => {
-    const { username } = useContext(UserContext);
+    const { setUsername, username } = useContext(UserContext);
+    const { setSession } = useContext(SessionContext);
 
     const [bookTitle, setBookTitle] = useState(null);
     const [bookDescription, setbookDescription] = useState(null);
@@ -29,6 +31,13 @@ const HomePage = () => {
 
     useEffect(async () => {
         displayBook()
+        if (sessionStorage.getItem('sessionID')) {
+            setSession(sessionStorage.getItem('sessionID'))
+        }
+
+        if (sessionStorage.getItem('username')) {
+            setUsername(sessionStorage.getItem('username'))
+        }
     }, [])
 
 

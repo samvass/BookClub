@@ -1,7 +1,7 @@
 import { Form, Button, Alert } from 'react-bootstrap';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { login } from '../../api/userAPI';
-import { Navigate } from "react-router-dom"
+import { Navigate, useNavigate } from "react-router-dom"
 import UserContext from '../../user/UserContext';
 import SessionContext from '../../session/SessionContext';
 
@@ -11,6 +11,7 @@ const LoginPage = () => {
     const { setUsername, username } = useContext(UserContext);
     const { setSession } = useContext(SessionContext);
 
+    const navigate = useNavigate();
 
     const [enteredUsername, setEnteredUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -18,6 +19,11 @@ const LoginPage = () => {
     const [successMsg, setSuccessMsg] = useState("");
     const [redirectMsg, setRedirectMsg] = useState(false);
 
+    useEffect(() => {
+        if (sessionStorage.getItem('username')) {
+            navigate("/")
+        }
+    }, [])
 
     const loginUser = async (event) => {
         event.preventDefault();
@@ -38,6 +44,8 @@ const LoginPage = () => {
         if (response.message === "Login Successful") {
             setSuccessMsg(response.message)
             setSession(response.sessionID);
+            sessionStorage.setItem('sessionID', response.sessionID);
+            sessionStorage.setItem('username', enteredUsername);
 
             console.log("seeting username to " + enteredUsername)
             setUsername(enteredUsername)

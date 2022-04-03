@@ -17,6 +17,8 @@ const LogoutPage = (props) => {
             await logout({}, session);
             setUsername("")
             setLogoutSuccess(true);
+            sessionStorage.removeItem('sessionID');
+            sessionStorage.removeItem('username');
         }
     }, [])
 
