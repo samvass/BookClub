@@ -3,6 +3,7 @@ var mongoose = require("mongoose");
 
 const User = require("../models/user");
 const Book = require("../models/book");
+const { default: HttpStream } = require("@cucumber/cucumber/lib/formatter/http_stream");
 
 const googleAPIKey = process.env.GOOGLE_API_KEY;
 
@@ -97,43 +98,49 @@ exports.getBookRecommendationByGenre = (req, res, next) => {
 
   // get one of the genres of the user
   const bookGenre = req.params.genre;
+  const axios = require('axios');
 
-  // generate random index between 0 and 39
-  let index = Math.floor(Math.random() * 40);
-  // console.log("Index", index);
-
-  books.search(bookGenre, options, function (error, results, apiResponse) {
-    let shownBook = results[index];
-    let n = 0;
-    // if retrieved book doesnt have a description, get a new one
-    while (!shownBook || !shownBook.description || !shownBook.title || !shownBook.categories || !shownBook.thumbnail) {
-      index = (index + 1) % 40;
-      n += 1;
-      // avoid infinite loop
-      if (n == 40) break;
-      shownBook = results[index];
+axios.get(`https://www.googleapis.com/books/v1/volumes?q=subject:${bookGenre}&key=AIzaSyCDmeu7MCYgpE_kA7wou6wP2Zvaxl9QiSQ`)
+  .then(response => {
+    let book = response.data.items[Math.floor(Math.random() * response.data.items.length)]
+    let bookObj = {
+      title: book.volumeInfo.title,
+      description: book.volumeInfo.description,
+      author: book.volumeInfo.authors[0],
+      genre: book.volumeInfo.categories[0],
+      thumbnail: book.volumeInfo.imageLinks.thumbnail,
     }
-
-    if (!error) {
-      // console.log(results.length);
-      return res.status(200).send({
-        data: {
-          book: results[index],
-        },
-        message: "",
-        error: {},
-      });
-    }
-
-    return res.status(404).send({
-      data: {},
-      message: "Error",
-      error: {
-        err: error,
+    return res.status(200).send({
+      data: {
+        book: bookObj
       },
-    });
+      message: "",
+      error: {}
+    })
+  })
+  .catch(error => {
+    console.log(error);
   });
-};
+
+    // if (!error) {
+    //   // console.log(results.length);
+    //   return res.status(200).send({
+    //     data: {
+    //       book: results[index],
+    //     },
+    //     message: "",
+    //     error: {},
+    //   });
+    // }
+
+    // return res.status(404).send({
+    //   data: {},
+    //   message: "Error",
+    //   error: {
+    //     err: error,
+    //   },
+    // });
+  }
 
 exports.acceptBookRecommendation = async (req, res, next) => {
   // get book information from request body
