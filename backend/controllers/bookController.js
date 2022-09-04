@@ -201,12 +201,12 @@ exports.rejectBookRecommendation = async (req, res, next) => {
   // we should implement a way to generate the next book from here ...
 
   // get book information from request body
-  const title = req.body.title;
+  const title       = req.body.title;
   const description = req.body.description;
-  const author = req.body.author;
-  const genre = req.body.genre;
-  const thumbnail = req.body.thumbnail;
-  const username = req.body.username;
+  const author      = req.body.author;
+  const genre       = req.body.genre;
+  const thumbnail   = req.body.thumbnail;
+  const username    = req.body.username;
 
   const user = await User.findOne({ username: username });
 
@@ -227,13 +227,13 @@ exports.rejectBookRecommendation = async (req, res, next) => {
 exports.setBookRating = async (req, res, next) => {
 
   const bookName = req.params.bookName;
-  const book = await Book.findOne({ title: bookName });
+  const book     = await Book.findOne({ title: bookName });
 
   // get current rating
-  const currentRating = book.rating;
+  const currentRating  = book.rating;
   const incomingRating = req.body.newRating;
 
-  const ratingCount = book.ratingCount;
+  const ratingCount    = book.ratingCount;
   const newRatingCount = ratingCount + 1;
 
   // get new rating average
