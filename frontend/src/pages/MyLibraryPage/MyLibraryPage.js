@@ -18,16 +18,20 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Shelf from "../../components/Shelf/Shelf";
 
 
 const MyLibraryPage = () => {
+    let bookCount = 0
     const { username } = useContext(UserContext);
     const { session } = useContext(SessionContext);
 
     const navigate = useNavigate()
 
+
     const [userBooks, setUserBooks] = useState([])
     const [userGenres, setUserGenres] = useState([])
+    const [shelves, setShelves] = useState([])
     const [selectedBooks, setSelectedBooks] = useState([])
     const [selectedGenre, setSelectedGenre] = useState("")
     const [showRemoveBook, setShowRemoveBook] = useState(false);
@@ -45,6 +49,21 @@ const MyLibraryPage = () => {
         const books = await getMyLibraryByUsername(username)
         setUserBooks(books.myLibrary)
         setSelectedBooks(books.myLibrary)
+
+        let bookArr = []
+        let shelvesArr = []
+        books.myLibrary.forEach((book,index) => {
+            if (index % 5 === 0 && index !== 0){
+                const shelf = <Shelf books={bookArr} />
+                // add the new shelf to the list of shelves
+                shelvesArr = [...shelvesArr, shelf]
+                // empty array and get next # of books
+                bookArr = []
+            }
+            bookArr = [...bookArr, book]
+        })
+
+        setShelves(shelvesArr)
 
         let userGenres = books.myLibrary.map(book => {
             return book.genre[0];
@@ -81,7 +100,7 @@ const MyLibraryPage = () => {
         <div className="myLibrary">
             <h1 className="myLibraryTitle">My Library</h1>
             <div className="bookFilter">
-                <Box sx={{ minWidth: 120 }}>
+                {/* <Box sx={{ minWidth: 120 }}>
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">Genre</InputLabel>
                         <Select
@@ -95,10 +114,12 @@ const MyLibraryPage = () => {
                             {userGenres.map(genre => <MenuItem key={genre} value={genre}>{genre}</MenuItem>)}
                         </Select>
                     </FormControl>
-                </Box>
+                </Box> */}
             </div>
 
-            {selectedBooks.map((row, index) => {
+            {shelves}
+
+            {/* {selectedBooks.map((row, index) => {
                 // create a new bookshelf every row
                 if (index % 5 == 0) {
                     return (<div data-aos='slide-up' key={index}>
@@ -106,7 +127,7 @@ const MyLibraryPage = () => {
                         <img src={woodshelf} className="shelf" alt="Wood Shelf"></img>
                     </div>)
                 }
-            })}
+            })} */}
             {curBook && <BookInfoModal updateUsersLibrary={setSelectedBooks} book={curBook} rBooks={readBooks} updateReadingList={setReadBooks} onCloseModal={() => { setCurBook(null) }} />}
         </div>)
 }

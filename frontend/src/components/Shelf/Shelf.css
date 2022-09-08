@@ -1,0 +1,9 @@
+.books-row {
+    display: flex;
+}
+
+.shelf {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
