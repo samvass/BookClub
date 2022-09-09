@@ -1,13 +1,12 @@
 import { apiURL } from "./apiConstants";
 
-const apiGet = async (endpoint, sessionID) => {
+const apiGet = async (endpoint) => {
     try {
         let res = await fetch(endpoint, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization': sessionID
             }
         });
         return await res.json();
@@ -16,7 +15,7 @@ const apiGet = async (endpoint, sessionID) => {
     }
 }
 
-const apiPost = async (endpoint, body, sessionID, method = 'POST') => {
+const apiPost = async (endpoint, body, method = 'POST') => {
     try {
         let res = await fetch(endpoint, {
             method: method,
@@ -24,7 +23,6 @@ const apiPost = async (endpoint, body, sessionID, method = 'POST') => {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization': sessionID
             }
         });
 

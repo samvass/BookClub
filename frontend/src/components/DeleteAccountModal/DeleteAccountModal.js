@@ -4,7 +4,7 @@ import { login, deleteAccount } from "../../api/userAPI"
 import { useNavigate } from 'react-router-dom';
 
 import UserContext from '../../user/UserContext';
-import SessionContext from "../../session/SessionContext"
+import SessionContext from "../../Context/SessionContext"
 import Modal from "../modal/Modal";
 
 const DeleteAccountModal = (props) => {

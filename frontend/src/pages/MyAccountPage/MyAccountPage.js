@@ -6,7 +6,7 @@ import { getPreferencesByUsername, getUserByUserName } from "../../api/userAPI"
 import PasswordChangeModal from "../PasswordChangeModal/PasswordChangeModal"
 import DeleteAccountModal from "../../components/DeleteAccountModal/DeleteAccountModal"
 import UserContext from '../../user/UserContext';
-import SessionContext from "../../session/SessionContext"
+import SessionContext from "../../Context/SessionContext"
 
 
 const MyAccountPage = () => {

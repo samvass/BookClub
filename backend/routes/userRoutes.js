@@ -1,7 +1,5 @@
 const express = require("express");
 const userController = require("../controllers/userController");
-
-const auth = require("./middleware/auth");
 const router = express.Router();
 
 // base url: /users
@@ -20,13 +18,13 @@ router.post('/create', userController.createAccount);
 router.post('/login', userController.login);
 
 // logout user
-router.post('/logout', auth.isLoggedIn, userController.logout);
+router.post('/logout', userController.logout);
 
 // change password
-router.put('/update', auth.isLoggedIn, userController.changePassword);
+router.put('/update', userController.changePassword);
 
 // delete account
-router.delete('/delete', auth.isLoggedIn, userController.deleteAccount);
+router.delete('/delete', userController.deleteAccount);
 
 // get user library
 router.get('/get/myLibrary/:username', userController.viewMyLibrary);

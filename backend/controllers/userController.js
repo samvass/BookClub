@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const emailValidator = require("email-validator");
 const passwordValidator = require('password-validator');
+const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 const Book = require('../models/book');
@@ -35,85 +36,91 @@ exports.getByUsername = (req, res, next) => {
         });
 };
 
-exports.createAccount = async (req, res, next) => {
-    var error = [];
+const validateUserAccountInput = async (username, email, password) => {
 
-    const username = req.body.username;
-    const email = req.body.email;
-    const password = req.body.password;
-    const preferences = req.body.preferences;
+    const errors = []
 
-    // // check username or email doesn't already exist
-    const userExists = await User.findOne({ username: username }) ? true : false;
-    const emailExists = await User.findOne({ email: email }) ? true : false;
-
-    if (userExists || emailExists) {
-        error.push("Username or email already exists");
-    }
-
-    // validate email
-    if (!emailValidator.validate(email)) {
-        error.push("Email must be valid");
-    }
-
-    // validate password
-    const passwordSchema = new passwordValidator();
-    passwordSchema
-        .is().min(8)                                    // Minimum length 8
-        .is().max(100)                                  // Maximum length 100
-        .has().uppercase()                              // Must have uppercase letters
-        .has().lowercase()                              // Must have lowercase letters
-        .has().digits(1)                                // Must have at least 1 digits
-        .has().symbols(1)                               // Must have at least 1 symbol
-        .has().not().spaces()                           // Should not have spaces
-
-    if (!passwordSchema.validate(password)) {
-        let errorList = passwordSchema.validate(password, { list: true })
-        if (errorList.includes("spaces")) {
-            error.push("Password cannot contain spaces");
-        }
-        if (errorList.includes("symbols") || errorList.includes("digits") || errorList.includes("symbols") || errorList.includes("uppercase") || errorList.includes("lowercase")) {
-            error.push("Password must contain an upper case, lower case, special character, and number");
-        }
-        if (errorList.includes("min")) {
-            error.push("Password must contain more than 8 characters");
-        }
-    }
-
-    // validate username
     const usernameSchema = new passwordValidator();
     usernameSchema
-        .is().min(5)                                    // Minimum length 5
-        .is().max(100)                                  // Maximum length 100
-        .has().not().symbols()                          // Should not have symbols
-        .has().not().spaces()                           // Should not have spaces
+        .is().min(5)
+        .is().max(25)                            
+        .has().not().symbols()                       
+        .has().not().spaces()                       
 
     if (!usernameSchema.validate(username)) {
         let errorList = usernameSchema.validate(username, { list: true })
         if (errorList.includes("spaces")) {
-            error.push("Username cannot contain spaces");
+            errors.push("Username cannot contain spaces");
         }
         if (errorList.includes("symbols")) {
-            error.push("Username must not contain special characters");
+            errors.push("Username must not contain special characters");
         }
         if (errorList.includes("min")) {
-            error.push("Username must contain more than 5 characters");
+            errors.push("Username must contain more than 5 characters");
         }
+        if (errorList.includes("max")) {
+            errors.push("Username must contain less than 25 characters");
+        }
+
+        return errors
     }
 
-    // check if there is any error
-    if (error.length > 0) {
+    if (!emailValidator.validate(email)) {
+        errors.push("Email must be valid");
+        return errors
+    }
+
+    const userExists  = await User.findOne({ username: username }) ? true : false;
+    const emailExists = await User.findOne({ email: email }) ? true : false;
+
+    if (userExists || emailExists) {
+        errors.push("Username or email already exists");
+        return errors
+    }
+
+    const passwordSchema = new passwordValidator();
+    passwordSchema
+        .is().min(8)                                 
+        .is().max(100)                                
+        .has().uppercase()                          
+        .has().lowercase()                          
+        .has().digits(1)                             
+        .has().symbols(1)
+        .has().not().spaces()                          
+
+    if (!passwordSchema.validate(password)) {
+        let errorList = passwordSchema.validate(password, { list: true })
+        if (errorList.includes("spaces")) {
+            errors.push("Password cannot contain spaces");
+        }
+        if (errorList.includes("symbols") || errorList.includes("digits") || errorList.includes("symbols") || errorList.includes("uppercase") || errorList.includes("lowercase")) {
+            errors.push("Password must contain an upper case, lower case, special character, and number");
+        }
+        if (errorList.includes("min")) {
+            errors.push("Password must contain more than 8 characters");
+        }
+        return errors
+    }
+
+}
+
+exports.createAccount = async (req, res, next) => {
+
+    const {username,email,password,preferences} = req.body
+
+    const errors = await validateUserAccountInput(username, email, password)
+
+    console.log(errors)
+    if (errors.length > 0) {
         return res.status(404).send({
             data: {},
-            message: "error",
-            error: error
+            message: "create user account validation error",
+            error: errors
         });
     }
 
-    // encrypt password
     let hashedPassword = await bcrypt.hash(password, 12);
 
-    // create the new user
     const user = new User({
         username: username,
         email: email,
@@ -125,10 +132,18 @@ exports.createAccount = async (req, res, next) => {
 
     await user.save();
 
+    // Create token
+    const token = jwt.sign(
+        { user_id: user._id },
+        process.env.TOKEN_KEY,
+        {expiresIn: "2h",});
+        // save user token
+        user.token = token;
+
     return res.json({
         data: user,
         message: "Account successfully created",
-        error: error
+        error: errors
     });
 };
 
@@ -206,68 +221,39 @@ exports.changePassword = async (req, res, next) => {
 };
 
 exports.login = async (req, res, next) => {
-    // get the credentials
-    const username = req.body.username;
-    const password = req.body.password;
+    const {username, password} = req.body;
 
-    const user = await User.findOne({ username: username });
-
-    if (!user) {
-        return res.json({
-            data: {},
-            message: {},
-            error: "Username does not exist"
-        });
-    }
-
+    const user            = await User.findOne({ username: username });
     const passwordMatches = await bcrypt.compare(password, user.password);
 
-    // login the user
-    if (passwordMatches) {
-        req.session.isLoggedIn = true;
-        req.session.user = user;
-
-        req.session.save(async (err) => {
-            if (!err) {
-                // try searching the session
-                const result = await mongoose.connection.collection('sessions').findOne({ 'session.user.username': username });
-
-                return res.json({
-                    data: user,
-                    message: "Login Successful",
-                    sessionID: result._id,
-                    error: {}
-                });
-            }
-        });
-    }
-
-    // return error
-    else {
+    if (!user || !passwordMatches) {
         return res.json({
             data: {},
             message: {},
-            error: "Incorrect Password"
+            error: "Invalid Credentials"
         });
     }
+
+    const token = jwt.sign(
+        { user_id: user._id },
+        process.env.TOKEN_KEY,
+        {
+          expiresIn: "2h",
+        }
+      );
+
+    // save user token
+    user.token = token;
+
+    return res.json({
+        data: user,
+        message: "Login Successful",
+        error: {}
+    });
 }
 
 exports.logout = async (req, res, next) => {
-    const sessionID = req.body.sessionID;
-
-    // search the db for the session
-    const result = await mongoose.connection.collection('sessions').deleteOne({ _id: sessionID });
-
-    if (result.acknowledged) {
-        return res.status(200).json({
-            message: "logout successful"
-        })
-    }
-    else {
-        return res.status(404).json({
-            message: "logout error"
-        })
-    }
+    // TODO
 };
 
 exports.viewMyLibrary = async (req, res, next) => {

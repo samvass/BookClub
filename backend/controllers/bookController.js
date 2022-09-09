@@ -102,6 +102,7 @@ exports.getBookRecommendationByGenre = (req, res, next) => {
 
 axios.get(`https://www.googleapis.com/books/v1/volumes?q=subject:${bookGenre}&key=AIzaSyCDmeu7MCYgpE_kA7wou6wP2Zvaxl9QiSQ`)
   .then(response => {
+    if (response.length <= 0) return
     let book = response.data.items[Math.floor(Math.random() * response.data.items.length)]
     let bookObj = {
       title: book.volumeInfo.title,

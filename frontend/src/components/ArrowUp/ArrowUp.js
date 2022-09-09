@@ -7,7 +7,7 @@ import "./ArrowUp.css"
 
 import LoginModal from "../../pages/LoginModal/LoginModal"
 import UserContext from "../../user/UserContext"
-import SessionContext from "../../session/SessionContext"
+import SessionContext from "../../Context/SessionContext"
 
 
 const ArrowUp = (props) => {

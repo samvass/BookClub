@@ -4,7 +4,7 @@ import { AwesomeButton } from 'react-awesome-button';
 
 import LoginModal from '../../pages/LoginModal/LoginModal';
 import UserContext from "../../user/UserContext"
-import SessionContext from "../../session/SessionContext"
+import SessionContext from "../../Context/SessionContext"
 
 import "react-awesome-button/dist/styles.css";
 import "./ArrowDown.css"

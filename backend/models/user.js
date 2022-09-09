@@ -14,7 +14,9 @@ const userSchema = new Schema({
         type: String,
         unique: true
     },
-
+    token: {
+        type: String,
+    },
     myLibrary: [{
         type: Schema.Types.ObjectId,
         ref: "Book"

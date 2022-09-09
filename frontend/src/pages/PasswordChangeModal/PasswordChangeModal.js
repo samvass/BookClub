@@ -1,7 +1,7 @@
 import { useState, useContext } from "react"
 import { Form, Button, Alert } from 'react-bootstrap';
 import { changePassword } from "../../api/userAPI";
-import SessionContext from "../../session/SessionContext";
+import SessionContext from "../../Context/SessionContext";
 
 import Modal from "../../components/modal/Modal"
 const PasswordChangeModal = (props) => {

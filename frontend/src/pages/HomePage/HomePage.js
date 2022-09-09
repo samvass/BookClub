@@ -8,7 +8,7 @@ import ArrowUp from '../../components/ArrowUp/ArrowUp';
 import ArrowDown from "../../components/ArrowDown/ArrowDown";
 import UndoButton from '../../components/ArrowDown/UndoButton';
 import UserContext from '../../user/UserContext';
-import SessionContext from '../../session/SessionContext';
+import SessionContext from '../../Context/SessionContext';
 import BookDescription from '../../components/BookDescription/BookDescription';
 
 import ReactCardFlip from 'react-card-flip';

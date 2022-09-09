@@ -11,7 +11,7 @@ import "./MyLibraryPage.css"
 import woodshelf from "../../images/woodshelf.png"
 
 import UserContext from "../../user/UserContext"
-import SessionContext from "../../session/SessionContext"
+import SessionContext from "../../Context/SessionContext"
 import BookInfoModal from "../../components/BookInfoModal/BookInfoModal"
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';

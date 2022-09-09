@@ -7,7 +7,7 @@ import Modal from "../../components/modal/Modal"
 import UserContext from "../../user/UserContext";
 import Rating from '@mui/material/Rating';
 import './BookInfoModal.css';
-import SessionProvider from "../../session/SessionProvider";
+import SessionProvider from "../../Context/SessionProvider";
 
 const LoginModal = (props) => {
     const selectedBook = props.book

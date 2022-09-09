@@ -10,15 +10,16 @@ import { CgLogIn, CgLogOut } from 'react-icons/cg';
 import { FiSettings } from 'react-icons/fi';
 import { ImBooks } from 'react-icons/im';
 import { useContext } from 'react';
+import TokenContext from '../../Context/TokenContext';
 
 
 export default function BasicSpeedDial() {
     let actions = null;
     const navigate = useNavigate();
 
-    const { username } = useContext(UserContext);
+    const tokenState = useContext(TokenContext);
 
-    if (username === "") {
+    if (tokenState.token === "") {
         actions = [
             { icon: <AiOutlineHome size={30} style={{ color: "#050C4E" }} />, name: 'Home', link: "/" },
             { icon: <CgLogIn size={30} style={{ color: "#050C4E" }} />, name: 'Login', link: "/login" },

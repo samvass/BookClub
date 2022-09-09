@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { logout } from "../api/userAPI";
 import { Navigate } from 'react-router-dom';
 import UserContext from '../user/UserContext';
-import SessionContext from '../session/SessionContext';
+import SessionContext from '../Context/SessionContext';
 
 
 const LogoutPage = (props) => {
