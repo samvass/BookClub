@@ -1,24 +1,48 @@
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {  useEffect, useState } from "react";
 import CreateAccountPage from "./pages/CreateAccountPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import HomePage from "./pages//HomePage/HomePage";
 import MyAccountPage from "./pages/MyAccountPage/MyAccountPage";
-import LogoutPage from "./pages/LogoutPage";
-import MyLibraryPage from "./pages/MyLibraryPage/MyLibraryPage";
-import NavBar from "./components/Navbar/NavBar";
-import SelectPreferencesPage from "./pages/SelectPreferencesPage/SelectPreferencesPage"
+import NavBar from "./components/navbar/NavBar"
 import { authenticateUserByToken } from "./api/authAPI";
-
+import { getUserByUserName } from '../src/api/userAPI';
 import "./App.css"
-import TokenContext from './Context/TokenContext'
-import UserContext from "./Context/UserContext";
 import SessionContext from "./Context/SessionContext";
+import LogoutPage from "./pages/LogoutPage";
 
 const App = () => {
 
     const [user, setUser] = useState({})
     const [token, setToken] = useState(null)
+
+    const authToken = async (sessionInfo) => {
+        const { username, token } = sessionInfo
+        // call the backend to authenticate
+        console.log("HANDLING TOKENS")
+        const body = {
+            token: token
+        }
+        const res = await authenticateUserByToken(body)
+        console.log(res)
+        sessionStorage.setItem("username", username)
+        sessionStorage.setItem("token", token)
+        setToken(token)
+
+        const user = await getUserByUserName(username)
+        console.log("found user", user)
+        setUser(user)
+    }
+
+    const logout = () =>{
+        setToken('')
+    }
+
+    useEffect(() => {
+        if (sessionStorage.length > 0) {
+            authToken(sessionStorage.getItem("token"))
+        }
+    }, [])
 
     return (
 
@@ -27,8 +51,9 @@ const App = () => {
         <SessionContext.Provider value={{
             token: token,
             user: user,
-            setToken: setToken,
+            setToken: authToken,
             setUser: setUser,
+            logout: logout,
         }}>
 
             <Router>
@@ -37,6 +62,8 @@ const App = () => {
                    <Route path='/' element={<HomePage />} />
                    <Route path='/myAccount' element={<MyAccountPage />} />
                    <Route path='/login' element={<LoginPage />} />
+                   <Route path='/signup' element={<CreateAccountPage />} />
+                   <Route path='/logout' element={<LogoutPage />} />
                 </Routes>
             </Router>
         </SessionContext.Provider>

@@ -1,29 +1,24 @@
-import { useState, useEffect, useContext } from 'react';
-import { logout } from "../api/userAPI";
-import { Navigate } from 'react-router-dom';
-import UserContext from '../Context/UserContext';
+import { useEffect, useContext } from 'react';
 import SessionContext from '../Context/SessionContext';
-
+import { useNavigate } from 'react-router-dom';
 
 const LogoutPage = (props) => {
-    const { username, setUsername } = useContext(UserContext);
-    const { session } = useContext(SessionContext);
-
-    const [logoutSuccess, setLogoutSuccess] = useState(false);
+    //const { username, setUsername } = useContext(UserContext);
+    const {token, logout, } = useContext(SessionContext);
+    const navigate = useNavigate();
 
     useEffect(async () => {
-        if (username != "") {
-            console.log(session)
-            await logout({}, session);
-            setUsername("")
-            setLogoutSuccess(true);
-            sessionStorage.removeItem('sessionID');
+        if ( token != "") {
+            //await logout({}, session); logout is not yet implemented in the controller
+            sessionStorage.removeItem('token');
             sessionStorage.removeItem('username');
+            logout()
+            navigate("/login")
         }
     }, [])
 
     return <div>
-        {logoutSuccess && <Navigate to="/login" />}
+     {/* {logoutSuccess && <Navigate to="/login" />} */}
     </div>
 }
 

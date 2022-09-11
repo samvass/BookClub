@@ -5,6 +5,7 @@ const SessionContext = createContext({
     user: {},
     setToken: (token) => {},
     setUser: (user) => {},
+    logout: () => {}, 
 });
 
 export default SessionContext;
