@@ -3,7 +3,7 @@ import { rejectBook } from '../../api/bookAPI';
 import { AwesomeButton } from 'react-awesome-button';
 
 import LoginModal from '../../pages/LoginModal/LoginModal';
-import UserContext from "../../user/UserContext"
+import UserContext from "../../Context/UserContext"
 import SessionContext from "../../Context/SessionContext"
 
 import "react-awesome-button/dist/styles.css";

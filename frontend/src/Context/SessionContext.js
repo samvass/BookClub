@@ -1,8 +1,10 @@
 import { createContext } from "react";
 
 const SessionContext = createContext({
-    session: "",
-    setSession: (sessionId) => { }
+    token: "",
+    user: {},
+    setToken: (token) => {},
+    setUser: (user) => {},
 });
 
 export default SessionContext;

@@ -1,21 +1,22 @@
 import { useContext, useState } from "react"
 import { Form, Button, Alert } from 'react-bootstrap';
 import { login } from '../../api/userAPI';
-import UserContext from "../../user/UserContext";
+import UserContext from "../../Context/UserContext";
 import SessionContext from "../../Context/SessionContext";
+import TokenContext from "../../Context/TokenContext";
 
 
 
 import Modal from "../../components/modal/Modal"
 const LoginModal = (props) => {
-    const { setUsername } = useContext(UserContext)
-    const { setSession } = useContext(SessionContext)
-
 
     const [enteredUsername, setEnteredUsername] = useState("");
     const [enteredPassword, setEnteredPassword] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
     const [successMsg, setSuccessMsg] = useState("");
+
+    const tokenState = useContext(TokenContext)
+    const userState = useContext(UserContext)
 
     const loginUser = async () => {
 
@@ -30,13 +31,22 @@ const LoginModal = (props) => {
 
         // send entered username and password to backend
         let response = await login(body);
-        console.log(response)
 
         // if backend approves of the info
         if (response.message === "Login Successful") {
+
+            let {username, email, preferences, id} = response.data
+
+            const user = {
+                username: username,
+                email: email,
+                preferences: preferences,
+                id: id
+            }
+
+            tokenState.setToken(response.data.token)
+            userState.setUser(user)
             setSuccessMsg(response.message)
-            setUsername(enteredUsername)
-            setSession(response.sessionID);
 
             setTimeout(() => {
                 props.onCloseModal();

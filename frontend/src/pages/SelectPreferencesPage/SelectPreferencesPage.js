@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from "react"
 import { Navigate } from 'react-router-dom';
 import { Alert } from 'react-bootstrap';
 import { getPreferencesByUsername, setPreferencesByUsername } from "../../api/userAPI"
-import UserContext from '../../user/UserContext';
+import UserContext from '../../Context/UserContext';
 
 
 import "./SelectPreferencesPage.css"

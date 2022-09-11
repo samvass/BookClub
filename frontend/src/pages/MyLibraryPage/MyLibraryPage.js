@@ -10,7 +10,7 @@ import 'aos/dist/aos.css'
 import "./MyLibraryPage.css"
 import woodshelf from "../../images/woodshelf.png"
 
-import UserContext from "../../user/UserContext"
+import UserContext from "../../Context/UserContext"
 import SessionContext from "../../Context/SessionContext"
 import BookInfoModal from "../../components/BookInfoModal/BookInfoModal"
 import Box from '@mui/material/Box';

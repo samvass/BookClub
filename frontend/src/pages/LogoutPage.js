@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { logout } from "../api/userAPI";
 import { Navigate } from 'react-router-dom';
-import UserContext from '../user/UserContext';
+import UserContext from '../Context/UserContext';
 import SessionContext from '../Context/SessionContext';
 
 

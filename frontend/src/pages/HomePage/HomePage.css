@@ -4,29 +4,10 @@
     display: block;
     margin-right: auto;
     margin-left: auto;
+    box-shadow: 4px 4px 12px 6px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
 }
 
 .book:hover {
     cursor: pointer;
 }
-
-#imgcontainer
-{
-    width: 100%;
-    margin-right: auto;
-    margin-left: auto;
-    color: black;
-
-}
-
-#imgcontainer:hover {
-    cursor: pointer;
-}
-
-.book {
-    box-shadow: 4px 4px 12px 6px rgba(0, 0, 0, 0.25);
-    border-radius: 20px;
-}
-
-
-

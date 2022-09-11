@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import CreateAccountPage from "./pages/CreateAccountPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
@@ -6,57 +6,66 @@ import HomePage from "./pages//HomePage/HomePage";
 import MyAccountPage from "./pages/MyAccountPage/MyAccountPage";
 import LogoutPage from "./pages/LogoutPage";
 import MyLibraryPage from "./pages/MyLibraryPage/MyLibraryPage";
-import NavBar from "./components/navbar/NavBar";
+import NavBar from "./components/Navbar/NavBar";
 import SelectPreferencesPage from "./pages/SelectPreferencesPage/SelectPreferencesPage"
 import { authenticateUserByToken } from "./api/authAPI";
 
 import "./App.css"
 import TokenContext from './Context/TokenContext'
+import UserContext from "./Context/UserContext";
+import SessionContext from "./Context/SessionContext";
 
 const App = () => {
 
-    const authToken = async (token) => {
-        // call the backend to authenticate
-        const body = {
-            token: token
-        }
-        const res = await authenticateUserByToken(body)
-
-        sessionStorage.setItem("token", token)
-
-        setToken(token)
-    }
-
-    useEffect(() => {
-        authToken(sessionStorage.getItem("token"))
-    }, [])
-    
-
-    const [token, setToken] = useState('')
+    const [user, setUser] = useState({})
+    const [token, setToken] = useState(null)
 
     return (
-        <div>
+
         <div className="App">
-            <TokenContext.Provider value={{token: token, setToken: authToken}}>
+
+        <SessionContext.Provider value={{
+            token: token,
+            user: user,
+            setToken: setToken,
+            setUser: setUser,
+        }}>
+
             <Router>
                 <NavBar />
-                <div>
-                    <Routes>
-                        {token && <Route path='/myLibrary' element={<MyLibraryPage />} />}
-                        {token && <Route path='/myAccount' element={<MyAccountPage />} />}
-                        {token && <Route path='/setPreferences' element={<SelectPreferencesPage />} />}
-                        {token && <Route path='/logout' element={<LogoutPage />} />}
-                        {token && <Route path='/' element={<HomePage />} />}
-                        <Route path='/signup' element={<CreateAccountPage />} />
-                        <Route path='/login' element={<LoginPage />} />
-                        
-                    </Routes>
-                </div>
+                <Routes>
+                   <Route path='/' element={<HomePage />} />
+                   <Route path='/myAccount' element={<MyAccountPage />} />
+                   <Route path='/login' element={<LoginPage />} />
+                </Routes>
             </Router>
-            </TokenContext.Provider>
-            </div>
-            <div className='spacer'></div>
-        </div >
+        </SessionContext.Provider>
+
+        </div>
+        // <div>
+        //     <div className="App">
+        //     <TokenContext.Provider value={{token: token, setToken: authToken}}>
+        //     <Router>
+        //         <NavBar />
+        //         <div>
+        //             <UserContext.Provider value={{user: user, setUser: setUser}}>
+        //             <Routes>
+        //                 {token && <Route path='/myLibrary' element={<MyLibraryPage />} />}
+        //                 {token && <Route path='/myAccount' element={<MyAccountPage />} />}
+        //                 {token && <Route path='/setPreferences' element={<SelectPreferencesPage />} />}
+        //                 {token && <Route path='/logout' element={<LogoutPage />} />}
+        //                 {token && <Route path='/' element={<HomePage />} />}
+        //                 <Route path='/signup' element={<CreateAccountPage />} />
+        //                 <Route path='/login' element={<LoginPage />} />
+        //             </Routes>
+        //             </UserContext.Provider>
+        //         </div>
+        //     </Router>
+        //     </TokenContext.Provider>
+        //     </div>
+        //     <div className='spacer'>
+        //     </div>
+        // </div >
     );
 }
 

@@ -2,7 +2,7 @@ import { useState, useContext } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { Navigate } from 'react-router-dom';
 import { createAccount, login } from '../api/userAPI';
-import UserContext from '../user/UserContext';
+import UserContext from '../Context/UserContext';
 
 const CreateAccountPage = () => {
     const { setUsername } = useContext(UserContext)

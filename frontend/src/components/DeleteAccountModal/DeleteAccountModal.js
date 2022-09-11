@@ -3,7 +3,7 @@ import { Form, Button, Alert } from 'react-bootstrap';
 import { login, deleteAccount } from "../../api/userAPI"
 import { useNavigate } from 'react-router-dom';
 
-import UserContext from '../../user/UserContext';
+import UserContext from '../../Context/UserContext';
 import SessionContext from "../../Context/SessionContext"
 import Modal from "../modal/Modal";
 

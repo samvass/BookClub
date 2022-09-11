@@ -6,7 +6,7 @@ import "react-awesome-button/dist/styles.css";
 import "./ArrowUp.css"
 
 import LoginModal from "../../pages/LoginModal/LoginModal"
-import UserContext from "../../user/UserContext"
+import UserContext from "../../Context/UserContext"
 import SessionContext from "../../Context/SessionContext"
 
 
