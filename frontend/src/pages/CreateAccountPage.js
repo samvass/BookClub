@@ -2,9 +2,7 @@ import { useContext, useEffect } from "react";
 import { createAccount, login } from "../api/userAPI";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-
 import { CREATE_ACCOUNT_SCHEMA } from "../Constants/Schema";
-import TokenContext from "../Context/TokenContext";
 import SessionContext from "../Context/SessionContext";
 import { useNavigate } from "react-router-dom";
 

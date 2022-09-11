@@ -2,24 +2,22 @@ import Box from '@mui/material/Box';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
-import UserContext from '../../Context/UserContext';
 import { useNavigate } from 'react-router-dom';
-
 import { AiOutlineHome } from 'react-icons/ai';
 import { CgLogIn, CgLogOut } from 'react-icons/cg';
 import { FiSettings } from 'react-icons/fi';
 import { ImBooks } from 'react-icons/im';
 import { useContext } from 'react';
-import TokenContext from '../../Context/TokenContext';
+import SessionContext from '../../Context/SessionContext';
 
 
 export default function BasicSpeedDial() {
     let actions = null;
     const navigate = useNavigate();
 
-    const tokenState = useContext(TokenContext);
+    const sessionState = useContext(SessionContext);
 
-    if (tokenState.token === "") {
+    if (sessionState.token === "") {
         actions = [
             { icon: <AiOutlineHome size={30} style={{ color: "#050C4E" }} />, name: 'Home', link: "/" },
             { icon: <CgLogIn size={30} style={{ color: "#050C4E" }} />, name: 'Login', link: "/login" },
