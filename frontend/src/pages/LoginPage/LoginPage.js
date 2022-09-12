@@ -1,87 +1,68 @@
-import { Form, Button, Alert } from 'react-bootstrap';
-import { useContext, useState, useEffect } from 'react';
-import { login } from '../../api/userAPI';
-import { Navigate, useNavigate } from "react-router-dom"
-import UserContext from '../../user/UserContext';
-import SessionContext from '../../Context/SessionContext';
-import TokenContext from '../../Context/TokenContext';
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { createAccount, login } from '../../api/userAPI';
+import React, { useContext, useEffect } from 'react'
+
+import { LOGIN_SCHEMA } from '../../Constants/Schema'
+import { useNavigate } from 'react-router-dom';
+
 
 import "./LoginPage.css"
+import AuthContext from "../../Context/AuthContext";
 
-const LoginPage = () => {
+export const LoginPage = () => {
+
+  const authState = useContext(AuthContext)
+  const navigate = useNavigate();
 
 
-    const [enteredUsername, setEnteredUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [errorMsg, setErrorMsg] = useState("");
-    const [successMsg, setSuccessMsg] = useState("");
-    const [redirectMsg, setRedirectMsg] = useState(false);
+    const { register, handleSubmit, formState: { errors }, reset,  } = useForm({
+        resolver: yupResolver(LOGIN_SCHEMA),
+      });
 
-    const tokenState = useContext(TokenContext)
+      const onSubmitHandler = async (data) => {
+        console.log({data});
 
-    const loginUser = async (event) => {
-        event.preventDefault();
-
-        setSuccessMsg("");
-        setErrorMsg("");
-
-        // call the backend
         const body = {
-            "username": enteredUsername,
-            "password": password,
-        }
+          "username": data.username,
+          "email": data.email, // do we need email?
+          "password": data.password,
+      }
 
-        // send entered username and password to backend
-        let response = await login(body);
-
+        const response = await login(body)
+        console.log(response)      
+      
         // if backend approves of the info
-        if (response.message === "Login Successful") {
+        if (response.data) {
+          console.log(authState)
+          const sessionInfo = { username : response.data.username, token: response.data.token}
+          authState.setToken(sessionInfo)
+          console.log("hi there")
+          // if backend sends an error
+      }
+        //reset(); //this is to reset the inputs
+      }
 
-            tokenState.setToken(response.data.token)
+      console.log(errors)
 
-
-            setSuccessMsg(response.message)
-
-            console.log(username)
-
-            // if backend sends an error
-        } else {
-            setErrorMsg(response.error);
+      useEffect(() => {
+        if (authState.token) {
+            navigate("/")
         }
+      }, [authState.token])
+      
 
-    }
-
-    const redirectToCreateAccountPage = () => {
-        setRedirectMsg(true)
-    }
-
-    return <div>
-        <div style={{ "width": 600, "margin": "0 auto", "marginTop": 30 }}>
-            {tokenState.token !== "" ? <Navigate to="/" /> : <div><Form>
-                <Form.Group className="mb-3 input-lg" controlId="formBasicUsername">
-                    <Form.Label>Username</Form.Label>
-                    <Form.Control type="text" onChange={(event) => setEnteredUsername(event.target.value)} />
-                </Form.Group>
-
-                <Form.Group className="last-input" controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" onChange={(event) => setPassword(event.target.value)} />
-                </Form.Group>
-
-                <div className="under-input">
-                    <Button variant="primary" type="submit" onClick={loginUser}>
-                        Login
-                    </Button>
-                    <div className="create-account-link" onClick={redirectToCreateAccountPage}>Create an account</div>
-                </div>
-
-            </Form>
-                <br />
-                {successMsg !== "" && <Alert variant="success" key={successMsg}>{successMsg}</Alert>}
-                {errorMsg !== "" && <Alert variant="danger" key={errorMsg}>{errorMsg}</Alert>}</div>}
-            {redirectMsg && <Navigate to="/signup" />}
-        </div>
+  return (
+    <div>
+        <form onSubmit={handleSubmit(onSubmitHandler)}>
+            <input {...register("username")} placeholder="username" type="text" />
+            <p>{errors.username?.message}</p>
+            <input {...register("password")} placeholder="password" type="password"  />
+            <p>{errors.password?.message}</p>
+            <button type="submit">Sign In</button>
+        </form>
     </div>
+  )
 }
 
 export default LoginPage;

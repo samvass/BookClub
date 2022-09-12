@@ -1,11 +1,11 @@
 import { useState, useContext } from "react"
 import { Form, Button, Alert } from 'react-bootstrap';
 import { changePassword } from "../../api/userAPI";
-import SessionContext from "../../Context/SessionContext";
+import AuthContext from "../../Context/AuthContext";
 
 import Modal from "../../components/modal/Modal"
 const PasswordChangeModal = (props) => {
-    const { session, setSession } = useContext(SessionContext)
+    const { session, setSession } = useContext(AuthContext)
 
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");

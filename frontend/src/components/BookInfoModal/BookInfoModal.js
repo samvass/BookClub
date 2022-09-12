@@ -4,15 +4,15 @@ import { leaveBookRating } from "../../api/bookAPI";
 import { setMyLibraryByUsername, getMyLibraryByUsername, getMyReadBookByUsername, markBookAsRead, markBookAsUnRead, } from "../../api/userAPI"
 
 import Modal from "../../components/modal/Modal"
-import UserContext from "../../user/UserContext";
 import Rating from '@mui/material/Rating';
 import './BookInfoModal.css';
-import SessionProvider from "../../Context/SessionProvider";
+import AuthContext from "../../Context/AuthContext";
 
 const LoginModal = (props) => {
     const selectedBook = props.book
     const readBooks = props.rBooks
-    let { username } = useContext(UserContext)
+    const { user } = useContext(AuthContext)
+    let username = user.username
 
     const [value, setValue] = useState(0);
     const [ratingSuccess, setRatingSuccess] = useState(null);

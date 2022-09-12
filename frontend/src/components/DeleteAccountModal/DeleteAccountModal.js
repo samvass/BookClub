@@ -3,12 +3,12 @@ import { Form, Button, Alert } from 'react-bootstrap';
 import { login, deleteAccount } from "../../api/userAPI"
 import { useNavigate } from 'react-router-dom';
 
-import UserContext from '../../user/UserContext';
-import SessionContext from "../../Context/SessionContext"
+import UserContext from '../../Context/UserContext';
+import AuthContext from "../../Context/AuthContext"
 import Modal from "../modal/Modal";
 
 const DeleteAccountModal = (props) => {
-    const { session, setSession } = useContext(SessionContext)
+    const { session, setSession } = useContext(AuthContext)
     const { username, setUsername } = useContext(UserContext)
     const navigate = useNavigate();
 

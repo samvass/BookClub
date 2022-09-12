@@ -109,15 +109,13 @@ exports.createAccount = async (req, res, next) => {
     const {username,email,password,preferences} = req.body
 
     const errors = await validateUserAccountInput(username, email, password)
-
-    console.log(errors)
-    if (errors.length > 0) {
-        return res.status(404).send({
-            data: {},
-            message: "create user account validation error",
-            error: errors
-        });
-    }
+    // if (errors.length > 0 ) {
+    //     return res.status(404).send({
+    //         data: {},
+    //         message: "create user account validation error",
+    //         error: errors
+    //     });
+    // }
 
     let hashedPassword = await bcrypt.hash(password, 12);
 
