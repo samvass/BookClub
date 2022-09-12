@@ -7,12 +7,12 @@ import "./ArrowUp.css"
 
 import LoginModal from "../../pages/LoginModal/LoginModal"
 import UserContext from "../../Context/UserContext"
-import SessionContext from "../../Context/SessionContext"
+import AuthContext from "../../Context/AuthContext"
 
 
 const ArrowUp = (props) => {
     const { username } = useContext(UserContext)
-    const { session } = useContext(SessionContext)
+    const { session } = useContext(AuthContext)
 
     const [showLoginPopup, setShowLoginPopup] = useState(false);
 

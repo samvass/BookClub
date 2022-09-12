@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom"
 import { LOGIN_HREF } from '../../Constants/Navigation';
-import SessionContext from '../../Context/SessionContext';
+import AuthContext from '../../Context/AuthContext';
 
 import "./HomePage.css"
 
@@ -9,10 +9,10 @@ import "./HomePage.css"
 const HomePage = () => {
 
     const navigate = useNavigate()
-    const sessionState = useContext(SessionContext)
+    const authState = useContext(AuthContext)
 
     useEffect(() => {
-        if (!sessionState.token){
+        if (!authState.token){
             navigate(LOGIN_HREF)
         }
     }, [])

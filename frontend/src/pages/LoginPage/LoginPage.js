@@ -8,11 +8,11 @@ import { useNavigate } from 'react-router-dom';
 
 
 import "./LoginPage.css"
-import SessionContext from "../../Context/SessionContext";
+import AuthContext from "../../Context/AuthContext";
 
 export const LoginPage = () => {
 
-  const sessionState = useContext(SessionContext)
+  const authState = useContext(AuthContext)
   const navigate = useNavigate();
 
 
@@ -25,20 +25,18 @@ export const LoginPage = () => {
 
         const body = {
           "username": data.username,
+          "email": data.email, // do we need email?
           "password": data.password,
-          "email": data.email
       }
 
-          const response = await login(body)
-          console.log(response)      
+        const response = await login(body)
+        console.log(response)      
       
         // if backend approves of the info
-        if (response.message === "Login Successful") {
-          console.log("k the login worked")
-          console.log(response)
-          console.log(sessionState)
-          const sessionInfo = { "username" : response.data.username, "token": response.data.token}
-          sessionState.setToken(sessionInfo)
+        if (response.data) {
+          console.log(authState)
+          const sessionInfo = { username : response.data.username, token: response.data.token}
+          authState.setToken(sessionInfo)
           console.log("hi there")
           // if backend sends an error
       }
@@ -48,10 +46,10 @@ export const LoginPage = () => {
       console.log(errors)
 
       useEffect(() => {
-        if (sessionState.token) {
+        if (authState.token) {
             navigate("/")
         }
-      }, [sessionState.token])
+      }, [authState.token])
       
 
   return (

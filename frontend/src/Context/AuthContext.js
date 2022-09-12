@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-const SessionContext = createContext({
+const AuthContext = createContext({
     token: "",
     user: {},
     setToken: (token) => {},
@@ -8,4 +8,4 @@ const SessionContext = createContext({
     logout: () => {}, 
 });
 
-export default SessionContext;
+export default AuthContext;

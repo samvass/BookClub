@@ -4,14 +4,14 @@ import { AwesomeButton } from 'react-awesome-button';
 
 import LoginModal from '../../pages/LoginModal/LoginModal';
 import UserContext from "../../Context/UserContext"
-import SessionContext from "../../Context/SessionContext"
+import AuthContext from "../../Context/AuthContext"
 
 import "react-awesome-button/dist/styles.css";
 import "./ArrowDown.css"
 
 const ArrowDown = props => {
     const { username } = useContext(UserContext)
-    const { session } = useContext(SessionContext)
+    const { session } = useContext(AuthContext)
 
     const [showLoginPopup, setShowLoginPopup] = useState(false);
 

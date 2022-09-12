@@ -2,7 +2,7 @@ import { useContext, useState } from "react"
 import { Form, Button, Alert } from 'react-bootstrap';
 import { login } from '../../api/userAPI';
 import UserContext from "../../Context/UserContext";
-import SessionContext from "../../Context/SessionContext";
+import AuthContext from "../../Context/AuthContext";
 import TokenContext from "../../Context/TokenContext";
 
 

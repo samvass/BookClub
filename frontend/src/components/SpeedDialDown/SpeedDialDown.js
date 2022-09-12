@@ -8,14 +8,14 @@ import { CgLogIn, CgLogOut } from 'react-icons/cg';
 import { FiSettings } from 'react-icons/fi';
 import { ImBooks } from 'react-icons/im';
 import { useContext } from 'react';
-import SessionContext from '../../Context/SessionContext';
+import AuthContext from '../../Context/AuthContext';
 
 
 export default function BasicSpeedDial() {
     let actions = null;
     const navigate = useNavigate();
 
-    const sessionState = useContext(SessionContext);
+    const sessionState = useContext(AuthContext);
 
     if (sessionState.token === "") {
         actions = [

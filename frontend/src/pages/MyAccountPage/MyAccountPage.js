@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { LOGIN_HREF } from "../../Constants/Navigation";
-import SessionContext from "../../Context/SessionContext";
+import AuthContext from "../../Context/AuthContext";
 import { getUserByUserName } from "../../api/userAPI";
 
 
@@ -9,13 +9,8 @@ import "./MyAccountPage.css";
 
 const MyAccountPage = () => {
   const navigate = useNavigate();
-  const sessionState = useContext(SessionContext);
+  const sessionState = useContext(AuthContext);
   const username = sessionStorage.getItem('username')
-
-
-
- // console.log(user)
-  console.log(username)
 
   const [email, setEmail] = useState("");
   const [selectedGenres, setSelectedGenres] = useState([])

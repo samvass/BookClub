@@ -1,24 +1,23 @@
+export const HOME_HREF = "/"
 export const LOGIN_HREF = "/login"
+export const MY_ACCOUNT_HREF = "/myAccount"
+export const MY_LIBRARY_HREF = "/myLibrary"
 
 export const PAGES = [
     {
         name: "Home",
-        href: "/"
+        href: HOME_HREF
     },
     {
         name: "My Account",
-        href: "/myAccount"
+        href: MY_ACCOUNT_HREF
     },
     {
         name: "My Library",
-        href: "/myLibrary"
+        href: MY_LIBRARY_HREF
     },
     {
         name: "Login",
         href: LOGIN_HREF
-    },
-    {
-        name: "Logout",
-        href: "/logout"
     },
 ]

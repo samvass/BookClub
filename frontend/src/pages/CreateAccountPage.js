@@ -3,13 +3,13 @@ import { createAccount, login } from "../api/userAPI";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CREATE_ACCOUNT_SCHEMA } from "../Constants/Schema";
-import SessionContext from "../Context/SessionContext";
+import AuthContext from "../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const CreateAccountPage = () => {
   const navigate = useNavigate();
 
-  const { token, setToken } = useContext(SessionContext);
+  const { token, setToken } = useContext(AuthContext);
 
   const {
     register,

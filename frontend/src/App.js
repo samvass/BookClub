@@ -8,12 +8,11 @@ import MyLibraryPage from "./pages/MyLibraryPage/MyLibraryPage";
 import SelectPreferencesPage from "./pages/SelectPreferencesPage/SelectPreferencesPage";
 
 
-import NavBar from "./components/navbar/NavBar";
+import NavBar from "./components/Navbar/NavBar";
 import { authenticateUserByToken } from "./api/authAPI";
 import { getUserByUserName } from "../src/api/userAPI";
 import "./App.css";
-import SessionContext from "./Context/SessionContext";
-import LogoutPage from "./pages/LogoutPage";
+import AuthContext from "./Context/AuthContext";
 
 const App = () => {
   const [user, setUser] = useState({});
@@ -27,35 +26,49 @@ const App = () => {
       token: token,
     };
     const res = await authenticateUserByToken(body);
-    console.log(res);
-    sessionStorage.setItem("username", username);
+
+    console.log(res.message === "Authentication Successful")
+
+    if (res.message !== "Authentication Successful"){
+      console.log(res.error, "error")
+      sessionStorage.removeItem("username")
+      sessionStorage.removeItem("token")
+      return
+    }
+
     sessionStorage.setItem("token", token);
     setToken(token);
-
+    
     const user = await getUserByUserName(username);
+    sessionStorage.setItem("username", username);
     console.log("found user", user);
     setUser(user);
   };
 
   const logout = () => {
-    setToken("");
-  };
+    setToken(null)
+    setUser(null)
+    sessionStorage.removeItem("username")
+    sessionStorage.removeItem("token")
+
+  }
 
   useEffect(() => {
-    if (sessionStorage.length > 0) {
-      authToken(sessionStorage.getItem("token"));
+    let token = sessionStorage.getItem("token")
+    if (token) {
+      authToken(token);
     }
   }, []);
 
   return (
     <div className="App">
-      <SessionContext.Provider
+      <AuthContext.Provider
         value={{
           token: token,
           user: user,
           setToken: authToken,
           setUser: setUser,
-          logout: logout,
+          logout: logout
         }}
       >
         <Router>
@@ -65,37 +78,12 @@ const App = () => {
             <Route path="/myAccount" element={<MyAccountPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<CreateAccountPage />} />
-            <Route path="/logout" element={<LogoutPage />} />
             <Route path="/myLibrary" element={<MyLibraryPage />} />
-            {/* <Route path="/setPreferences" element={<SelectPreferencesPage />} /> */}
+            <Route path="/setPreferences" element={<SelectPreferencesPage />} />
           </Routes>
         </Router>
-      </SessionContext.Provider>
+      </AuthContext.Provider>
     </div>
-    // <div>
-    //     <div className="App">
-    //     <TokenContext.Provider value={{token: token, setToken: authToken}}>
-    //     <Router>
-    //         <NavBar />
-    //         <div>
-    //             <UserContext.Provider value={{user: user, setUser: setUser}}>
-    //             <Routes>
-    //                 {token && <Route path='/myLibrary' element={<MyLibraryPage />} />}
-    //                 {token && <Route path='/myAccount' element={<MyAccountPage />} />}
-    //                 {token && <Route path='/setPreferences' element={<SelectPreferencesPage />} />}
-    //                 {token && <Route path='/logout' element={<LogoutPage />} />}
-    //                 {token && <Route path='/' element={<HomePage />} />}
-    //                 <Route path='/signup' element={<CreateAccountPage />} />
-    //                 <Route path='/login' element={<LoginPage />} />
-    //             </Routes>
-    //             </UserContext.Provider>
-    //         </div>
-    //     </Router>
-    //     </TokenContext.Provider>
-    //     </div>
-    //     <div className='spacer'>
-    //     </div>
-    // </div >
   );
 };
 

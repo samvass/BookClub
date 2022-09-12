@@ -10,7 +10,7 @@ import 'aos/dist/aos.css'
 import "./MyLibraryPage.css"
 import woodshelf from "../../images/woodshelf.png"
 
-import SessionContext from "../../Context/SessionContext"
+import AuthContext from "../../Context/AuthContext"
 import BookInfoModal from "../../components/BookInfoModal/BookInfoModal"
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
@@ -23,7 +23,7 @@ import Shelf from "../../components/Shelf/Shelf";
 const MyLibraryPage = () => {
     let bookCount = 0
     //const { username } = useContext(UserContext);
-    const { user } = useContext(SessionContext);
+    const { user } = useContext(AuthContext);
 
     const username = user.username;
 

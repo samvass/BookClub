@@ -7,10 +7,10 @@ import {
 } from "../../api/userAPI";
 
 import "./SelectPreferencesPage.css";
-import SessionContext from "../../Context/SessionContext";
+import AuthContext from "../../Context/AuthContext";
 
 const SelectPreferencesPage = () => {
-  const { user } = useContext(SessionContext);
+  const { user } = useContext(AuthContext);
   const username = user.username;
 
   useEffect(async () => {
@@ -22,7 +22,6 @@ const SelectPreferencesPage = () => {
     }
   }, []);
 
-  const [selectedGenres, setSelectedGenres] = useState([]);
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -64,36 +63,18 @@ const SelectPreferencesPage = () => {
     "Young adult",
   ];
 
-  const setSelected = (genre) => {
-    if (selectedGenres) return selectedGenres.includes(genre);
-  };
 
   const displayGenres = possibleGenres.map((genre, index) => {
     return (
-      <div
-        onClick={() => {
-          if (selectedGenres.includes(genre)) {
-            setSelectedGenres(
-              selectedGenres.filter((allgenre) => {
-                return allgenre !== genre;
-              })
-            );
-          } else {
-            setSelectedGenres([...selectedGenres, genre]);
-          }
-        }}
-        className={`possible-genre ${
-          setSelected(genre) ? "selected-genre" : ""
-        }`}
-        key={index}
-      >
-        {genre}
+      <div>
+        <button>
+          {genre}
+        </button>
       </div>
     );
   });
 
   const setUserGenres = async () => {
-    console.log(selectedGenres);
 
     if (selectedGenres.length < 5) {
       setErrorMsg("You must select at least 5 genres");

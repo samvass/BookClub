@@ -6,12 +6,12 @@ import { setMyLibraryByUsername, getMyLibraryByUsername, getMyReadBookByUsername
 import Modal from "../../components/modal/Modal"
 import Rating from '@mui/material/Rating';
 import './BookInfoModal.css';
-import SessionContext from "../../Context/SessionContext";
+import AuthContext from "../../Context/AuthContext";
 
 const LoginModal = (props) => {
     const selectedBook = props.book
     const readBooks = props.rBooks
-    const { user } = useContext(SessionContext)
+    const { user } = useContext(AuthContext)
     let username = user.username
 
     const [value, setValue] = useState(0);
