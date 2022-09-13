@@ -9,7 +9,8 @@ import "./MyAccountPage.css";
 
 const MyAccountPage = () => {
   const navigate = useNavigate();
-  const sessionState = useContext(AuthContext);
+  const authState = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const username = sessionStorage.getItem('username')
 
   const [email, setEmail] = useState("");
@@ -18,7 +19,7 @@ const MyAccountPage = () => {
   const [deleteAccountOpen, setDeleteAccountOpen] = useState(false);
 
   useEffect(async () => {
-    if (!sessionState.token) {
+    if (!authState.token) {
       navigate(LOGIN_HREF);
     }
 
@@ -40,66 +41,11 @@ const MyAccountPage = () => {
 })
 
   return (
-    <div className="text">
-      <div className="page">
-        <div className="preferences">
-          <div className="display-properly">
-            <h1>Genres</h1>
-            <button
-              className="password-button"
-              id="password-button"
-              onClick={() => {
-                navigate("/setPreferences");
-              }}
-            >
-              Change Genres
-            </button>
-          </div>
-          <div className="selected-items">{displaySelectedGenres}</div>
-        </div>
-        <div className="account-info">
-          <h1>Account Info</h1>
-          <div>
-            <h3>Email</h3>
-            <h4>{email}</h4>
-          </div>
-          <div>
-            <h3>Username</h3>
-            <h4>{username}</h4>
-          </div>
-          <button
-            className="password-button"
-            onClick={() => {
-              setIsChangePasswordOpen(true);
-            }}
-          >
-            Change Password
-          </button>
-          <button
-            className="password-button"
-            onClick={() => setDeleteAccountOpen(true)}
-          >
-            Delete Account
-          </button>
-        </div>
-      </div>
-      {isChangePasswordOpen && (
-        <PasswordChangeModal
-          onClosePasswordChange={() => {
-            setIsChangePasswordOpen(false);
-          }}
-        />
-      )}
-      {deleteAccountOpen && (
-        <DeleteAccountModal setModalClose={() => setDeleteAccountOpen(false)} />
-      )}
+    <div>
+      Username: { user.username }
+      Email: { user.email }
+      Genres: { user.preferences }
     </div>
-    // <div>
-    //     <div>username</div>
-    //     <div>email</div>
-    //     <div>preferences</div>
-    //     <div>changes password button</div>
-    // </div>
   );
 };
 

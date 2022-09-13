@@ -63,7 +63,6 @@ const SelectPreferencesPage = () => {
     "Young adult",
   ];
 
-
   const displayGenres = possibleGenres.map((genre, index) => {
     return (
       <div>

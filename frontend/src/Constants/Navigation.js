@@ -16,6 +16,13 @@ export const PAGES = [
         name: "My Library",
         href: MY_LIBRARY_HREF
     },
+]
+
+export const PAGES_NON_AUTH = [
+    {
+        name: "Home",
+        href: HOME_HREF
+    },
     {
         name: "Login",
         href: LOGIN_HREF

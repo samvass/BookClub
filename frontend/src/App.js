@@ -27,8 +27,6 @@ const App = () => {
     };
     const res = await authenticateUserByToken(body);
 
-    console.log(res.message === "Authentication Successful")
-
     if (res.message !== "Authentication Successful"){
       console.log(res.error, "error")
       sessionStorage.removeItem("username")
@@ -41,7 +39,6 @@ const App = () => {
     
     const user = await getUserByUserName(username);
     sessionStorage.setItem("username", username);
-    console.log("found user", user);
     setUser(user);
   };
 
@@ -55,8 +52,12 @@ const App = () => {
 
   useEffect(() => {
     let token = sessionStorage.getItem("token")
+    let username = sessionStorage.getItem("username")
     if (token) {
-      authToken(token);
+      authToken({
+        token: token,
+        username: username,
+      });
     }
   }, []);
 

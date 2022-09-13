@@ -1,31 +1,43 @@
-import { useEffect, useState, useContext } from 'react';
-import { useNavigate } from "react-router-dom"
-import { LOGIN_HREF } from '../../Constants/Navigation';
+import React, { useEffect, useState, useContext } from 'react';
 import AuthContext from '../../Context/AuthContext';
-
+import LandingPage from '../LandingPage/LandingPage';
 import "./HomePage.css"
 
 
 const HomePage = () => {
 
-    const navigate = useNavigate()
-    const authState = useContext(AuthContext)
+    const { token } = useContext(AuthContext)
+
+    const [isAuth, setIsAuth] = useState(false)
 
     useEffect(() => {
-        if (!authState.token){
-            navigate(LOGIN_HREF)
-        }
-    }, [])
-    
 
+      setIsAuth(token ? true : false)
+
+    }, [token])
+    
     return (
-      <div>
-        <div className='recommendation-section'>
-            <div className='arrow reject'><button>Accept</button></div>
-            <div className='book'></div>
-            <div className='arrow accept'><button>Reject</button></div>
-        </div>
-      </div>
+      <React.Fragment>
+
+        {/* Render the regular home if user is authenticated */}
+        {
+        isAuth &&
+          <div className='recommendation-section'>
+              <div className='arrow reject'><button>Accept</button></div>
+              <div className='book'></div>
+              <div className='arrow accept'><button>Reject</button></div>
+          </div>
+        }
+
+        {/* Render the landing page if user is not authenticated */}
+        {
+          !isAuth &&
+
+          <LandingPage />
+
+        }
+
+      </React.Fragment>
     )
   }
 
