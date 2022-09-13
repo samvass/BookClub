@@ -5,7 +5,7 @@ export const MY_LIBRARY_HREF = "/myLibrary"
 
 export const PAGES = [
     {
-        name: "Home",
+        name: "Browse",
         href: HOME_HREF
     },
     {

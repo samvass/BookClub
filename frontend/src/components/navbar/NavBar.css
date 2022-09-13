@@ -1,15 +1,16 @@
-.header {
+.navbar {
     display: flex;
     flex-direction: column;
-    margin-left: 15px;
+    justify-content: center;
+    align-items: center;
 }
 
 .logo-info {
     display: flex;
+    flex-direction: row;
 }
 
-
-.header h1 {
+.name {
     margin-left: 15px;
     color: #050C4E;
     font-size: 72px;    
@@ -17,10 +18,8 @@
     /* margin-top: 10px; */
 }
 
-.header img {
-    margin-left: 15px;
-    max-width: 82px;
-    max-height: 70px;
-    /* margin-top: 15px; */
-
+.navigation-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

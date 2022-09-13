@@ -6,6 +6,7 @@ import AuthContext from '../../Context/AuthContext'
 import { useNavigate } from "react-router-dom"
 
 import { useContext, useState, useEffect } from "react"
+import { Button } from "@mui/material"
 
 const NavBar = () => {
 
@@ -25,17 +26,19 @@ const NavBar = () => {
     }, [token])
     
     return (
-        <div className="header">
+        <div className="navbar">
             <div className="logo-info">
-                <h1>BookClub</h1>
-                <img src={bookWorm} alt="Book Worm"></img>
+                <h1 className="name">BookClub</h1>
+            </div>
+            <div className="navigation-links">
                 {pagesDisplayed.map((page, index) => {
                     const link = page.href
                     return (
-                        <button key={index} onClick={() => navigate(link)}>{page.name}</button>
+                        <Button key={index} size="large" style={{color: '#EDEDED'}} 
+                        onClick={() => navigate(link)}>{page.name}</Button>
                     )
                 })}
-                <button onClick={logoutUser}>Logout</button>
+                <Button style={{color: '#EDEDED'}} onClick={logoutUser}>Logout</Button>
             </div>
         </div >
         )
