@@ -38,7 +38,8 @@ const NavBar = () => {
                         onClick={() => navigate(link)}>{page.name}</Button>
                     )
                 })}
-                <Button style={{color: '#EDEDED'}} onClick={logoutUser}>Logout</Button>
+                {token && <Button style={{color: '#EDEDED'}} onClick={logoutUser}>Logout</Button>}
+                
             </div>
         </div >
         )
