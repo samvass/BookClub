@@ -5,9 +5,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { CREATE_ACCOUNT_SCHEMA } from "../Constants/Schema";
 import AuthContext from "../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
+import { HOME_HREF } from "../Constants/Navigation";
+
 
 const CreateAccountPage = () => {
   const navigate = useNavigate();
+  const authState = useContext(AuthContext)
+
 
   const { token, setToken } = useContext(AuthContext);
 
@@ -29,74 +34,68 @@ const CreateAccountPage = () => {
       email: data.email,
     };
 
-    console.log(body);
 
     const response = await createAccount(body);
-    console.log(response);
 
     if (response.message === "Account successfully created") {
       const response1 = await login(body);
-      console.log(response1);
+
       // if backend approves of the info
       if (response1.message === "Login Successful") {
-        console.log("k the login worked");
         console.log(response1);
         const sessionInfo = {
           username: response1.data.username,
           token: response1.data.token,
         };
         setToken(sessionInfo);
-        console.log("hi there");
-        // if backend sends an error
       }
     }
+
 
     reset();
   };
 
-  useEffect(() => {
-    console.log("this is the token: ", token);
-    navigate("/");
-  }, [token]);
 
-  console.log(errors);
+  useEffect(() => {
+    if (authState.token) {
+        navigate(HOME_HREF)
+    }
+  }, [authState.token])
+  
 
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmitHandler)}>
-        <input
-          {...register("email")}
-          placeholder="email"
-          type="email"
-          required
-        />
-        <p>{errors.email?.message}</p>
-        <input
-          {...register("username")}
-          placeholder="username"
-          type="text"
-          required
-        />
-        <p>{errors.username?.message}</p>
-        <input
-          {...register("password")}
-          placeholder="password"
-          type="password"
-          required
-        />
-        <p>{errors.password?.message}</p>
-        <input
-          {...register("retypePassword")}
-          placeholder="retypePassword"
-          type="password"
-          required
-        />
-        <p>{errors.retypePassword?.message}</p>
-        <button type="submit">Sign In</button>
+      <form className="login-form" onSubmit={handleSubmit(onSubmitHandler)}>
+        <ul className="login">
+          <li className="input">
+              <p className="input-header">What's Your Email?</p>
+              <input className="input-field" {...register("email")} placeholder="Enter your email." type="text" />
+              <p className="validation-error">{errors.email?.message}</p>
+          </li>
+          <li className="input">
+              <p className="input-header">What's Your Username?</p>
+              <input className="input-field" {...register("username")} placeholder="Enter your username." type="text" />
+              <p className="validation-error">{errors.username?.message}</p>
+          </li>
+          <li className="input">
+              <p className="input-header">What's Your Password?</p>
+              <input className="input-field" {...register("password")} placeholder="Enter your password." type="password" />
+              <p className="validation-error">{errors.password?.message}</p>
+          </li>
+          <li className="input">
+              <p className="input-header">Confirm your password</p>
+              <input className="input-field" {...register("retypePassword")} placeholder="Confirm your password." type="password" />
+              <p className="validation-error">{errors.retypePassword?.message}</p>
+          </li>
+          <li>
+            <Button type="submit" style={{color: '#EDEDED', backgroundColor: '#050C4E'}}>Create Account</Button>
+          </li>
+        </ul>
       </form>
     </div>
   );
 };
+
 
 // const CreateAccountPageOld = () => {
 //     const { setUsername } = useContext(UserContext)

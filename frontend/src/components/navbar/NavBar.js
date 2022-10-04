@@ -8,6 +8,10 @@ import { useNavigate } from "react-router-dom"
 import { useContext, useState, useEffect } from "react"
 import { Button } from "@mui/material"
 
+import Spline from '@splinetool/react-spline';
+
+
+
 const NavBar = () => {
 
     const navigate = useNavigate()

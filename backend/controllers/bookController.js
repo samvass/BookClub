@@ -50,6 +50,7 @@ exports.getBookByName = (req, res, next) => {
 };
 
 exports.getBookRecommendation = (req, res, next) => {
+
   var options = {
     key: googleAPIKey,
     offset: 0,
@@ -100,6 +101,8 @@ exports.getBookRecommendationByGenre = (req, res, next) => {
   const bookGenre = req.params.genre;
   const axios = require('axios');
 
+  console.log(bookGenre)
+
 axios.get(`https://www.googleapis.com/books/v1/volumes?q=subject:${bookGenre}&key=AIzaSyCDmeu7MCYgpE_kA7wou6wP2Zvaxl9QiSQ`)
   .then(response => {
     if (response.length <= 0) return
@@ -109,7 +112,6 @@ axios.get(`https://www.googleapis.com/books/v1/volumes?q=subject:${bookGenre}&ke
       description: book.volumeInfo.description,
       author: book.volumeInfo.authors[0],
       genre: book.volumeInfo.categories[0],
-      thumbnail: book.volumeInfo.imageLinks.thumbnail,
     }
     return res.status(200).send({
       data: {

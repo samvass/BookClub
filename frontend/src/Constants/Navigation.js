@@ -2,6 +2,7 @@ export const HOME_HREF = "/"
 export const LOGIN_HREF = "/login"
 export const MY_ACCOUNT_HREF = "/myAccount"
 export const MY_LIBRARY_HREF = "/myLibrary"
+export const SIGN_UP_HREF = "/signup"
 
 export const PAGES = [
     {
@@ -26,5 +27,9 @@ export const PAGES_NON_AUTH = [
     {
         name: "Login",
         href: LOGIN_HREF
+    },
+    {
+        name: "Sign Up",
+        href: SIGN_UP_HREF
     },
 ]

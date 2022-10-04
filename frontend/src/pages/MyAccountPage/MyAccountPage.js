@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { LOGIN_HREF } from "../../Constants/Navigation";
 import AuthContext from "../../Context/AuthContext";
 import { getUserByUserName } from "../../api/userAPI";
+import { BsFillPencilFill } from 'react-icons/bs'
 
 
 import "./MyAccountPage.css";
@@ -11,40 +12,45 @@ const MyAccountPage = () => {
   const navigate = useNavigate();
   const authState = useContext(AuthContext);
   const { user } = useContext(AuthContext);
-  const username = sessionStorage.getItem('username')
-
-  const [email, setEmail] = useState("");
-  const [selectedGenres, setSelectedGenres] = useState([])
-  const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
-  const [deleteAccountOpen, setDeleteAccountOpen] = useState(false);
+  const [userData, setUserData] = useState({})
 
   useEffect(async () => {
     if (!authState.token) {
       navigate(LOGIN_HREF);
     }
 
-    if (sessionStorage.getItem('username')) {
-      console.log(username)
-      const incomingUserData = await getUserByUserName(sessionStorage.getItem('username'));
-  
-      console.log(incomingUserData)
-      setEmail(incomingUserData.user.email)
-  
-      const incomingPreferences = await getPreferencesByUsername(username)
-      setSelectedGenres(incomingPreferences.data)
-    }
+    setUserData(user.user)
     
   }, []);
 
-  const displaySelectedGenres = selectedGenres.map((genre, index) => {
-    return <div className="selected-item" key={index}>{genre}</div>
-})
+  const navigateToPreferences = () => {
+    navigate("/setPreferences")
+  }
+
 
   return (
-    <div>
-      Username: { user.username }
-      Email: { user.email }
-      Genres: { user.preferences }
+    <div className="account-page">
+      <div className="section">
+        <div className="section-header">
+          Account Info
+        </div>
+        <div className="user-field">
+          Username: { userData.username }
+          <BsFillPencilFill />
+        </div>
+        <div className="user-field">
+          Email: { userData.email }
+          <BsFillPencilFill />
+        </div>
+      </div>
+      <div className="section">
+        <div className="section-header">
+          Update Preferences
+        </div>
+        <div>
+          Genres: { userData.preferences }
+        </div>
+      </div>
     </div>
   );
 };

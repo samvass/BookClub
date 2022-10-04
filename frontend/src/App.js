@@ -5,7 +5,6 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import HomePage from "./pages//HomePage/HomePage";
 import MyAccountPage from "./pages/MyAccountPage/MyAccountPage";
 import MyLibraryPage from "./pages/MyLibraryPage/MyLibraryPage";
-import SelectPreferencesPage from "./pages/SelectPreferencesPage/SelectPreferencesPage";
 
 
 import NavBar from "./components/Navbar/NavBar";
@@ -80,7 +79,6 @@ const App = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<CreateAccountPage />} />
             <Route path="/myLibrary" element={<MyLibraryPage />} />
-            <Route path="/setPreferences" element={<SelectPreferencesPage />} />
           </Routes>
         </Router>
       </AuthContext.Provider>

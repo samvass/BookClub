@@ -7,6 +7,8 @@
     "@emotion/styled": "^11.8.1",
     "@hookform/resolvers": "^2.9.7",
     "@mui/material": "^5.5.2",
+    "@splinetool/react-spline": "^2.2.3",
+    "@splinetool/runtime": "^0.9.116",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
@@ -22,6 +24,7 @@
     "react-icons": "^4.3.1",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
+    "react-spline": "^1.2.1",
     "sass": "^1.49.7",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"

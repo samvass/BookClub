@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import AuthContext from '../../Context/AuthContext';
 import LandingPage from '../LandingPage/LandingPage';
+import {getBookByGenre} from '../../api/bookAPI'
 import "./HomePage.css"
 
 
@@ -10,9 +11,15 @@ const HomePage = () => {
 
     const [isAuth, setIsAuth] = useState(false)
 
-    useEffect(() => {
+    const [book, setBook] = useState("")
+
+    useEffect(async () => {
 
       setIsAuth(token ? true : false)
+
+      const res = await getBookByGenre("adventure")
+      
+      setBook(res.data.book)
 
     }, [token])
     
@@ -24,7 +31,9 @@ const HomePage = () => {
         isAuth &&
           <div className='recommendation-section'>
               <div className='arrow reject'><button>Accept</button></div>
-              <div className='book'></div>
+              <div className='book'>
+                {book.title}
+              </div>
               <div className='arrow accept'><button>Reject</button></div>
           </div>
         }

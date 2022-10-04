@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { createAccount, login } from '../../api/userAPI';
 import React, { useContext, useEffect } from 'react'
+import { HOME_HREF } from "../../Constants/Navigation";
+
 
 import { LOGIN_SCHEMA } from '../../Constants/Schema'
 import { useNavigate } from 'react-router-dom';
@@ -47,7 +49,7 @@ export const LoginPage = () => {
 
       useEffect(() => {
         if (authState.token) {
-            navigate("/")
+            navigate(HOME_HREF)
         }
       }, [authState.token])
       
