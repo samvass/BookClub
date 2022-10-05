@@ -28,8 +28,29 @@ const apiPost = async (endpoint, body, method = 'POST') => {
 
         return await res.json();
     } catch (error) {
-        console.log("hell0");
+        console.log(error);
     }
+}
+const apiPut = async (endpoint, body, method = 'PUT') => {
+    try {
+        let res = await fetch(endpoint, {
+            method: method,
+            body: JSON.stringify(body),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        });
+
+        return await res.json();
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const updateUserInfo = async (userId, body) => {
+    let endpoint = apiURL + "/users/update/" + userId;
+    return await apiPut(endpoint, body);
 }
 
 export const getUserByUserName = async (username) => {

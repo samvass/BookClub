@@ -43,9 +43,10 @@
 .input-header {
     font-style: normal;
     font-weight: 400;
-    font-size: 12px;
+    font-size: 20px;
     line-height: 14px;
-    color: #dfdfdf;   
+    color: #dfdfdf; 
+    margin-bottom: 15px;  
 }
 
 .validation-error {

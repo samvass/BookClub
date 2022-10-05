@@ -1,0 +1,13 @@
+.fields {
+    display: flex;
+    justify-content: space-around;
+}
+
+.account-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.update-account-button{
+    margin: 30px;
+}

@@ -7,6 +7,8 @@ const router = express.Router();
 // get all users
 router.get('/get', userController.getUsers);
 
+router.put('/update/:id', userController.updateUser);
+
 // get user by username
 // :username -> dynamic route (/users/get/username)
 router.get('/get/:username', userController.getByUsername);

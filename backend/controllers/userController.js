@@ -8,6 +8,10 @@ const User = require('../models/user');
 const Book = require('../models/book');
 const { update } = require('../models/user');
 
+exports.updateUser = (req, res, next) => {
+    console.log(req)
+}
+
 exports.getUsers = (req, res, next) => {
 
     // take the user schema and find all instances

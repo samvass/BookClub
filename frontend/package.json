@@ -6,6 +6,7 @@
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
     "@hookform/resolvers": "^2.9.7",
+    "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.5.2",
     "@splinetool/react-spline": "^2.2.3",
     "@splinetool/runtime": "^0.9.116",
@@ -25,6 +26,7 @@
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
     "react-spline": "^1.2.1",
+    "react-tabs": "^5.1.0",
     "sass": "^1.49.7",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
